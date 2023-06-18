@@ -30,6 +30,9 @@ declare module "next-auth" {
   // }
 }
 
+// https://discord.com/developers/docs/topics/oauth2#shared-resources-oauth2-scopes
+const scopes = ["identify", "email"].join(" ");
+
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
@@ -50,6 +53,7 @@ export const authOptions: NextAuthOptions = {
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
+      authorization: { params: { scope: scopes } },
     }),
     /**
      * ...add more providers here.

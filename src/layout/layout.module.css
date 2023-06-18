@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  width: 100%;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  max-height: 100%;
+  overflow: scroll;
+}
+
+.content {
+  flex: 1;
+  height: 100%;
+  overflow: scroll;
+}
+
+.sidebar {
+  width: 200px;
+}
+
+.footer {
+  padding: 10px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.horizontalStack {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
