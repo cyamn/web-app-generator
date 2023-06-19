@@ -1,9 +1,12 @@
 import { Header } from "@/components/header";
+import { ViewList } from "@/components/view-list";
 import { Layout } from "@/layout";
 import { api } from "@/utils/api";
+import { type Page } from "@/data/page";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { PageList } from "@/components/page-list";
 
 type PageRoutes = {
   project: string;
@@ -42,6 +45,17 @@ export default function Page() {
             item={`${projectName} 👉 ${pageName}`}
             user={sessionData.user}
           />
+        }
+        sidebarLeft={
+          <div className="flex h-full flex-col bg-slate-700">
+            <div className="flex h-full flex-row">
+              <ViewList activeView={"pages"} />
+              <div className="flex h-full w-full flex-col justify-between bg-slate-700">
+                <PageList projectName={projectName} pageName={pageName} />
+              </div>
+            </div>
+            {/* <StatusBar /> */}
+          </div>
         }
         content={<div></div>}
       />
