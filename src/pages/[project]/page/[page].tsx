@@ -71,6 +71,18 @@ export default function Page() {
 
   const [status, setStatus] = useState<EditorStatus>(EditorStatus.SAVED);
 
+  const ctx = api.useContext();
+
+  const { mutate, isLoading: isSaving } =
+    api.projects.updatePageOfProject.useMutation({
+      onSuccess: () => {
+        void ctx.projects.getPageOfProject.invalidate({
+          projectName,
+          pagePath,
+        });
+      },
+    });
+
   if (!projectName || !pagePath) return <div>invalid path</div>;
   if (!sessionData) return <div>not logged in</div>;
   if (isError) return <div>{error.message}</div>;
@@ -99,7 +111,9 @@ export default function Page() {
 
   function trySaveToDatabase() {
     if (status !== EditorStatus.CHANGED) return;
-    //TODO: implement
+    if (!localPage) return;
+    mutate({ projectName, pagePath, page: localPage });
+    setStatus(EditorStatus.SAVED);
   }
 
   return (
@@ -118,6 +132,8 @@ export default function Page() {
                   {projectName} 👉 {page.name}
                 </div>
                 <button
+                  disabled={isSaving}
+                  onClick={() => trySaveToDatabase()}
                   className={
                     "mx-3 rounded-md  px-1 font-mono " + statusToCSS(status)
                   }

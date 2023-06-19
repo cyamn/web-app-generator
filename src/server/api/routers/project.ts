@@ -150,4 +150,57 @@ export const projectsRouter = createTRPCRouter({
       });
       return page;
     }),
+
+  updatePageOfProject: protectedProcedure
+    .input(
+      z.object({
+        projectName: z.string(),
+        pagePath: z.string(),
+        page: PageSchema,
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.findFirst({
+        where: {
+          name: input.projectName,
+          ownerId: ctx.session.user.id,
+        },
+        select: {
+          pages: {
+            where: {
+              path: {
+                equals: input.pagePath,
+              },
+            },
+            select: {
+              id: true,
+            },
+          },
+        },
+      });
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+      if (!project.pages || project.pages.length === 0 || !project.pages[0]) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Page not found",
+        });
+      }
+      const page = await ctx.prisma.page.update({
+        where: {
+          id: project.pages[0].id,
+        },
+        data: {
+          name: input.page.name,
+          path: input.page.path,
+          dashboards: JSON.stringify(input.page.dashboards),
+        },
+      });
+
+      return page;
+    }),
 });
