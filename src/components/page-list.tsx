@@ -4,15 +4,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type Page } from "@/data/page";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { type } from "os";
 
 type PageListProperties = {
   projectName: string;
-  pageName: string;
+  pagePath: string;
 };
 
 export const PageList: React.FC<PageListProperties> = ({
   projectName,
-  pageName,
+  pagePath,
 }) => {
   const {
     data: pages,
@@ -41,7 +42,7 @@ export const PageList: React.FC<PageListProperties> = ({
     <>
       <nav className="flex h-full flex-col overflow-scroll p-1">
         {pages.map((page, id) => (
-          <PageItem key={id} page={page} active={pageName === page.path.base} />
+          <PageItem key={id} page={page} active={pagePath === page.path} />
         ))}
       </nav>
       <a
@@ -77,7 +78,7 @@ export const PageItem: React.FC<PageItemProperties> = ({ page, active }) => {
   return (
     <div className={"m-[1px] grid grid-cols-6 rounded-lg" + shadow}>
       <Link
-        href={`/${projectName}/page/${page.path.base}`}
+        href={`/${projectName}/page/${page.path}`}
         className="col-span-6 items-center  p-2"
       >
         <span className="mx-1 text-base font-medium">

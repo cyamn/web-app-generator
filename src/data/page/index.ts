@@ -15,7 +15,7 @@ import { defaultPath, PathSchema } from "./path";
 export const PageSchema = z
   .object({
     name: z.string(),
-    path: PathSchema,
+    path: z.string(),
     //   scope: ScopeSchema.optional(),
     // access: AccessAttributesSchema,
     dashboards: z.array(DashboardSchema),
@@ -26,7 +26,7 @@ export type Page = z.infer<typeof PageSchema>;
 
 export const defaultPage: Page = {
   name: "example",
-  path: defaultPath,
+  path: "example",
   // access: defaultAccessAttributes,
   dashboards: [defaultDashboard, defaultDatabaseView],
 };

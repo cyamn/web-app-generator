@@ -2,7 +2,6 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { defaultWebApp } from "@/data/webapp";
 import { PageSchema, defaultPage } from "@/data/page";
-import { PathSchema } from "@/data/page/path";
 import { DashboardSchema } from "@/data/dashboard/library/dashboard";
 import { TRPCError } from "@trpc/server";
 import { nameToInternal } from "@/utils/name-to-internal";
@@ -38,7 +37,7 @@ export const projectsRouter = createTRPCRouter({
             create: [
               {
                 name: defaultPage.name,
-                path: JSON.stringify(defaultPage.path),
+                path: defaultPage.path,
                 dashboards: JSON.stringify(defaultPage.dashboards),
               },
             ],
@@ -75,27 +74,11 @@ export const projectsRouter = createTRPCRouter({
           message: "Project not found",
         });
       }
-
-      const outPages = [];
-      for (const page of project.pages) {
-        const unsafePath: unknown = JSON.parse(page.path as string);
-        const parsedPath = PathSchema.safeParse(unsafePath);
-        if (!parsedPath.success) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Invalid path",
-          });
-        }
-        outPages.push({
-          name: page.name,
-          path: parsedPath.data,
-        });
-      }
-      return outPages;
+      return project.pages;
     }),
 
   getPageOfProject: protectedProcedure
-    .input(z.object({ projectName: z.string(), pageName: z.string() }))
+    .input(z.object({ projectName: z.string(), pagePath: z.string() }))
     .output(PageSchema)
     .query(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
@@ -106,7 +89,9 @@ export const projectsRouter = createTRPCRouter({
         select: {
           pages: {
             where: {
-              name: input.pageName,
+              path: {
+                equals: input.pagePath,
+              },
             },
           },
         },
@@ -118,15 +103,13 @@ export const projectsRouter = createTRPCRouter({
         });
       }
       const page = project.pages[0];
-      const unsafePath: unknown = JSON.parse(page.path as string);
       const unsafeDashboards: unknown = JSON.parse(page.dashboards as string);
 
-      const parsedPath = PathSchema.safeParse(unsafePath);
       const parsedDashboards = z
         .array(DashboardSchema)
         .safeParse(unsafeDashboards);
 
-      if (!parsedPath.success || !parsedDashboards.success) {
+      if (!parsedDashboards.success) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to parse page",
@@ -134,7 +117,7 @@ export const projectsRouter = createTRPCRouter({
       }
       return {
         name: page.name,
-        path: parsedPath.data,
+        path: page.path,
         dashboards: parsedDashboards.data,
       };
     }),
@@ -154,12 +137,10 @@ export const projectsRouter = createTRPCRouter({
           message: "Project not found",
         });
       }
-      const path = defaultPage.path;
-      path.base = nameToInternal(input.pageName);
       const page = await ctx.prisma.page.create({
         data: {
           name: input.pageName,
-          path: JSON.stringify(path),
+          path: nameToInternal(input.pageName),
           dashboards: JSON.stringify(defaultPage.dashboards),
           projectId: project.id,
         },

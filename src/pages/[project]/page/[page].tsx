@@ -16,7 +16,7 @@ type PageRoutes = {
 export default function Page() {
   const router = useRouter();
   const { data: sessionData } = useSession();
-  const { project: projectName, page: pageName } = router.query as PageRoutes;
+  const { project: projectName, page: pagePath } = router.query as PageRoutes;
   const {
     data: page,
     error,
@@ -24,10 +24,10 @@ export default function Page() {
     isLoading,
   } = api.projects.getPageOfProject.useQuery({
     projectName,
-    pageName,
+    pagePath,
   });
 
-  if (!projectName || !pageName) return <div>invalid path</div>;
+  if (!projectName || !pagePath) return <div>invalid path</div>;
   if (!sessionData) return <div>not logged in</div>;
   if (isError) return <div>{error.message}</div>;
   if (isLoading || !page) return <div>loading</div>;
@@ -42,7 +42,7 @@ export default function Page() {
       <Layout
         header={
           <Header
-            item={`${projectName} 👉 ${pageName}`}
+            item={`${projectName} 👉 ${page.name}`}
             user={sessionData.user}
           />
         }
@@ -51,7 +51,7 @@ export default function Page() {
             <div className="flex h-full flex-row">
               <ViewList activeView={"pages"} />
               <div className="flex h-full w-full flex-col justify-between bg-slate-700">
-                <PageList projectName={projectName} pageName={pageName} />
+                <PageList projectName={projectName} pagePath={pagePath} />
               </div>
             </div>
             {/* <StatusBar /> */}
