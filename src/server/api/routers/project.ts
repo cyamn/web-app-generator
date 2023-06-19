@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { defaultWebApp } from "@/data/webapp";
 import { PageSchema, defaultPage } from "@/data/page";
@@ -79,7 +79,7 @@ export const projectsRouter = createTRPCRouter({
 
   getPageOfProject: protectedProcedure
     .input(z.object({ projectName: z.string(), pagePath: z.string() }))
-    .output(PageSchema)
+    .output(z.object({ page: PageSchema, updatedAt: z.date() }))
     .query(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
@@ -116,9 +116,12 @@ export const projectsRouter = createTRPCRouter({
         });
       }
       return {
-        name: page.name,
-        path: page.path,
-        dashboards: parsedDashboards.data,
+        page: {
+          name: page.name,
+          path: page.path,
+          dashboards: parsedDashboards.data,
+        },
+        updatedAt: page.updatedAt,
       };
     }),
 

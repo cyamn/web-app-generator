@@ -2,23 +2,58 @@ import { Header } from "@/components/header";
 import { ViewList } from "@/components/view-list";
 import { Layout } from "@/layout";
 import { api } from "@/utils/api";
-import { type Page } from "@/data/page";
+import { PageSchema, type Page } from "@/data/page";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { PageList } from "@/components/page-list";
+import { Tabs } from "@/components/tabs";
+import { PageMode } from "@/data/state";
+import { useEffect, useState } from "react";
+import { IDE } from "@/components/editor";
+import { deepEqual } from "@/utils/deep-equal";
+
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 type PageRoutes = {
   project: string;
   page: string;
 };
 
+export enum EditorStatus {
+  INVALID_JSON = "invalid json",
+  INVALID_PAGE = "invalid page",
+  CHANGED = "changed",
+  SAVED = "saved",
+  AUTOSAVED = "auto saved",
+}
+
+function statusToCSS(status: EditorStatus): string {
+  switch (status) {
+    case EditorStatus.INVALID_JSON:
+    case EditorStatus.INVALID_PAGE:
+      return "bg-red-500 text-red-950";
+    case EditorStatus.CHANGED:
+      return "bg-green-500 text-green-950";
+    case EditorStatus.SAVED:
+    case EditorStatus.AUTOSAVED:
+      return "bg-blue-500 text-blue-950";
+    default:
+      return "bg-slate-500 text-slate-950";
+  }
+}
+
 export default function Page() {
   const router = useRouter();
   const { data: sessionData } = useSession();
   const { project: projectName, page: pagePath } = router.query as PageRoutes;
+
+  const [pageMode, setPageMode] = useState<PageMode>(PageMode.Edit);
   const {
-    data: page,
+    data: pageWithMeta,
     error,
     isError,
     isLoading,
@@ -27,10 +62,45 @@ export default function Page() {
     pagePath,
   });
 
+  const [localPage, setLocalPage] = useState<Page | null | undefined>(
+    pageWithMeta?.page
+  );
+  useEffect(() => {
+    setLocalPage(pageWithMeta?.page);
+  }, [pageWithMeta]);
+
+  const [status, setStatus] = useState<EditorStatus>(EditorStatus.SAVED);
+
   if (!projectName || !pagePath) return <div>invalid path</div>;
   if (!sessionData) return <div>not logged in</div>;
   if (isError) return <div>{error.message}</div>;
-  if (isLoading || !page) return <div>loading</div>;
+  if (isLoading || !pageWithMeta || !localPage) return <div>loading</div>;
+
+  const { page, updatedAt } = pageWithMeta;
+
+  function trySetLocalPageFromString(pageString: string): void {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(pageString);
+    } catch (e) {
+      setStatus(EditorStatus.INVALID_JSON);
+      return;
+    }
+    const verify = PageSchema.safeParse(parsed);
+    if (!verify.success) {
+      setStatus(EditorStatus.INVALID_PAGE);
+      console.log(verify.error);
+      return;
+    }
+    setLocalPage(verify.data);
+    if (deepEqual(verify.data, page)) setStatus(EditorStatus.SAVED);
+    else setStatus(EditorStatus.CHANGED);
+  }
+
+  function trySaveToDatabase() {
+    if (status !== EditorStatus.CHANGED) return;
+    //TODO: implement
+  }
 
   return (
     <>
@@ -42,8 +112,33 @@ export default function Page() {
       <Layout
         header={
           <Header
-            item={`${projectName} 👉 ${page.name}`}
+            item={
+              <div className="flex flex-row items-center">
+                <div>
+                  {projectName} 👉 {page.name}
+                </div>
+                <button
+                  className={
+                    "mx-3 rounded-md  px-1 font-mono " + statusToCSS(status)
+                  }
+                >
+                  {status}
+                </button>
+                {(status === EditorStatus.SAVED ||
+                  status === EditorStatus.AUTOSAVED) && (
+                  <div className="text-sm text-slate-400">
+                    {dayjs(updatedAt).fromNow()}
+                  </div>
+                )}
+                {status === EditorStatus.CHANGED && (
+                  <div className="text-sm text-slate-400">
+                    {dayjs(updatedAt).fromNow()}
+                  </div>
+                )}
+              </div>
+            }
             user={sessionData.user}
+            tabs={<Tabs pageMode={pageMode} setPageMode={setPageMode} />}
           />
         }
         sidebarLeft={
@@ -57,8 +152,39 @@ export default function Page() {
             {/* <StatusBar /> */}
           </div>
         }
-        content={<div></div>}
+        content={
+          <Content
+            page={localPage}
+            pageMode={pageMode}
+            trySetLocalPageFromString={trySetLocalPageFromString}
+          />
+        }
       />
     </>
   );
+}
+
+type ContentProps = {
+  page: Page;
+  pageMode: PageMode;
+  trySetLocalPageFromString: (pageString: string) => void;
+};
+
+function Content({ page, pageMode, trySetLocalPageFromString }: ContentProps) {
+  switch (pageMode) {
+    case PageMode.Edit:
+      return <div>edit {page.name}</div>;
+    case PageMode.Preview:
+      return <div>preview</div>;
+    case PageMode.JSON:
+      return (
+        <IDE
+          page={page}
+          trySetLocalPageFromString={trySetLocalPageFromString}
+        />
+      );
+
+    default:
+      return null;
+  }
 }
