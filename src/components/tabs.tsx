@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 import { PageMode } from "@/data/state";
-import Link from "next/link";
 
 type TabProperties = {
   mode: PageMode;

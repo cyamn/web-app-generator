@@ -1,11 +1,13 @@
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { type Page } from "@/data/page";
 import Editor from "@monaco-editor/react";
-import React, { useEffect } from "react";
+import React from "react";
 
-import { type EditorProperties } from "../shared";
+type MonacoProperties = {
+  page: Page;
+  trySetLocalPageFromString: (pageString: string) => void;
+};
 
-export const Monaco: React.FC<EditorProperties> = ({
+export const Monaco: React.FC<MonacoProperties> = ({
   page,
   trySetLocalPageFromString,
 }) => {
@@ -46,7 +48,7 @@ const MonacoEditor: React.FC<MonacoEditorProperties> = ({
       language="json"
       options={options}
       value={content}
-      onChange={(c: any) => {
+      onChange={(c: string | undefined) => {
         handleChange(c ?? "");
       }}
     />

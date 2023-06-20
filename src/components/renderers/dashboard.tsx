@@ -1,14 +1,12 @@
 import { type Dashboard } from "@/data/dashboard/library/dashboard";
-import { type DatabaseView } from "@/data/dashboard/library/database-view";
 import { type Markdown } from "@/data/dashboard/library/markdown";
-import Link from "next/link";
 import React from "react";
 import { MarkdownRender } from "./markdown";
 
 export const DashboardRenderer: React.FC<{
   dashboard: Dashboard;
   index: number;
-}> = ({ dashboard, index }) => {
+}> = ({ dashboard }) => {
   return <div className={"px-3 pt-3"}>{renderDashboard(dashboard)}</div>;
 };
 

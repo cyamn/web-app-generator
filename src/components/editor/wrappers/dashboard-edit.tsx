@@ -1,8 +1,7 @@
+import { DashboardRenderer } from "@/components/renderers/dashboard";
+import { type Dashboard } from "@/data/dashboard/library/dashboard";
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import { Dashboard, DashboardRender } from "@/data/dashboard/library/dashboard";
-import { HorizontalStack, Stack } from "@/layout";
 
 type DashboardEditProperties = {
   dashboard: Dashboard;
@@ -22,7 +21,7 @@ export const DashboardEdit: React.FC<DashboardEditProperties> = ({
     : "rounded-r-lg border-2 border-slate-300";
   return (
     <div className="my-1 cursor-pointer">
-      <HorizontalStack>
+      <div className="flex flex-row">
         <NameTag visible={showBorders} name={dashboard.type} active={active} />
         <div
           key={dashboard.type}
@@ -30,9 +29,9 @@ export const DashboardEdit: React.FC<DashboardEditProperties> = ({
             active ? "shadow-xl" : ""
           }`}
         >
-          <DashboardRender dashboard={dashboard} index={index} />
+          <DashboardRenderer dashboard={dashboard} index={index} />
         </div>
-      </HorizontalStack>
+      </div>
     </div>
   );
 };
@@ -50,7 +49,7 @@ const NameTag: React.FC<NameTagProperties> = ({ visible, name, active }) => {
     : "bg-slate-300 text-slate-800";
   return (
     <div className={"w-10 rounded-l-lg  py-[2px] " + colors}>
-      <Stack>
+      <div className="flex flex-col">
         <FontAwesomeIcon className="text-2xl" icon={faMarkdown} />
         <div
           className="py-1 pr-2 font-mono uppercase"
@@ -63,7 +62,7 @@ const NameTag: React.FC<NameTagProperties> = ({ visible, name, active }) => {
         >
           {name}
         </div>
-      </Stack>
+      </div>
     </div>
   );
 };

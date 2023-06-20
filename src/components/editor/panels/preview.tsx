@@ -1,9 +1,8 @@
 import { DashboardRenderer } from "@/components/renderers/dashboard";
+import { type Page } from "@/data/page";
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-
-import { type EditorProperties } from "../shared";
 
 type NameTagProperties = {
   visible: boolean;
@@ -36,11 +35,21 @@ const NameTag: React.FC<NameTagProperties> = ({ visible, name, active }) => {
   );
 };
 
-export const Preview: React.FC<EditorProperties> = ({
+type PreviewProperties = {
+  page: Page;
+  showBorders?: boolean;
+  setDashboardIndex?: (index: number) => void;
+  index?: number;
+};
+
+export const Preview: React.FC<PreviewProperties> = ({
   page,
   showBorders = false,
+  setDashboardIndex = (_) => {
+    return;
+  },
+  index = -1,
 }) => {
-  const [index, setIndex] = React.useState(-1);
   return (
     <div className="flex h-full flex-col overflow-scroll p-4 font-sans leading-normal tracking-normal">
       {page.dashboards.map((dashboard, id) => {
@@ -49,7 +58,11 @@ export const Preview: React.FC<EditorProperties> = ({
           ? "rounded-r-lg border-2 border-slate-800"
           : "rounded-r-lg border-2 border-slate-300";
         return (
-          <div key={id} className="my-1 cursor-pointer">
+          <div
+            key={id}
+            className="my-1 cursor-pointer"
+            onClick={() => setDashboardIndex(id)}
+          >
             <div className="flex flex-row">
               <NameTag
                 visible={showBorders}

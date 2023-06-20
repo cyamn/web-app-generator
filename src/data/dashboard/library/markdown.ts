@@ -4,7 +4,6 @@ import {
   defaultMarkdownParameters,
   MarkdownParametersSchema,
 } from "../parameters/markdown";
-import { Dashboard } from "./dashboard";
 
 export const MarkdownSchema = z
   .object({

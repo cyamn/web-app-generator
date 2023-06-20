@@ -5,19 +5,11 @@ import {
   defaultDashboard,
 } from "../dashboard/library/dashboard";
 import { defaultDatabaseView } from "../dashboard/library/database-view";
-// import { ScopeSchema } from "../dynamic";
-import {
-  AccessAttributesSchema,
-  defaultAccessAttributes,
-} from "./access-attributes";
-import { defaultPath, PathSchema } from "./path";
 
 export const PageSchema = z
   .object({
     name: z.string(),
     path: z.string(),
-    //   scope: ScopeSchema.optional(),
-    // access: AccessAttributesSchema,
     dashboards: z.array(DashboardSchema),
   })
   .strict();

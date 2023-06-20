@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type Page } from "@/data/page";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { type } from "os";
 
 type PageListProperties = {
   projectName: string;

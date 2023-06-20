@@ -1,4 +1,6 @@
-export function deepEqual(obj1: any, obj2: any): boolean {
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+export function deepEqual(obj1: unknown, obj2: unknown): boolean {
   // Check if the objects are of the same type
   if (typeof obj1 !== typeof obj2) {
     return false;

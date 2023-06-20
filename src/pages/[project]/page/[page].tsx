@@ -10,7 +10,7 @@ import { PageList } from "@/components/page-list";
 import { Tabs } from "@/components/tabs";
 import { PageMode } from "@/data/state";
 import { useEffect, useState } from "react";
-import { IDE } from "@/components/editor";
+import { GUIEditor, IDE, Preview } from "@/components/editor";
 import { deepEqual } from "@/utils/deep-equal";
 
 import dayjs from "dayjs";
@@ -109,11 +109,24 @@ export default function Page() {
     else setStatus(EditorStatus.CHANGED);
   }
 
+  function wrapSetLocalPage(updatedPage: Page): void {
+    setLocalPage(updatedPage);
+    if (deepEqual(updatedPage, page)) setStatus(EditorStatus.SAVED);
+    else setStatus(EditorStatus.CHANGED);
+  }
+
   function trySaveToDatabase() {
     if (status !== EditorStatus.CHANGED) return;
     if (!localPage) return;
     mutate({ projectName, pagePath, page: localPage });
     setStatus(EditorStatus.SAVED);
+  }
+
+  function tryAutoSaveToDatabase() {
+    if (status !== EditorStatus.CHANGED) return;
+    if (!localPage) return;
+    mutate({ projectName, pagePath, page: localPage });
+    setStatus(EditorStatus.AUTOSAVED);
   }
 
   return (
@@ -140,17 +153,9 @@ export default function Page() {
                 >
                   {status}
                 </button>
-                {(status === EditorStatus.SAVED ||
-                  status === EditorStatus.AUTOSAVED) && (
-                  <div className="text-sm text-slate-400">
-                    {dayjs(updatedAt).fromNow()}
-                  </div>
-                )}
-                {status === EditorStatus.CHANGED && (
-                  <div className="text-sm text-slate-400">
-                    {dayjs(updatedAt).fromNow()}
-                  </div>
-                )}
+                <div className="text-sm text-slate-400">
+                  last saved {dayjs(updatedAt).fromNow()}
+                </div>
               </div>
             }
             user={sessionData.user}
@@ -173,6 +178,8 @@ export default function Page() {
             page={localPage}
             pageMode={pageMode}
             trySetLocalPageFromString={trySetLocalPageFromString}
+            setLocalPage={wrapSetLocalPage}
+            tryAutoSaveToDatabase={tryAutoSaveToDatabase}
           />
         }
       />
@@ -184,14 +191,28 @@ type ContentProps = {
   page: Page;
   pageMode: PageMode;
   trySetLocalPageFromString: (pageString: string) => void;
+  setLocalPage: (page: Page) => void;
+  tryAutoSaveToDatabase: () => void;
 };
 
-function Content({ page, pageMode, trySetLocalPageFromString }: ContentProps) {
+function Content({
+  page,
+  pageMode,
+  trySetLocalPageFromString,
+  setLocalPage,
+  tryAutoSaveToDatabase,
+}: ContentProps) {
   switch (pageMode) {
     case PageMode.Edit:
-      return <div>edit {page.name}</div>;
+      return (
+        <GUIEditor
+          page={page}
+          setLocalPage={setLocalPage}
+          tryAutoSaveToDatabase={tryAutoSaveToDatabase}
+        />
+      );
     case PageMode.Preview:
-      return <div>preview</div>;
+      return <Preview page={page} />;
     case PageMode.JSON:
       return (
         <IDE
