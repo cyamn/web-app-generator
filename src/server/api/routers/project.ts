@@ -77,6 +77,54 @@ export const projectsRouter = createTRPCRouter({
       return project.pages;
     }),
 
+  getAllPagesOfProject: protectedProcedure
+    .input(z.string())
+    .output(z.array(z.object({ page: PageSchema, updatedAt: z.date() })))
+    .query(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.findFirst({
+        where: {
+          name: input,
+          ownerId: ctx.session.user.id,
+        },
+        select: {
+          pages: {
+            orderBy: {
+              updatedAt: "desc",
+            },
+          },
+        },
+      });
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+      const pages = project.pages.map((page) => {
+        const unsafeDashboards: unknown = JSON.parse(page.dashboards as string);
+
+        const parsedDashboards = z
+          .array(DashboardSchema)
+          .safeParse(unsafeDashboards);
+
+        if (!parsedDashboards.success) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to parse page",
+          });
+        }
+        return {
+          page: {
+            name: page.name,
+            path: page.path,
+            dashboards: parsedDashboards.data,
+          },
+          updatedAt: page.updatedAt,
+        };
+      });
+      return pages;
+    }),
+
   getPageOfProject: protectedProcedure
     .input(z.object({ projectName: z.string(), pagePath: z.string() }))
     .output(z.object({ page: PageSchema, updatedAt: z.date() }))

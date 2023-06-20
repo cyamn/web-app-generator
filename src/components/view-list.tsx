@@ -6,9 +6,15 @@ type ViewItemProperties = {
   icon: IconDefinition;
   view: string;
   activeView: string;
+  projectName: string;
 };
 
-const ViewItem: React.FC<ViewItemProperties> = ({ icon, view, activeView }) => {
+const ViewItem: React.FC<ViewItemProperties> = ({
+  icon,
+  view,
+  activeView,
+  projectName,
+}) => {
   const active = activeView === view;
   const style = active
     ? "bg-slate-200 text-slate-700"
@@ -16,7 +22,7 @@ const ViewItem: React.FC<ViewItemProperties> = ({ icon, view, activeView }) => {
   return (
     <a
       className={"mb-2 h-12 w-12 rounded-lg p-1 pt-2 text-center " + style}
-      href={`/#/${view}`}
+      href={`/${projectName}/${view}`}
     >
       <FontAwesomeIcon className="text-3xl" icon={icon} />
     </a>
@@ -25,14 +31,28 @@ const ViewItem: React.FC<ViewItemProperties> = ({ icon, view, activeView }) => {
 
 type ViewListProperties = {
   activeView: string;
+  projectName: string;
 };
 
-export const ViewList: React.FC<ViewListProperties> = ({ activeView }) => {
+export const ViewList: React.FC<ViewListProperties> = ({
+  activeView,
+  projectName,
+}) => {
   return (
     <div className="flex h-full flex-col justify-between bg-slate-800 text-slate-400">
       <nav className="mr-1 flex h-full flex-col overflow-scroll p-1">
-        <ViewItem icon={faFile} view={"pages"} activeView={activeView} />
-        <ViewItem icon={faTable} view={"tables"} activeView={activeView} />
+        <ViewItem
+          icon={faFile}
+          view={"page"}
+          activeView={activeView}
+          projectName={projectName}
+        />
+        <ViewItem
+          icon={faTable}
+          view={"table"}
+          activeView={activeView}
+          projectName={projectName}
+        />
       </nav>
     </div>
   );

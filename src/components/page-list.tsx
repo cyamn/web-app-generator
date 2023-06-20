@@ -7,12 +7,12 @@ import Link from "next/link";
 
 type PageListProperties = {
   projectName: string;
-  pagePath: string;
+  pagePath?: string;
 };
 
 export const PageList: React.FC<PageListProperties> = ({
   projectName,
-  pagePath,
+  pagePath = "",
 }) => {
   const {
     data: pages,
@@ -24,8 +24,10 @@ export const PageList: React.FC<PageListProperties> = ({
   const ctx = api.useContext();
   const { mutate, isLoading: isCreating } =
     api.projects.addPageToProject.useMutation({
-      onSuccess: () =>
-        ctx.projects.listAllPagesOfProject.invalidate(projectName),
+      onSuccess: () => {
+        void ctx.projects.listAllPagesOfProject.invalidate(projectName);
+        void ctx.projects.getAllPagesOfProject.invalidate(projectName);
+      },
     });
 
   if (isError) return <div>{error.message}</div>;
