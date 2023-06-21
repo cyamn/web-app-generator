@@ -68,16 +68,15 @@ const PagesOverview: React.FC<PagesOverviewProps> = ({ projectName }) => {
     error,
     isError,
     isLoading,
-  } = api.projects.getAllPagesOfProject.useQuery(projectName);
+  } = api.pages.getAll.useQuery(projectName);
 
   const ctx = api.useContext();
-  const { mutate, isLoading: isCreating } =
-    api.projects.addPageToProject.useMutation({
-      onSuccess: () => {
-        void ctx.projects.listAllPagesOfProject.invalidate(projectName);
-        void ctx.projects.getAllPagesOfProject.invalidate(projectName);
-      },
-    });
+  const { mutate, isLoading: isCreating } = api.pages.add.useMutation({
+    onSuccess: () => {
+      void ctx.pages.listAll.invalidate(projectName);
+      void ctx.pages.getAll.invalidate(projectName);
+    },
+  });
 
   if (isError) return <div>{error.message}</div>;
   if (isLoading || !pagesWithMeta) return <div>loading...</div>;

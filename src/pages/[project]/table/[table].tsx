@@ -58,7 +58,7 @@ export default function Page() {
     error,
     isError,
     isLoading,
-  } = api.projects.getTableOfProject.useQuery({
+  } = api.tables.get.useQuery({
     projectName,
     tableName,
   });

@@ -15,23 +15,22 @@ export const PageList: React.FC<PageListProperties> = ({
   pagePath = "",
 }) => {
   const {
-    data: pages,
+    data: pagesWithMeta,
     error,
     isError,
     isLoading,
-  } = api.projects.listAllPagesOfProject.useQuery(projectName);
+  } = api.pages.listAll.useQuery(projectName);
 
   const ctx = api.useContext();
-  const { mutate, isLoading: isCreating } =
-    api.projects.addPageToProject.useMutation({
-      onSuccess: () => {
-        void ctx.projects.listAllPagesOfProject.invalidate(projectName);
-        void ctx.projects.getAllPagesOfProject.invalidate(projectName);
-      },
-    });
+  const { mutate, isLoading: isCreating } = api.pages.add.useMutation({
+    onSuccess: () => {
+      void ctx.pages.listAll.invalidate(projectName);
+      void ctx.pages.getAll.invalidate(projectName);
+    },
+  });
 
   if (isError) return <div>{error.message}</div>;
-  if (isLoading || !pages) return <div>loading</div>;
+  if (isLoading || !pagesWithMeta) return <div>loading</div>;
 
   const addPage = (): void => {
     const pageName = prompt("Please enter your page name:", "my new page");
@@ -42,7 +41,7 @@ export const PageList: React.FC<PageListProperties> = ({
   return (
     <>
       <nav className="flex h-full flex-col overflow-scroll p-1">
-        {pages.map((page, id) => (
+        {pagesWithMeta.map((page, id) => (
           <PageItem key={id} page={page} active={pagePath === page.path} />
         ))}
       </nav>

@@ -57,7 +57,7 @@ export default function Page() {
     error,
     isError,
     isLoading,
-  } = api.projects.getPageOfProject.useQuery({
+  } = api.pages.get.useQuery({
     projectName,
     pagePath,
   });
@@ -73,15 +73,14 @@ export default function Page() {
 
   const ctx = api.useContext();
 
-  const { mutate, isLoading: isSaving } =
-    api.projects.updatePageOfProject.useMutation({
-      onSuccess: () => {
-        void ctx.projects.getPageOfProject.invalidate({
-          projectName,
-          pagePath,
-        });
-      },
-    });
+  const { mutate, isLoading: isSaving } = api.pages.update.useMutation({
+    onSuccess: () => {
+      void ctx.pages.get.invalidate({
+        projectName,
+        pagePath,
+      });
+    },
+  });
 
   if (!projectName || !pagePath) return <div>invalid path</div>;
   if (!sessionData) return <div>not logged in</div>;

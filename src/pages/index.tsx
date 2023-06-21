@@ -62,10 +62,14 @@ function Auth() {
 
 function ProjectList() {
   const { data: sessionData } = useSession();
-  const { data: projects, isError, isLoading } = api.projects.getAll.useQuery();
+  const {
+    data: projects,
+    isError,
+    isLoading,
+  } = api.projects.listAll.useQuery();
   const ctx = api.useContext();
   const { mutate, isLoading: isCreating } = api.projects.create.useMutation({
-    onSuccess: () => ctx.projects.getAll.invalidate(),
+    onSuccess: () => ctx.projects.listAll.invalidate(),
   });
 
   const user = sessionData?.user;
