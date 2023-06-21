@@ -16,15 +16,13 @@ export type Table = z.infer<typeof TableSchema>;
 export const defaultTable: Table = {
   name: "people",
   columns: [
-    { key: "active", name: "Active", type: "boolean" },
+    { key: "active", type: "boolean" },
     {
       key: "name",
-      name: "Name",
       type: "string",
     },
     {
       key: "years_active",
-      name: "Years Active",
       type: "number",
     },
   ],
@@ -55,10 +53,10 @@ export const defaultTable: Table = {
 export const moreComplexTable: Table = {
   name: "lectures",
   columns: [
-    { key: "name", name: "Name", type: "string" },
-    { key: "semester", name: "Semester", type: "string" },
-    { key: "credits", name: "Credits", type: "number" },
-    { key: "dozent", name: "Dozent", type: "string" },
+    { key: "name", type: "string" },
+    { key: "semester", type: "string" },
+    { key: "credits", type: "number" },
+    { key: "dozent", type: "string" },
   ],
   rows: [
     {

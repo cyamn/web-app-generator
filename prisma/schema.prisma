@@ -74,6 +74,7 @@ model Project {
   //  app config
   home        String
   pages       Page[]
+  tables      Table[]
 
   @@index([ownerId])
 }
@@ -87,4 +88,43 @@ model Page {
   dashboards Json
   projectId  String
   project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Table {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  columns   Column[]
+  rows      Row[]
+}
+
+model Column {
+  id         String  @id @default(cuid())
+  key        String
+  type       String
+  isRequired Boolean @default(false)
+  isPrimary  Boolean @default(false)
+  isUnique   Boolean @default(false)
+  tableId    String
+  table      Table   @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  cells      Cell[]
+}
+
+model Row {
+  id      String @id @default(cuid())
+  tableId String
+  table   Table  @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  cells   Cell[]
+}
+
+model Cell {
+  id       String @id @default(cuid())
+  value    String
+  columnId String
+  column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  rowId    String
+  row      Row    @relation(fields: [rowId], references: [id], onDelete: Cascade)
 }
