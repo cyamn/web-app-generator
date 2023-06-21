@@ -1,0 +1,6 @@
+{
+  "reporters": ["console"],
+  "pattern": "src/**/*.*",
+  "minTokens": 20,
+  "min-lines": 7
+}
