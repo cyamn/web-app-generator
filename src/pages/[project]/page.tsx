@@ -140,7 +140,7 @@ export const PageDetailedItem: React.FC<PageDetailedItemProperties> = ({
           <div className="col-span-6">
             <div className="-translate-x-1/4 -translate-y-1/4  scale-50">
               <div className="h-[200%] w-[200%]">
-                <Preview page={page} />
+                <Preview page={page} projectName={projectName} />
               </div>
             </div>
           </div>

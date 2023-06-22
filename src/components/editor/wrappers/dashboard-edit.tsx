@@ -9,6 +9,7 @@ type DashboardEditProperties = {
   index: number;
   active: boolean;
   showBorders: boolean;
+  projectName: string;
 };
 
 export const DashboardEdit: React.FC<DashboardEditProperties> = ({
@@ -16,6 +17,7 @@ export const DashboardEdit: React.FC<DashboardEditProperties> = ({
   dashboard,
   index,
   showBorders,
+  projectName,
 }) => {
   const border = active
     ? "rounded-r-lg border-2 border-slate-800"
@@ -30,7 +32,11 @@ export const DashboardEdit: React.FC<DashboardEditProperties> = ({
             active ? "shadow-xl" : ""
           }`}
         >
-          <DashboardRenderer dashboard={dashboard} index={index} />
+          <DashboardRenderer
+            dashboard={dashboard}
+            index={index}
+            projectName={projectName}
+          />
         </div>
       </div>
     </div>

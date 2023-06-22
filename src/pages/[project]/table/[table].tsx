@@ -65,18 +65,6 @@ const Page: NextPage = () => {
 
   const [status, setStatus] = useState<EditorStatus>(EditorStatus.SAVED);
 
-  const context = api.useContext();
-
-  // const { mutate, isLoading: isSaving } =
-  //   api.projects.updatePageOfProject.useMutation({
-  //     onSuccess: () => {
-  //       void ctx.projects.getPageOfProject.invalidate({
-  //         projectName,
-  //         pagePath,
-  //       });
-  //     },
-  //   });
-
   if (!projectName || !tableName) return <div>invalid path</div>;
   if (!sessionData) return <div>not logged in</div>;
   if (isError) return <div>{error.message}</div>;

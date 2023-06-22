@@ -8,12 +8,14 @@ type GUIEditorProperties = {
   page: Page;
   setLocalPage: (page: Page) => void;
   tryAutoSaveToDatabase: () => void;
+  projectName: string;
 };
 
 export const GUIEditor: React.FC<GUIEditorProperties> = ({
   page,
   setLocalPage,
   tryAutoSaveToDatabase,
+  projectName,
 }) => {
   const [dashboardIndex, setDashboardIndex] = useState(-1);
   function wrapSetDashboardIndex(index: number): void {
@@ -32,6 +34,7 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({
           showBorders={true}
           setDashboardIndex={wrapSetDashboardIndex}
           index={dashboardIndex}
+          projectName={projectName}
         />
       </div>
       {dashboardIndex !== -1 && (

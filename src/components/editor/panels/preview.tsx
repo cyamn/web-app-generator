@@ -41,6 +41,7 @@ type PreviewProperties = {
   showBorders?: boolean;
   setDashboardIndex?: (index: number) => void;
   index?: number;
+  projectName: string;
 };
 
 export const Preview: React.FC<PreviewProperties> = ({
@@ -50,6 +51,7 @@ export const Preview: React.FC<PreviewProperties> = ({
     return;
   },
   index = -1,
+  projectName,
 }) => {
   return (
     <div className="flex h-full flex-col overflow-scroll p-4 font-sans leading-normal tracking-normal">
@@ -78,7 +80,11 @@ export const Preview: React.FC<PreviewProperties> = ({
                   active ? "shadow-xl" : ""
                 }`}
               >
-                <DashboardRenderer dashboard={dashboard} index={index} />
+                <DashboardRenderer
+                  dashboard={dashboard}
+                  index={index}
+                  projectName={projectName}
+                />
               </div>
             </div>
           </div>

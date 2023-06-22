@@ -7,11 +7,13 @@ import { Monaco, Preview } from "./panels";
 type IDEProperties = {
   page: Page;
   trySetLocalPageFromString: (pageString: string) => void;
+  projectName: string;
 };
 
 export const IDE: React.FC<IDEProperties> = ({
   page,
   trySetLocalPageFromString,
+  projectName,
 }) => {
   return (
     <div className="flex h-full flex-row">
@@ -22,7 +24,7 @@ export const IDE: React.FC<IDEProperties> = ({
         />
       </div>
       <div className="w-1/2">
-        <Preview page={page} />
+        <Preview page={page} projectName={projectName} />
       </div>
     </div>
   );

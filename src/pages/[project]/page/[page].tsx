@@ -186,6 +186,7 @@ const Page: NextPage = () => {
             trySetLocalPageFromString={trySetLocalPageFromString}
             setLocalPage={wrapSetLocalPage}
             tryAutoSaveToDatabase={tryAutoSaveToDatabase}
+            projectName={projectName}
           />
         }
       />
@@ -199,6 +200,7 @@ type ContentProperties = {
   trySetLocalPageFromString: (pageString: string) => void;
   setLocalPage: (page: Page) => void;
   tryAutoSaveToDatabase: () => void;
+  projectName: string;
 };
 
 const Content: React.FC<ContentProperties> = ({
@@ -207,6 +209,7 @@ const Content: React.FC<ContentProperties> = ({
   trySetLocalPageFromString,
   setLocalPage,
   tryAutoSaveToDatabase,
+  projectName,
 }) => {
   switch (pageMode) {
     case PageMode.Edit: {
@@ -215,17 +218,19 @@ const Content: React.FC<ContentProperties> = ({
           page={page}
           setLocalPage={setLocalPage}
           tryAutoSaveToDatabase={tryAutoSaveToDatabase}
+          projectName={projectName}
         />
       );
     }
     case PageMode.Preview: {
-      return <Preview page={page} />;
+      return <Preview page={page} projectName={projectName} />;
     }
     case PageMode.JSON: {
       return (
         <IDE
           page={page}
           trySetLocalPageFromString={trySetLocalPageFromString}
+          projectName={projectName}
         />
       );
     }
