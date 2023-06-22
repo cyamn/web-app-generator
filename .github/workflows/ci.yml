@@ -22,8 +22,8 @@ jobs:
       - name: Lint
         run: npm run lint:conventions
 
-      - name: Find dublicates
-        run: npm run lint:dublicates
+      - name: Find duplicates
+        run: npm run lint:duplicates
 
       - name: Print Environment Variable
         run: echo $MY_ENV_VAR
