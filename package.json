@@ -5,10 +5,13 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "postinstall": "prisma generate",
-    "lint": "eslint src && prettier --check . && jscpd",
+    "start": "next start",
+    "lint:types": "tsc --noEmit",
+    "lint:conventions": "eslint src && prettier --check .",
+    "lint:duplicates": "jscpd",
+    "lint": "npm run lint:types && npm run lint:conventions && npm run lint:duplicates",
     "format": "eslint src --fix && prettier --write .",
-    "start": "next start"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
