@@ -1,24 +1,24 @@
-import Head from "next/head";
-
-import { Layout } from "@/layout";
-import { Header } from "@/components/header";
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-import { ViewList } from "@/components/view-list";
-import { PageList } from "@/components/page-list";
-import { api } from "@/utils/api";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile } from "@fortawesome/free-solid-svg-icons";
-import { type Page } from "@/data/page";
-import Link from "next/link";
-import { Preview } from "@/components/editor/panels";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { NextPage } from "next";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+
+import { Preview } from "@/components/editor/panels";
+import { Header } from "@/components/header";
+import { PageList } from "@/components/page-list";
+import { ViewList } from "@/components/view-list";
+import { type Page } from "@/data/page";
+import { Layout } from "@/layout";
+import { api } from "@/utils/api";
 
 dayjs.extend(relativeTime);
 
-export default function Home() {
+const Page: NextPage = () => {
   const router = useRouter();
   const { data: sessionData } = useSession();
   const { project: projectName } = router.query as { project: string };
@@ -56,13 +56,13 @@ export default function Home() {
       />
     </>
   );
-}
+};
 
-type PagesOverviewProps = {
+type PagesOverviewProperties = {
   projectName: string;
 };
 
-const PagesOverview: React.FC<PagesOverviewProps> = ({ projectName }) => {
+const PagesOverview: React.FC<PagesOverviewProperties> = ({ projectName }) => {
   const {
     data: pagesWithMeta,
     error,
@@ -70,20 +70,20 @@ const PagesOverview: React.FC<PagesOverviewProps> = ({ projectName }) => {
     isLoading,
   } = api.pages.getAll.useQuery(projectName);
 
-  const ctx = api.useContext();
+  const context = api.useContext();
   const { mutate, isLoading: isCreating } = api.pages.add.useMutation({
     onSuccess: () => {
-      void ctx.pages.listAll.invalidate(projectName);
-      void ctx.pages.getAll.invalidate(projectName);
+      void context.pages.listAll.invalidate(projectName);
+      void context.pages.getAll.invalidate(projectName);
     },
   });
 
   if (isError) return <div>{error.message}</div>;
-  if (isLoading || !pagesWithMeta) return <div>loading...</div>;
+  if (isLoading) return <div>loading...</div>;
 
   const addPage = (): void => {
     const pageName = prompt("Please enter your page name:", "my new page");
-    if (!pageName) return;
+    if (pageName === null) return;
     mutate({ projectName, pageName });
   };
 
@@ -149,3 +149,5 @@ export const PageDetailedItem: React.FC<PageDetailedItemProperties> = ({
     </Link>
   );
 };
+
+export default Page;

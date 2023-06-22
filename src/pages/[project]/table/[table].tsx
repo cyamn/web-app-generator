@@ -1,20 +1,16 @@
-import { Header } from "@/components/header";
-import { ViewList } from "@/components/view-list";
-import { Layout } from "@/layout";
-import { api } from "@/utils/api";
-import { PageSchema, type Page } from "@/data/page";
-import { useSession } from "next-auth/react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { PageList } from "@/components/page-list";
-import { Tabs } from "@/components/tabs";
-import { PageMode } from "@/data/state";
-import { useEffect, useState } from "react";
-import { GUIEditor, IDE, Preview } from "@/components/editor";
-import { deepEqual } from "@/utils/deep-equal";
-
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+
+import { Header } from "@/components/header";
+import { ViewList } from "@/components/view-list";
+import { type Page } from "@/data/page";
+import { PageMode } from "@/data/state";
+import { Layout } from "@/layout";
+import { api } from "@/utils/api";
 
 dayjs.extend(relativeTime);
 
@@ -34,19 +30,23 @@ export enum EditorStatus {
 function statusToCSS(status: EditorStatus): string {
   switch (status) {
     case EditorStatus.INVALID_JSON:
-    case EditorStatus.INVALID_PAGE:
+    case EditorStatus.INVALID_PAGE: {
       return "bg-red-500 text-red-950";
-    case EditorStatus.CHANGED:
+    }
+    case EditorStatus.CHANGED: {
       return "bg-green-500 text-green-950";
+    }
     case EditorStatus.SAVED:
-    case EditorStatus.AUTOSAVED:
+    case EditorStatus.AUTOSAVED: {
       return "bg-blue-500 text-blue-950";
-    default:
+    }
+    default: {
       return "bg-slate-500 text-slate-950";
+    }
   }
 }
 
-export default function Page() {
+const Page: NextPage = () => {
   const router = useRouter();
   const { data: sessionData } = useSession();
   const { project: projectName, table: tableName } =
@@ -65,7 +65,7 @@ export default function Page() {
 
   const [status, setStatus] = useState<EditorStatus>(EditorStatus.SAVED);
 
-  const ctx = api.useContext();
+  const context = api.useContext();
 
   // const { mutate, isLoading: isSaving } =
   //   api.projects.updatePageOfProject.useMutation({
@@ -80,7 +80,7 @@ export default function Page() {
   if (!projectName || !tableName) return <div>invalid path</div>;
   if (!sessionData) return <div>not logged in</div>;
   if (isError) return <div>{error.message}</div>;
-  if (isLoading || !table) return <div>loading</div>;
+  if (isLoading) return <div>loading</div>;
 
   // const { page, updatedAt } = pageWithMeta;
 
@@ -135,7 +135,9 @@ export default function Page() {
       />
     </>
   );
-}
+};
+
+import { NextPage } from "next";
 
 import { type Table } from "@/data/table";
 
@@ -169,7 +171,7 @@ export const TableView: React.FC<TableViewProperties> = ({ table }) => {
               <tr key={index} className="border-b bg-white hover:bg-slate-50 ">
                 {table.columns.map((column) => (
                   <td key={column.key} className="px-6 py-4">
-                    {row[column.key].toString()}
+                    {row[column.key]?.toString()}
                   </td>
                 ))}
               </tr>
@@ -180,3 +182,5 @@ export const TableView: React.FC<TableViewProperties> = ({ table }) => {
     </div>
   );
 };
+
+export default Page;

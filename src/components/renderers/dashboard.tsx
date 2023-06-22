@@ -1,6 +1,8 @@
+import React from "react";
+
 import { type Dashboard } from "@/data/dashboard/library/dashboard";
 import { type Markdown } from "@/data/dashboard/library/markdown";
-import React from "react";
+
 import { MarkdownRender } from "./markdown";
 
 export const DashboardRenderer: React.FC<{

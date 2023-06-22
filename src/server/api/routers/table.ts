@@ -1,8 +1,10 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+
 import { type Table, TableSchema } from "@/data/table";
 import { ColumnSchema } from "@/data/table/column";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+
 import { createTable, getProjectTableDeep } from "../helpers/table";
 
 export const tablesRouter = createTRPCRouter({
@@ -70,11 +72,7 @@ export const tablesRouter = createTRPCRouter({
           message: "Project not found",
         });
       }
-      if (
-        !project.tables ||
-        project.tables.length === 0 ||
-        !project.tables[0]
-      ) {
+      if (project.tables.length === 0 || !project.tables[0]) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Table not found",
@@ -98,11 +96,11 @@ export const tablesRouter = createTRPCRouter({
         }),
         rows: table.rows.map((row) => {
           const result: { [key: string]: string } = {};
-          row.cells.forEach((cell) => {
+          for (const cell of row.cells) {
             const { value, column } = cell;
             const { key } = column;
             result[key] = value;
-          });
+          }
           return result;
         }),
       };

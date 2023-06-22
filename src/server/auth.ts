@@ -1,15 +1,16 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { type GetServerSidePropsContext } from "next";
 import {
+  type DefaultSession,
   getServerSession,
   type NextAuthOptions,
-  type DefaultSession,
+  Session,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
-import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+
 import { env } from "@/env.mjs";
-import { prisma } from "@/server/db";
+import { prisma } from "@/server/database";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -82,9 +83,9 @@ export const authOptions: NextAuthOptions = {
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = (ctx: {
+export const getServerAuthSession = async (context: {
   req: GetServerSidePropsContext["req"];
   res: GetServerSidePropsContext["res"];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
+}): Promise<Session | null> => {
+  return getServerSession(context.req, context.res, authOptions);
 };

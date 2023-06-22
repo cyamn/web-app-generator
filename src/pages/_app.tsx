@@ -1,20 +1,21 @@
-import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
-import { type AppType } from "next/app";
-import { api } from "@/utils/api";
 import "@/styles/globals.css";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import { config } from "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-svg-core/styles.css";
+import { type AppType } from "next/app";
+import { type Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+
+import { api } from "@/utils/api";
 config.autoAddCss = false;
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { session, ...pageProperties },
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <Component {...pageProperties} />
     </SessionProvider>
   );
 };

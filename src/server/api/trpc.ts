@@ -12,8 +12,9 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
+
 import { getServerAuthSession } from "@/server/auth";
-import { prisma } from "@/server/db";
+import { prisma } from "@/server/database";
 
 /**
  * 1. CONTEXT
@@ -37,9 +38,10 @@ type CreateContextOptions = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (opts: CreateContextOptions) => {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const createInnerTRPCContext = (options: CreateContextOptions) => {
   return {
-    session: opts.session,
+    session: options.session,
     prisma,
   };
 };
@@ -50,8 +52,9 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts;
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const createTRPCContext = async (options: CreateNextContextOptions) => {
+  const { req, res } = options;
 
   // Get the session from the server using the getServerSession wrapper function
   const session = await getServerAuthSession({ req, res });
@@ -107,8 +110,8 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
+const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({

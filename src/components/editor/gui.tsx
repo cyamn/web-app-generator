@@ -1,5 +1,6 @@
-import { type Page } from "@/data/page";
 import React, { useState } from "react";
+
+import { type Page } from "@/data/page";
 
 import { Forms, Preview } from "./panels";
 

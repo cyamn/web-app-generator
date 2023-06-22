@@ -36,7 +36,9 @@ const Tab: React.FC<TabProperties> = ({
   return (
     <li className="m-[2px] w-full">
       <button
-        onClick={() => setPageMode(mode)}
+        onClick={() => {
+          setPageMode(mode);
+        }}
         className={
           "inline-block w-full border-2 border-slate-200 p-[3px]" +
           backgroundColor +

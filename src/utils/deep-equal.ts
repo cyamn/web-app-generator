@@ -1,23 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-export function deepEqual(obj1: unknown, obj2: unknown): boolean {
+// eslint-disable-next-line max-lines-per-function
+export function deepEqual(some1: unknown, some2: unknown): boolean {
   // Check if the objects are of the same type
-  if (typeof obj1 !== typeof obj2) {
+  if (typeof some1 !== typeof some2) {
     return false;
   }
 
-  // Check if the objects are primitive types or null
-  if (
-    obj1 === null ||
-    obj2 === null ||
-    typeof obj1 !== "object" ||
-    typeof obj2 !== "object"
-  ) {
-    return obj1 === obj2;
+  if (primitiveOrNull(some1, some2)) {
+    return some1 === some2;
   }
 
-  const keys1 = Object.keys(obj1) as (keyof typeof obj1)[];
-  const keys2 = Object.keys(obj2) as (keyof typeof obj2)[];
+  const object1 = some1 as object;
+  const object2 = some2 as object;
+
+  const keys1 = Object.keys(object1) as (keyof typeof object1)[];
+  const keys2 = Object.keys(object2) as (keyof typeof object2)[];
 
   // Check if the objects have the same number of properties
   if (keys1.length !== keys2.length) {
@@ -26,10 +22,18 @@ export function deepEqual(obj1: unknown, obj2: unknown): boolean {
 
   // Check if the objects have the same properties and values recursively
   for (const key of keys1) {
-    if (!deepEqual(obj1[key], obj2[key])) {
+    // eslint-disable-next-line security/detect-object-injection
+    if (!deepEqual(object1[key], object2[key])) {
       return false;
     }
   }
-
   return true;
+}
+function primitiveOrNull(object1: unknown, object2: unknown): boolean {
+  return (
+    object1 === null ||
+    object2 === null ||
+    typeof object1 !== "object" ||
+    typeof object2 !== "object"
+  );
 }

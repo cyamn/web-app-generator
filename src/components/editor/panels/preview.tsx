@@ -1,8 +1,9 @@
-import { DashboardRenderer } from "@/components/renderers/dashboard";
-import { type Page } from "@/data/page";
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+
+import { DashboardRenderer } from "@/components/renderers/dashboard";
+import { type Page } from "@/data/page";
 
 type NameTagProperties = {
   visible: boolean;
@@ -61,7 +62,9 @@ export const Preview: React.FC<PreviewProperties> = ({
           <div
             key={id}
             className="my-1 cursor-pointer"
-            onClick={() => setDashboardIndex(id)}
+            onClick={() => {
+              setDashboardIndex(id);
+            }}
           >
             <div className="flex flex-row">
               <NameTag

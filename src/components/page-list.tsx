@@ -1,9 +1,10 @@
-import { api } from "@/utils/api";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { type Page } from "@/data/page";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import { useRouter } from "next/router";
+
+import { type Page } from "@/data/page";
+import { api } from "@/utils/api";
 
 type PageListProperties = {
   projectName: string;
@@ -21,20 +22,20 @@ export const PageList: React.FC<PageListProperties> = ({
     isLoading,
   } = api.pages.listAll.useQuery(projectName);
 
-  const ctx = api.useContext();
+  const context = api.useContext();
   const { mutate, isLoading: isCreating } = api.pages.add.useMutation({
     onSuccess: () => {
-      void ctx.pages.listAll.invalidate(projectName);
-      void ctx.pages.getAll.invalidate(projectName);
+      void context.pages.listAll.invalidate(projectName);
+      void context.pages.getAll.invalidate(projectName);
     },
   });
 
   if (isError) return <div>{error.message}</div>;
-  if (isLoading || !pagesWithMeta) return <div>loading</div>;
+  if (isLoading) return <div>loading</div>;
 
   const addPage = (): void => {
     const pageName = prompt("Please enter your page name:", "my new page");
-    if (!pageName) return;
+    if (pageName === null) return;
     mutate({ projectName, pageName });
   };
 

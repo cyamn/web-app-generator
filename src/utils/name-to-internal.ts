@@ -4,25 +4,25 @@
  * @returns A string that is a valid URL.
  */
 export function nameToInternal(name: string): string {
-  let i = name;
+  let index = name;
   // lowercase
-  i = i.toLowerCase();
+  index = index.toLowerCase();
   // space -> _
-  i = i.replace(" ", "_");
+  index = index.replace(" ", "_");
   // replace umlauts to
-  i = i.replace(/ä/g, "ae");
-  i = i.replace(/ö/g, "oe");
-  i = i.replace(/ü/g, "ue");
-  i = i.replace(/ß/g, "ss");
+  index = index.replace(/ä/g, "ae");
+  index = index.replace(/ö/g, "oe");
+  index = index.replace(/ü/g, "ue");
+  index = index.replace(/ß/g, "ss");
   // replace . to dot
-  i = i.replace(/\./g, "dot");
+  index = index.replace(/\./g, "dot");
   // replace special characters to _
-  i = i.replace(/\W/g, "_");
+  index = index.replace(/\W/g, "_");
   // remove double _
-  i = i.replace(/_+/g, "_");
+  index = index.replace(/_+/g, "_");
   // remove leading _
-  i = i.replace(/^_/, "");
+  index = index.replace(/^_/, "");
   // remove trailing _
-  i = i.replace(/_$/, "");
-  return i;
+  index = index.replace(/_$/, "");
+  return index;
 }

@@ -1,9 +1,10 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { PageSchema, defaultPage } from "@/data/page";
-import { DashboardSchema } from "@/data/dashboard/library/dashboard";
 import { TRPCError } from "@trpc/server";
-import { nameToInternal } from "@/utils/name-to-internal";
 import { z } from "zod";
+
+import { DashboardSchema } from "@/data/dashboard/library/dashboard";
+import { defaultPage, PageSchema } from "@/data/page";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { nameToInternal } from "@/utils/name-to-internal";
 
 export const pagesRouter = createTRPCRouter({
   listAll: protectedProcedure
@@ -191,7 +192,7 @@ export const pagesRouter = createTRPCRouter({
           message: "Project not found",
         });
       }
-      if (!project.pages || project.pages.length === 0 || !project.pages[0]) {
+      if (project.pages.length === 0 || !project.pages[0]) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Page not found",

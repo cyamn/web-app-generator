@@ -1,7 +1,8 @@
+import React from "react";
+
 import { DashboardForm } from "@/components/forms/dashboard";
 import { type Dashboard } from "@/data/dashboard/library/dashboard";
 import { type Page } from "@/data/page";
-import React from "react";
 
 type FormProperties = {
   page: Page;
@@ -14,14 +15,13 @@ export const Forms: React.FC<FormProperties> = ({
   setLocalPage,
   index = -1,
 }) => {
-  if (!page) return <div>Page not found</div>;
   if (
-    !page.dashboards ||
     index >= page.dashboards.length ||
-    page.dashboards[index] === undefined
+    page.dashboards[index] === undefined ||
+    page.dashboards[index] === null
   )
     return null;
-  const dashboard: Dashboard = page.dashboards[index] ?? ({} as Dashboard);
+  const dashboard: Dashboard = page.dashboards[index] as Dashboard;
 
   function setLocalDashboard(dashboard: Dashboard): void {
     // create deep copy of page

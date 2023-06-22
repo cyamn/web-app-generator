@@ -1,11 +1,13 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { defaultWebApp } from "@/data/webapp";
-import { defaultPage } from "@/data/page";
-import { createTable } from "../helpers/table";
 import { z } from "zod";
 
+import { defaultPage } from "@/data/page";
+import { defaultWebApp } from "@/data/webapp";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+
+import { createTable } from "../helpers/table";
+
 export const projectsRouter = createTRPCRouter({
-  listAll: protectedProcedure.query(({ ctx }) => {
+  listAll: protectedProcedure.query(async ({ ctx }) => {
     return ctx.prisma.project.findMany({
       select: {
         name: true,

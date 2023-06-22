@@ -13,6 +13,7 @@ export const TableSchema = z
 
 export type Table = z.infer<typeof TableSchema>;
 
+/* eslint-disable spellcheck/spell-checker */
 export const defaultTable: Table = {
   name: "people",
   columns: [
@@ -97,3 +98,4 @@ export const moreComplexTable: Table = {
     },
   ],
 };
+/* eslint-enable spellcheck/spell-checker */

@@ -1,20 +1,21 @@
-import { Header } from "@/components/header";
-import { ViewList } from "@/components/view-list";
-import { Layout } from "@/layout";
-import { api } from "@/utils/api";
-import { PageSchema, type Page } from "@/data/page";
-import { useSession } from "next-auth/react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { PageList } from "@/components/page-list";
-import { Tabs } from "@/components/tabs";
-import { PageMode } from "@/data/state";
-import { useEffect, useState } from "react";
-import { GUIEditor, IDE, Preview } from "@/components/editor";
-import { deepEqual } from "@/utils/deep-equal";
-
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { NextPage } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+
+import { GUIEditor, IDE, Preview } from "@/components/editor";
+import { Header } from "@/components/header";
+import { PageList } from "@/components/page-list";
+import { Tabs } from "@/components/tabs";
+import { ViewList } from "@/components/view-list";
+import { type Page, PageSchema } from "@/data/page";
+import { PageMode } from "@/data/state";
+import { Layout } from "@/layout";
+import { api } from "@/utils/api";
+import { deepEqual } from "@/utils/deep-equal";
 
 dayjs.extend(relativeTime);
 
@@ -34,19 +35,23 @@ export enum EditorStatus {
 function statusToCSS(status: EditorStatus): string {
   switch (status) {
     case EditorStatus.INVALID_JSON:
-    case EditorStatus.INVALID_PAGE:
+    case EditorStatus.INVALID_PAGE: {
       return "bg-red-500 text-red-950";
-    case EditorStatus.CHANGED:
+    }
+    case EditorStatus.CHANGED: {
       return "bg-green-500 text-green-950";
+    }
     case EditorStatus.SAVED:
-    case EditorStatus.AUTOSAVED:
+    case EditorStatus.AUTOSAVED: {
       return "bg-blue-500 text-blue-950";
-    default:
+    }
+    default: {
       return "bg-slate-500 text-slate-950";
+    }
   }
 }
 
-export default function Page() {
+const Page: NextPage = () => {
   const router = useRouter();
   const { data: sessionData } = useSession();
   const { project: projectName, page: pagePath } = router.query as PageRoutes;
@@ -71,11 +76,11 @@ export default function Page() {
 
   const [status, setStatus] = useState<EditorStatus>(EditorStatus.SAVED);
 
-  const ctx = api.useContext();
+  const context = api.useContext();
 
   const { mutate, isLoading: isSaving } = api.pages.update.useMutation({
     onSuccess: () => {
-      void ctx.pages.get.invalidate({
+      void context.pages.get.invalidate({
         projectName,
         pagePath,
       });
@@ -85,7 +90,7 @@ export default function Page() {
   if (!projectName || !pagePath) return <div>invalid path</div>;
   if (!sessionData) return <div>not logged in</div>;
   if (isError) return <div>{error.message}</div>;
-  if (isLoading || !pageWithMeta || !localPage) return <div>loading</div>;
+  if (isLoading || !localPage) return <div>loading</div>;
 
   const { page, updatedAt } = pageWithMeta;
 
@@ -93,7 +98,7 @@ export default function Page() {
     let parsed: unknown;
     try {
       parsed = JSON.parse(pageString);
-    } catch (e) {
+    } catch {
       setStatus(EditorStatus.INVALID_JSON);
       return;
     }
@@ -114,14 +119,14 @@ export default function Page() {
     else setStatus(EditorStatus.CHANGED);
   }
 
-  function trySaveToDatabase() {
+  function trySaveToDatabase(): void {
     if (status !== EditorStatus.CHANGED) return;
     if (!localPage) return;
     mutate({ projectName, pagePath, page: localPage });
     setStatus(EditorStatus.SAVED);
   }
 
-  function tryAutoSaveToDatabase() {
+  function tryAutoSaveToDatabase(): void {
     if (status !== EditorStatus.CHANGED) return;
     if (!localPage) return;
     mutate({ projectName, pagePath, page: localPage });
@@ -145,7 +150,9 @@ export default function Page() {
                 </div>
                 <button
                   disabled={isSaving}
-                  onClick={() => trySaveToDatabase()}
+                  onClick={() => {
+                    trySaveToDatabase();
+                  }}
                   className={
                     "mx-3 rounded-md  px-1 font-mono " + statusToCSS(status)
                   }
@@ -184,9 +191,9 @@ export default function Page() {
       />
     </>
   );
-}
+};
 
-type ContentProps = {
+type ContentProperties = {
   page: Page;
   pageMode: PageMode;
   trySetLocalPageFromString: (pageString: string) => void;
@@ -194,15 +201,15 @@ type ContentProps = {
   tryAutoSaveToDatabase: () => void;
 };
 
-function Content({
+const Content: React.FC<ContentProperties> = ({
   page,
   pageMode,
   trySetLocalPageFromString,
   setLocalPage,
   tryAutoSaveToDatabase,
-}: ContentProps) {
+}) => {
   switch (pageMode) {
-    case PageMode.Edit:
+    case PageMode.Edit: {
       return (
         <GUIEditor
           page={page}
@@ -210,17 +217,23 @@ function Content({
           tryAutoSaveToDatabase={tryAutoSaveToDatabase}
         />
       );
-    case PageMode.Preview:
+    }
+    case PageMode.Preview: {
       return <Preview page={page} />;
-    case PageMode.JSON:
+    }
+    case PageMode.JSON: {
       return (
         <IDE
           page={page}
           trySetLocalPageFromString={trySetLocalPageFromString}
         />
       );
+    }
 
-    default:
+    default: {
       return null;
+    }
   }
-}
+};
+
+export default Page;

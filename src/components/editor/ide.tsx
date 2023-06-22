@@ -1,5 +1,6 @@
-import { type Page } from "@/data/page";
 import React from "react";
+
+import { type Page } from "@/data/page";
 
 import { Monaco, Preview } from "./panels";
 

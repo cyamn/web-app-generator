@@ -1,6 +1,7 @@
-import { type Page } from "@/data/page";
 import Editor from "@monaco-editor/react";
 import React from "react";
+
+import { type Page } from "@/data/page";
 
 type MonacoProperties = {
   page: Page;

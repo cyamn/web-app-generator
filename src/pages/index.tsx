@@ -1,17 +1,17 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { NextPage } from "next";
 import Head from "next/head";
-import { api } from "@/utils/api";
+import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 import { Header } from "@/components/header";
 import { Layout } from "@/layout";
-
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import Link from "next/link";
+import { api } from "@/utils/api";
 
 dayjs.extend(relativeTime);
 
-export default function Home() {
+const Home: NextPage = () => {
   const { data: sessionData } = useSession();
   return (
     <>
@@ -23,9 +23,11 @@ export default function Home() {
       {sessionData ? <ProjectList /> : <Landing />}
     </>
   );
-}
+};
 
-function Landing() {
+export default Home;
+
+const Landing: React.FC = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-600 to-slate-800">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
@@ -43,9 +45,9 @@ function Landing() {
       </div>
     </main>
   );
-}
+};
 
-function Auth() {
+const Auth: React.FC = () => {
   const { data: sessionData } = useSession();
 
   return (
@@ -58,18 +60,18 @@ function Auth() {
       </button>
     </div>
   );
-}
+};
 
-function ProjectList() {
+const ProjectList: React.FC = () => {
   const { data: sessionData } = useSession();
   const {
     data: projects,
     isError,
     isLoading,
   } = api.projects.listAll.useQuery();
-  const ctx = api.useContext();
+  const context = api.useContext();
   const { mutate, isLoading: isCreating } = api.projects.create.useMutation({
-    onSuccess: () => ctx.projects.listAll.invalidate(),
+    onSuccess: async () => context.projects.listAll.invalidate(),
   });
 
   const user = sessionData?.user;
@@ -79,9 +81,9 @@ function ProjectList() {
   if (isError) return <div>error</div>;
   if (isLoading) return <div>loading</div>;
 
-  function addProject() {
+  function addProject(): void {
     const name = prompt("Project name");
-    if (!name) return;
+    if (name === null) return;
     mutate({ name });
   }
 
@@ -114,7 +116,9 @@ function ProjectList() {
               ))}
               <button
                 disabled={isCreating}
-                onClick={() => addProject()}
+                onClick={() => {
+                  addProject();
+                }}
                 className="hover:bg-gradient-to m-3 grid h-48 min-h-min select-none place-items-center rounded-md bg-slate-300 text-center text-5xl text-slate-600 hover:bg-gradient-to-br hover:from-slate-400 hover:via-slate-200 hover:to-slate-400 "
               >
                 {isCreating ? "...creating" : "+ new app"}
@@ -125,4 +129,4 @@ function ProjectList() {
       />
     </>
   );
-}
+};

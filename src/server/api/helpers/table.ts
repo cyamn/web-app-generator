@@ -1,13 +1,14 @@
-import { defaultTable, type Table } from "@/data/table";
-import { type Row } from "@/data/table/row";
 import cuid from "cuid";
-import { ColumnSchema, type Column } from "@/data/table/column";
-import { prisma } from "@/server/db";
+
+import { defaultTable, type Table } from "@/data/table";
+import { type Column } from "@/data/table/column";
+import { type Row } from "@/data/table/row";
+import { prisma } from "@/server/database";
 
 export async function createTable(
   projectID: string,
   tableSchema: Table = defaultTable
-) {
+): Promise<string> {
   const table = await prisma.table.create({
     data: {
       name: tableSchema.name,
@@ -22,7 +23,10 @@ export async function createTable(
   return table.id;
 }
 
-async function buildColumns(columnSchema: Column[], tableId: string) {
+async function buildColumns(
+  columnSchema: Column[],
+  tableId: string
+): Promise<Record<string, string>> {
   const columnCuids: Record<string, string> = {};
   for (const column of columnSchema) {
     columnCuids[column.key] = cuid();
@@ -38,7 +42,7 @@ async function buildColumns(columnSchema: Column[], tableId: string) {
   return columnCuids;
 }
 
-async function buildRows(rowSchema: Row[], tableId: string) {
+async function buildRows(rowSchema: Row[], tableId: string): Promise<string[]> {
   const rowCuids = rowSchema.map(() => cuid());
   await prisma.row.createMany({
     data: rowSchema.map((_, index) => ({
@@ -53,20 +57,19 @@ async function buildCells(
   rowSchema: Row[],
   columnCuids: Record<string, string>,
   rowCuids: string[]
-) {
-  return await prisma.cell.createMany({
-    data: rowSchema
-      .map((row: Row, rowIndex) =>
-        Object.keys(row).map((key, columnIndex) => ({
-          rowId: rowCuids[rowIndex]!,
-          columnId: columnCuids[key]!,
-          value: row[key]?.toString() ?? "",
-        }))
-      )
-      .flat(),
+): Promise<void> {
+  await prisma.cell.createMany({
+    data: rowSchema.flatMap((row: Row, rowIndex) =>
+      Object.keys(row).map((key, columnIndex) => ({
+        rowId: rowCuids[rowIndex]!,
+        columnId: columnCuids[key]!,
+        value: row[key]?.toString() ?? "",
+      }))
+    ),
   });
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function getProjectTableDeep(
   projectName: string,
   tableName: string,

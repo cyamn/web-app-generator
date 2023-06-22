@@ -1,9 +1,9 @@
-import { type Session } from "next-auth";
-import React from "react";
-import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
+import { type Session } from "next-auth";
 import { signOut } from "next-auth/react";
+import React from "react";
 
 type HeaderProperties = {
   item: React.ReactNode;
@@ -17,24 +17,26 @@ export const Header: React.FC<HeaderProperties> = ({ item, user, tabs }) => {
     <div className="flex h-11 w-full justify-center bg-slate-800 py-1">
       <div className="grid w-full grid-cols-3 gap-4 text-slate-50">
         <div className="pl-3 pt-1 text-xl">{item}</div>
-        {tabs && tabs}
-        {!tabs && <div></div>}
+        {tabs !== undefined && tabs}
+        {tabs === undefined && <div></div>}
 
         <div className="relative inline-block text-right">
           <div>
-            <button onClick={() => setShow(!show)}>
-              {user && (
-                <div className="flex flex-row-reverse p-1 pt-1 text-xl text-white">
-                  <Image
-                    src={user.image?.toString() ?? ""}
-                    width={32}
-                    height={32}
-                    alt={user.name ?? "user"}
-                    className="rounded-full"
-                  />
-                  <div className="px-2">{user.name}</div>
-                </div>
-              )}
+            <button
+              onClick={() => {
+                setShow(!show);
+              }}
+            >
+              <div className="flex flex-row-reverse p-1 text-xl text-white">
+                <Image
+                  src={user.image?.toString() ?? ""}
+                  width={32}
+                  height={32}
+                  alt={user.name ?? "user"}
+                  className="rounded-full"
+                />
+                <div className="px-2">{user.name}</div>
+              </div>
             </button>
           </div>
           {show && (
@@ -48,7 +50,6 @@ export const Header: React.FC<HeaderProperties> = ({ item, user, tabs }) => {
                 <button
                   onClick={() => void signOut()}
                   className="block px-4 py-2 text-sm text-slate-700"
-                  role="menuitem"
                   id="menu-item-0"
                 >
                   <FontAwesomeIcon className="pr-2" icon={faRightFromBracket} />
