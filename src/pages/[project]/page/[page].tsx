@@ -171,7 +171,7 @@ const Page: NextPage = () => {
         sidebarLeft={
           <div className="flex h-full flex-col bg-slate-700">
             <div className="flex h-full flex-row">
-              <ViewList activeView={"pages"} projectName={projectName} />
+              <ViewList activeView={"page"} projectName={projectName} />
               <div className="flex h-full w-full flex-col justify-between bg-slate-700">
                 <PageList projectName={projectName} pagePath={pagePath} />
               </div>

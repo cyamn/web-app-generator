@@ -1,4 +1,4 @@
-import { faFile } from "@fortawesome/free-solid-svg-icons";
+import { faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -8,17 +8,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-import { Preview } from "@/components/editor/panels";
 import { Header } from "@/components/header";
-import { PageList } from "@/components/page-list";
+import { TableList } from "@/components/table-list";
+import { TableView } from "@/components/table-view";
 import { ViewList } from "@/components/view-list";
-import { type Page } from "@/data/page";
+import { type Table } from "@/data/table";
 import { Layout } from "@/layout";
 import { api } from "@/utils/api";
 
 dayjs.extend(relativeTime);
 
-const Page: NextPage = () => {
+const Table: NextPage = () => {
   const router = useRouter();
   const { data: sessionData } = useSession();
   const { project: projectName } = router.query as { project: string };
@@ -44,68 +44,73 @@ const Page: NextPage = () => {
         sidebarLeft={
           <div className="flex h-full flex-col bg-slate-700">
             <div className="flex h-full flex-row">
-              <ViewList activeView={"page"} projectName={projectName} />
+              <ViewList activeView={"table"} projectName={projectName} />
               <div className="flex h-full w-full flex-col justify-between bg-slate-700">
-                <PageList projectName={projectName} />
+                <TableList projectName={projectName} />
               </div>
             </div>
             {/* <StatusBar /> */}
           </div>
         }
-        content={<PagesOverview projectName={projectName} />}
+        content={<TablesOverview projectName={projectName} />}
       />
     </>
   );
 };
 
-type PagesOverviewProperties = {
+type TablesOverviewProperties = {
   projectName: string;
 };
 
-const PagesOverview: React.FC<PagesOverviewProperties> = ({ projectName }) => {
+const TablesOverview: React.FC<TablesOverviewProperties> = ({
+  projectName,
+}) => {
   const {
-    data: pagesWithMeta,
+    data: tablesWithMeta,
     error,
     isError,
     isLoading,
-  } = api.pages.getAll.useQuery(projectName);
+  } = api.tables.getAll.useQuery(projectName);
 
   const context = api.useContext();
-  const { mutate, isLoading: isCreating } = api.pages.add.useMutation({
+  const { mutate, isLoading: isCreating } = api.tables.add.useMutation({
     onSuccess: () => {
-      void context.pages.listAll.invalidate(projectName);
-      void context.pages.getAll.invalidate(projectName);
+      void context.tables.listAll.invalidate(projectName);
+      void context.tables.getAll.invalidate(projectName);
     },
   });
 
   if (isError) return <div>{error.message}</div>;
   if (isLoading) return <div>loading...</div>;
 
-  const addPage = (): void => {
-    const pageName = prompt("Please enter your page name:", "my new page");
-    if (pageName === null) return;
-    mutate({ projectName, pageName });
+  const addTable = (): void => {
+    const tableName = prompt(
+      "Please enter your table name:",
+      "my awesome table"
+    );
+    if (tableName === null) return;
+    mutate({ projectName, tableName });
   };
 
   return (
     <>
-      <h1 className="p-3 text-center">All Pages in {projectName}</h1>
+      <h1 className="p-3 text-center">All Tables in {projectName}</h1>
       <div className="grid grid-cols-3 px-20">
-        {pagesWithMeta.map((pageWithMeta) => (
-          <PageDetailedItem
-            updatedAt={pageWithMeta.updatedAt}
-            key={pageWithMeta.page.name}
-            page={pageWithMeta.page}
+        {tablesWithMeta.map((tableWithMeta) => (
+          <TableDetailedItem
+            updatedAt={tableWithMeta.updatedAt}
+            key={tableWithMeta.table.name}
+            table={tableWithMeta.table}
             projectName={projectName}
           />
         ))}
         <div className="m-2">
           <button
             disabled={isCreating}
-            onClick={addPage}
+            onClick={addTable}
             className="mt-6 flex h-64 w-full flex-row items-center justify-center rounded-lg bg-slate-400 p-2 text-slate-100 hover:bg-slate-500"
           >
-            <h1>{isCreating ? "creating..." : "+ Add Page"}</h1>
+            <h1>{isCreating ? "creating..." : "+ Add Table"}</h1>
           </button>
         </div>
       </div>
@@ -113,41 +118,35 @@ const PagesOverview: React.FC<PagesOverviewProperties> = ({ projectName }) => {
   );
 };
 
-interface PageDetailedItemProperties {
-  page: Page;
+interface TableDetailedItemProperties {
+  table: Table;
   projectName: string;
   updatedAt: Date;
 }
 
-export const PageDetailedItem: React.FC<PageDetailedItemProperties> = ({
-  page,
+export const TableDetailedItem: React.FC<TableDetailedItemProperties> = ({
+  table,
   projectName,
   updatedAt,
 }) => {
   return (
-    <Link href={`/${projectName}/page/${page.path}`}>
+    <Link href={`/${projectName}/table/${table.name}`}>
       <div className="m-2">
         <div className="grid w-full grid-cols-2">
           <div>
-            <FontAwesomeIcon icon={faFile} className="mx-2" />
-            {page.name}: ({page.path}){" "}
+            <FontAwesomeIcon icon={faTable} className="ml-1 mr-2" />
+            {table.name}
           </div>
           <div className="pr-2 text-right text-slate-400">
             {dayjs(updatedAt).fromNow()}
           </div>
         </div>
-        <div className="h-64 overflow-scroll overflow-x-hidden rounded-lg  border border-slate-300 bg-white hover:shadow-2xl">
-          <div className="col-span-6">
-            <div className="-translate-x-1/4 -translate-y-1/4  scale-50">
-              <div className="h-[200%] w-[200%]">
-                <Preview page={page} />
-              </div>
-            </div>
-          </div>
+        <div className="max-h-64 overflow-hidden  rounded-lg border border-slate-300 hover:shadow-md">
+          <TableView table={table} />
         </div>
       </div>
     </Link>
   );
 };
 
-export default Page;
+export default Table;
