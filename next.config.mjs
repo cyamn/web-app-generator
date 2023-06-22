@@ -3,9 +3,10 @@
  * for Docker builds.
  */
 await import("./src/env.mjs");
+import { withAxiom } from "next-axiom";
 
 /** @type {import("next").NextConfig} */
-const config = {
+const config = withAxiom({
   images: {
     domains: ["cdn.discordapp.com", "avatars.githubusercontent.com"],
   },
@@ -21,5 +22,5 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-};
+});
 export default config;
