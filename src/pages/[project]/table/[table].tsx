@@ -65,18 +65,6 @@ const Page: NextPage = () => {
 
   const [status, setStatus] = useState<EditorStatus>(EditorStatus.SAVED);
 
-  const context = api.useContext();
-
-  // const { mutate, isLoading: isSaving } =
-  //   api.projects.updatePageOfProject.useMutation({
-  //     onSuccess: () => {
-  //       void ctx.projects.getPageOfProject.invalidate({
-  //         projectName,
-  //         pagePath,
-  //       });
-  //     },
-  //   });
-
   if (!projectName || !tableName) return <div>invalid path</div>;
   if (!sessionData) return <div>not logged in</div>;
   if (isError) return <div>{error.message}</div>;
@@ -119,9 +107,9 @@ const Page: NextPage = () => {
         sidebarLeft={
           <div className="flex h-full flex-col bg-slate-700">
             <div className="flex h-full flex-row">
-              <ViewList activeView={"pages"} projectName={projectName} />
+              <ViewList activeView={"table"} projectName={projectName} />
               <div className="flex h-full w-full flex-col justify-between bg-slate-700">
-                {/* <PageList projectName={projectName} pagePath={pagePath} /> */}
+                <TableList projectName={projectName} tableName={tableName} />
               </div>
             </div>
             {/* <StatusBar /> */}
@@ -139,48 +127,6 @@ const Page: NextPage = () => {
 
 import { NextPage } from "next";
 
-import { type Table } from "@/data/table";
-
-type TableViewProperties = {
-  table: Table;
-};
-
-// eslint-disable-next-line max-lines-per-function
-export const TableView: React.FC<TableViewProperties> = ({ table }) => {
-  return (
-    <div className="">
-      {/* <h1 className="text-2xl font-bold">{table.name}</h1> */}
-
-      <div className="max-h-full overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-left text-sm text-slate-500 ">
-          <thead className="sticky top-0 bg-slate-50 text-xs uppercase text-slate-700">
-            <tr>
-              {table.columns.map((column) => (
-                <th
-                  key={column.key}
-                  scope="col"
-                  className="px-6 py-3 font-medium tracking-wider"
-                >
-                  {column.key}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="overflow-y-auto">
-            {table.rows.map((row, index) => (
-              <tr key={index} className="border-b bg-white hover:bg-slate-50 ">
-                {table.columns.map((column) => (
-                  <td key={column.key} className="px-6 py-4">
-                    {row[column.key]?.toString()}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
-
+import { TableList } from "@/components/table-list";
+import { TableView } from "@/components/table-view";
 export default Page;

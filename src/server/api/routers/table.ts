@@ -1,14 +1,14 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { type Table, TableSchema } from "@/data/table";
+import { defaultTable, type Table, TableSchema } from "@/data/table";
 import { ColumnSchema } from "@/data/table/column";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
 import { createTable, getProjectTableDeep } from "../helpers/table";
 
 export const tablesRouter = createTRPCRouter({
-  create: protectedProcedure
+  add: protectedProcedure
     .input(z.object({ projectName: z.string(), tableName: z.string() }))
     .output(z.string())
     .mutation(async ({ ctx, input }) => {
@@ -24,37 +24,118 @@ export const tablesRouter = createTRPCRouter({
           message: "Project not found",
         });
       }
-      return await createTable(project.id);
+      const tableSchema = defaultTable;
+      tableSchema.name = input.tableName;
+      return await createTable(project.id, tableSchema);
     }),
 
   listAll: protectedProcedure
     .input(z.string())
-    .output(z.array(TableSchema.pick({ id: true, name: true })))
+    .output(z.array(z.object({ id: z.string(), name: z.string() })))
     .query(async ({ ctx, input }) => {
-      const project = await ctx.prisma.project.findFirst({
+      const tables = await ctx.prisma.table.findMany({
         where: {
-          name: input,
-          ownerId: ctx.session.user.id,
-        },
-        select: {
-          tables: {
-            select: {
-              id: true,
-              name: true,
-            },
-            orderBy: {
-              updatedAt: "desc",
-            },
+          project: {
+            owner: ctx.session.user,
+            name: input,
           },
         },
+        select: {
+          id: true,
+          name: true,
+        },
+        orderBy: {
+          updatedAt: "desc",
+        },
       });
-      if (!project) {
+      if (tables === null) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Project not found",
         });
       }
-      return project.tables;
+      return tables;
+    }),
+
+  getAll: protectedProcedure
+    .input(z.string())
+    .output(z.array(z.object({ table: TableSchema, updatedAt: z.date() })))
+    .query(async ({ ctx, input }) => {
+      const tables = await ctx.prisma.table.findMany({
+        where: {
+          project: {
+            owner: ctx.session.user,
+            name: input,
+          },
+        },
+        select: {
+          id: true,
+          name: true,
+          updatedAt: true,
+          columns: {
+            select: {
+              id: true,
+              key: true,
+              type: true,
+            },
+          },
+          rows: {
+            select: {
+              id: true,
+              cells: {
+                select: {
+                  column: {
+                    select: {
+                      key: true,
+                    },
+                  },
+                  value: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          updatedAt: "desc",
+        },
+      });
+      if (tables === null) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+      return tables.map((table) => {
+        const outputTable: Table = {
+          name: table.name,
+          columns: table.columns.map((column) => {
+            const col = ColumnSchema.safeParse({
+              type: column.type,
+              key: column.key,
+            });
+            if (!col.success) {
+              throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Invalid column",
+              });
+            }
+            return col.data;
+          }),
+          rows: table.rows.map((row) => {
+            const result: { [key: string]: string } = {};
+            for (const cell of row.cells) {
+              const { value, column } = cell;
+              const { key } = column;
+              result[key] = value;
+            }
+            return result;
+          }),
+        };
+        return {
+          table: outputTable,
+          updatedAt: table.updatedAt,
+        };
+      });
     }),
 
   get: protectedProcedure

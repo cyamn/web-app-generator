@@ -171,7 +171,7 @@ const Page: NextPage = () => {
         sidebarLeft={
           <div className="flex h-full flex-col bg-slate-700">
             <div className="flex h-full flex-row">
-              <ViewList activeView={"pages"} projectName={projectName} />
+              <ViewList activeView={"page"} projectName={projectName} />
               <div className="flex h-full w-full flex-col justify-between bg-slate-700">
                 <PageList projectName={projectName} pagePath={pagePath} />
               </div>
@@ -186,6 +186,7 @@ const Page: NextPage = () => {
             trySetLocalPageFromString={trySetLocalPageFromString}
             setLocalPage={wrapSetLocalPage}
             tryAutoSaveToDatabase={tryAutoSaveToDatabase}
+            projectName={projectName}
           />
         }
       />
@@ -199,6 +200,7 @@ type ContentProperties = {
   trySetLocalPageFromString: (pageString: string) => void;
   setLocalPage: (page: Page) => void;
   tryAutoSaveToDatabase: () => void;
+  projectName: string;
 };
 
 const Content: React.FC<ContentProperties> = ({
@@ -207,6 +209,7 @@ const Content: React.FC<ContentProperties> = ({
   trySetLocalPageFromString,
   setLocalPage,
   tryAutoSaveToDatabase,
+  projectName,
 }) => {
   switch (pageMode) {
     case PageMode.Edit: {
@@ -215,17 +218,19 @@ const Content: React.FC<ContentProperties> = ({
           page={page}
           setLocalPage={setLocalPage}
           tryAutoSaveToDatabase={tryAutoSaveToDatabase}
+          projectName={projectName}
         />
       );
     }
     case PageMode.Preview: {
-      return <Preview page={page} />;
+      return <Preview page={page} projectName={projectName} />;
     }
     case PageMode.JSON: {
       return (
         <IDE
           page={page}
           trySetLocalPageFromString={trySetLocalPageFromString}
+          projectName={projectName}
         />
       );
     }
