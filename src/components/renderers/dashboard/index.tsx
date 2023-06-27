@@ -7,20 +7,11 @@ import { type Markdown } from "@/data/dashboard/library/markdown";
 import { DatabaseViewRender } from "./database-view";
 import { MarkdownRender } from "./markdown";
 
-export const DashboardRenderer: React.FC<{
+export const DashboardRender: React.FC<{
   dashboard: Dashboard;
   index: number;
   projectName: string;
 }> = ({ dashboard, projectName }) => {
-  return (
-    <div className={"px-3 pt-3"}>{renderDashboard(dashboard, projectName)}</div>
-  );
-};
-
-function renderDashboard(
-  dashboard: Dashboard,
-  projectName: string
-): React.JSX.Element {
   switch (dashboard.type) {
     case "markdown": {
       return <MarkdownRender dashboard={dashboard as Markdown} />;
@@ -41,4 +32,4 @@ function renderDashboard(
       );
     }
   }
-}
+};

@@ -135,15 +135,6 @@ const config = {
       "error",
       { assertionStyle: "as", objectLiteralTypeAssertions: "never" },
     ],
-    "@typescript-eslint/explicit-function-return-type": [
-      "error",
-      {
-        allowExpressions: true,
-        allowTypedFunctionExpressions: true,
-        allowDirectConstAssertionInArrowFunctions: true,
-        allowConciseArrowFunctionExpressionsStartingWithVoid: true,
-      },
-    ],
     "@typescript-eslint/explicit-member-accessibility": "error",
     "@typescript-eslint/method-signature-style": "error",
     "@typescript-eslint/no-base-to-string": "error",

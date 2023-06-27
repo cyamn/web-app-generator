@@ -2,33 +2,6 @@ import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faFile, faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-type ViewItemProperties = {
-  icon: IconDefinition;
-  view: string;
-  activeView: string;
-  projectName: string;
-};
-
-const ViewItem: React.FC<ViewItemProperties> = ({
-  icon,
-  view,
-  activeView,
-  projectName,
-}) => {
-  const active = activeView === view;
-  const style = active
-    ? "bg-slate-200 text-slate-700"
-    : "bg-slate-700 text-slate-200";
-  return (
-    <a
-      className={"mb-2 h-12 w-12 rounded-lg p-1 pt-2 text-center " + style}
-      href={`/${projectName}/${view}`}
-    >
-      <FontAwesomeIcon className="text-3xl" icon={icon} />
-    </a>
-  );
-};
-
 type ViewListProperties = {
   activeView: string;
   projectName: string;
@@ -55,5 +28,32 @@ export const ViewList: React.FC<ViewListProperties> = ({
         />
       </nav>
     </div>
+  );
+};
+
+type ViewItemProperties = {
+  icon: IconDefinition;
+  view: string;
+  activeView: string;
+  projectName: string;
+};
+
+const ViewItem: React.FC<ViewItemProperties> = ({
+  icon,
+  view,
+  activeView,
+  projectName,
+}) => {
+  const active = activeView === view;
+  const style = active
+    ? "bg-slate-200 text-slate-700"
+    : "bg-slate-700 text-slate-200";
+  return (
+    <a
+      className={"mb-2 h-12 w-12 rounded-lg p-1 pt-2 text-center " + style}
+      href={`/${projectName}/${view}`}
+    >
+      <FontAwesomeIcon className="text-3xl" icon={icon} />
+    </a>
   );
 };

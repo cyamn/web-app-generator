@@ -1,9 +1,11 @@
+"use client";
+
 import React from "react";
 
+import { SkeletonTableView } from "@/components/skeletons/table-view";
+import { TableView } from "@/components/table-view";
 import { DatabaseView } from "@/data/dashboard/library/database-view";
 import { api } from "@/utils/api";
-
-import { TableView } from "../table-view";
 
 export const DatabaseViewRender: React.FC<{
   dashboard: DatabaseView;
@@ -21,7 +23,7 @@ export const DatabaseViewRender: React.FC<{
   });
 
   if (isError) return <div>{error.message}</div>;
-  if (isLoading) return <div>loading</div>;
+  if (isLoading) return <SkeletonTableView />;
 
   return (
     <div>

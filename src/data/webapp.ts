@@ -9,6 +9,8 @@ export const WebAppSchema = z
     home: z.string(),
     pages: z.array(PageSchema),
     tables: z.array(TableSchema),
+    description: z.string().optional(),
+    updatedAt: z.date().optional(),
   })
   .strict();
 

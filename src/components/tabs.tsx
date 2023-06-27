@@ -6,9 +6,8 @@ import {
   type IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 import React from "react";
-
-import { PageMode } from "@/data/state";
 
 type TabProperties = {
   mode: PageMode;
@@ -16,7 +15,7 @@ type TabProperties = {
   first?: boolean;
   last?: boolean;
   active: boolean;
-  setPageMode: (mode: PageMode) => void;
+  base: string;
 };
 
 const Tab: React.FC<TabProperties> = ({
@@ -25,7 +24,7 @@ const Tab: React.FC<TabProperties> = ({
   last = false,
   icon = faFile,
   active,
-  setPageMode,
+  base,
 }) => {
   const backgroundColor = active
     ? " bg-slate-200 text-slate-800"
@@ -35,29 +34,34 @@ const Tab: React.FC<TabProperties> = ({
   const leftS = last ? " rounded-r-lg" : "";
   return (
     <li className="m-[2px] w-full">
-      <button
-        onClick={() => {
-          setPageMode(mode);
-        }}
-        className={
-          "inline-block w-full border-2 border-slate-200 p-[3px]" +
-          backgroundColor +
-          rightS +
-          leftS
-        }
-      >
-        <FontAwesomeIcon className="text-xl" icon={icon} />
-      </button>
+      <Link href={`${base}/${mode}`}>
+        <button
+          className={
+            "inline-block w-full border-2 border-slate-200 p-[3px]" +
+            backgroundColor +
+            rightS +
+            leftS
+          }
+        >
+          <FontAwesomeIcon className="text-xl" icon={icon} />
+        </button>
+      </Link>
     </li>
   );
 };
 
+export enum PageMode {
+  JSON = "json",
+  Edit = "edit",
+  Preview = "preview",
+}
+
 type TabsProperties = {
-  pageMode: PageMode;
-  setPageMode: (mode: PageMode) => void;
+  mode: PageMode;
+  base: string;
 };
 
-export const Tabs: React.FC<TabsProperties> = ({ pageMode, setPageMode }) => {
+export const Tabs: React.FC<TabsProperties> = ({ mode, base }) => {
   return (
     <div className="text-center">
       <ul className="hidden rounded-lg text-center shadow sm:flex">
@@ -65,21 +69,21 @@ export const Tabs: React.FC<TabsProperties> = ({ pageMode, setPageMode }) => {
           mode={PageMode.JSON}
           icon={faCode}
           first
-          active={pageMode === PageMode.JSON}
-          setPageMode={setPageMode}
+          active={mode === PageMode.JSON}
+          base={base}
         />
         <Tab
           mode={PageMode.Edit}
           icon={faWandMagicSparkles}
-          active={pageMode === PageMode.Edit}
-          setPageMode={setPageMode}
+          active={mode === PageMode.Edit}
+          base={base}
         />
         <Tab
           mode={PageMode.Preview}
           icon={faEye}
           last
-          active={pageMode === PageMode.Preview}
-          setPageMode={setPageMode}
+          active={mode === PageMode.Preview}
+          base={base}
         />
       </ul>
     </div>

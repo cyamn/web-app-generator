@@ -1,7 +1,7 @@
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { DashboardRenderer } from "@/components/renderers/dashboard";
+import { DashboardRender } from "@/components/renderers/dashboard";
 import { type Dashboard } from "@/data/dashboard/library/dashboard";
 
 type DashboardEditProperties = {
@@ -32,7 +32,7 @@ export const DashboardEdit: React.FC<DashboardEditProperties> = ({
             active ? "shadow-xl" : ""
           }`}
         >
-          <DashboardRenderer
+          <DashboardRender
             dashboard={dashboard}
             index={index}
             projectName={projectName}
