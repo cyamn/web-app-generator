@@ -1,3 +1,5 @@
+"use client";
+
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
@@ -7,7 +9,7 @@ import React from "react";
 
 type HeaderProperties = {
   item: React.ReactNode;
-  user: Session["user"];
+  user?: Session["user"];
   tabs?: React.ReactNode;
 };
 
@@ -21,24 +23,8 @@ export const Header: React.FC<HeaderProperties> = ({ item, user, tabs }) => {
         {tabs === undefined && <div></div>}
 
         <div className="relative inline-block text-right">
-          <div>
-            <button
-              onClick={() => {
-                setShow(!show);
-              }}
-            >
-              <div className="flex flex-row-reverse p-1 text-xl text-white">
-                <Image
-                  src={user.image?.toString() ?? ""}
-                  width={32}
-                  height={32}
-                  alt={user.name ?? "user"}
-                  className="rounded-full"
-                />
-                <div className="px-2">{user.name}</div>
-              </div>
-            </button>
-          </div>
+          {user && <User user={user} show={show} setShow={setShow} />}
+          {!user && <UserSkeleton />}
           {show && (
             <div
               className="absolute right-0 z-10 mr-2 mt-2 w-56 origin-top-right divide-y divide-slate-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
@@ -60,6 +46,47 @@ export const Header: React.FC<HeaderProperties> = ({ item, user, tabs }) => {
           )}
         </div>
       </div>
+    </div>
+  );
+};
+
+type UserProperties = {
+  user: Session["user"];
+  show: boolean;
+  setShow: (show: boolean) => void;
+};
+
+export const User: React.FC<UserProperties> = ({ user, show, setShow }) => {
+  return (
+    <div>
+      <button
+        onClick={() => {
+          setShow(!show);
+        }}
+      >
+        <div className="flex flex-row-reverse p-1 text-xl text-white">
+          <Image
+            src={user.image?.toString() ?? ""}
+            width={32}
+            height={32}
+            alt={user.name ?? "user"}
+            className="rounded-full"
+          />
+          <div className="px-2">{user.name}</div>
+        </div>
+      </button>
+    </div>
+  );
+};
+export const UserSkeleton: React.FC = () => {
+  return (
+    <div>
+      <button>
+        <div className="flex flex-row-reverse p-1 text-xl text-white">
+          {/* Skeleton loader */}
+          <div className="h-8 w-8 animate-pulse rounded-full bg-gray-300" />
+        </div>
+      </button>
     </div>
   );
 };

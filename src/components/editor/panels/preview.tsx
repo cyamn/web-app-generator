@@ -2,7 +2,7 @@ import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
-import { DashboardRenderer } from "@/components/renderers/dashboard";
+import { DashboardRender } from "@/components/renderers/dashboard";
 import { type Page } from "@/data/page";
 
 type NameTagProperties = {
@@ -25,7 +25,6 @@ const NameTag: React.FC<NameTagProperties> = ({ visible, name, active }) => {
           style={{
             writingMode: "vertical-rl",
             textOrientation: "upright",
-            // less gap between letters
             letterSpacing: "-0.1em",
           }}
         >
@@ -39,18 +38,18 @@ const NameTag: React.FC<NameTagProperties> = ({ visible, name, active }) => {
 type PreviewProperties = {
   page: Page;
   showBorders?: boolean;
-  setDashboardIndex?: (index: number) => void;
   index?: number;
+  setIndex?: (index: number) => void;
   projectName: string;
 };
 
 export const Preview: React.FC<PreviewProperties> = ({
   page,
   showBorders = false,
-  setDashboardIndex = (_) => {
+  index = -1,
+  setIndex = (index: number) => {
     return;
   },
-  index = -1,
   projectName,
 }) => {
   return (
@@ -65,7 +64,7 @@ export const Preview: React.FC<PreviewProperties> = ({
             key={id}
             className="my-1 cursor-pointer"
             onClick={() => {
-              setDashboardIndex(id);
+              setIndex(id);
             }}
           >
             <div className="flex flex-row">
@@ -80,7 +79,7 @@ export const Preview: React.FC<PreviewProperties> = ({
                   active ? "shadow-xl" : ""
                 }`}
               >
-                <DashboardRenderer
+                <DashboardRender
                   dashboard={dashboard}
                   index={index}
                   projectName={projectName}

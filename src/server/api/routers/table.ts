@@ -9,12 +9,12 @@ import { createTable, getProjectTableDeep } from "../helpers/table";
 
 export const tablesRouter = createTRPCRouter({
   add: protectedProcedure
-    .input(z.object({ projectName: z.string(), tableName: z.string() }))
+    .input(z.object({ project: z.string(), tableName: z.string() }))
     .output(z.string())
     .mutation(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          name: input.projectName,
+          name: input.project,
           owner: ctx.session.user,
         },
       });

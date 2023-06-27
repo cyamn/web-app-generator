@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DashboardForm } from "@/components/forms/dashboard";
+import { DashboardForm } from "@/components/renderers/forms";
 import { type Dashboard } from "@/data/dashboard/library/dashboard";
 import { type Page } from "@/data/page";
 

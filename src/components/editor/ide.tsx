@@ -1,20 +1,63 @@
-import React from "react";
+"use client";
 
-import { type Page } from "@/data/page";
+import React, { useState } from "react";
 
-import { Monaco, Preview } from "./panels";
+import { type Page, PageSchema } from "@/data/page";
+import { useKey } from "@/hooks/use-key";
+import { api } from "@/utils/api";
+
+import { Monaco } from "./panels/monaco";
+import { Previewer } from "./previewer";
+
+export enum IDEError {
+  NONE = "",
+  INVALID_JSON = "invalid json",
+  INVALID_PAGE = "invalid page",
+}
 
 type IDEProperties = {
   page: Page;
-  trySetLocalPageFromString: (pageString: string) => void;
-  projectName: string;
+  project: string;
 };
 
-export const IDE: React.FC<IDEProperties> = ({
-  page,
-  trySetLocalPageFromString,
-  projectName,
-}) => {
+export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
+  const [localPage, setLocalPage] = useState<Page>(page);
+  const [error, setError] = useState<IDEError>(IDEError.NONE);
+  function trySetLocalPageFromString(pageString: string): void {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(pageString);
+    } catch {
+      setError(IDEError.INVALID_JSON);
+      return;
+    }
+    const verify = PageSchema.safeParse(parsed);
+    if (!verify.success) {
+      setError(IDEError.INVALID_PAGE);
+      return;
+    }
+    setLocalPage(verify.data);
+    setError(IDEError.NONE);
+  }
+
+  const { mutate, isLoading: isSaving } = api.pages.update.useMutation({
+    onSuccess: () => {
+      location.reload();
+    },
+  });
+
+  function trySaveToDatabase(): void {
+    if (error !== IDEError.NONE) {
+      alert("could not save page");
+      return;
+    }
+    mutate({ project, pagePath: localPage.path, page: localPage });
+  }
+
+  useKey("ctrls", () => {
+    trySaveToDatabase();
+  });
+
   return (
     <div className="flex h-full flex-row">
       <div className="w-1/2">
@@ -24,7 +67,10 @@ export const IDE: React.FC<IDEProperties> = ({
         />
       </div>
       <div className="w-1/2">
-        <Preview page={page} projectName={projectName} />
+        <div className="mx-5 flex justify-center bg-red-800 font-mono text-3xl text-red-300">
+          {error}
+        </div>
+        <Previewer page={localPage} project={project} />
       </div>
     </div>
   );

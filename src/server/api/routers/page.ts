@@ -86,19 +86,19 @@ export const pagesRouter = createTRPCRouter({
     }),
 
   get: protectedProcedure
-    .input(z.object({ projectName: z.string(), pagePath: z.string() }))
+    .input(z.object({ project: z.string(), page: z.string() }))
     .output(z.object({ page: PageSchema, updatedAt: z.date() }))
     .query(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          name: input.projectName,
+          name: input.project,
           ownerId: ctx.session.user.id,
         },
         select: {
           pages: {
             where: {
               path: {
-                equals: input.pagePath,
+                equals: input.page,
               },
             },
           },
@@ -134,11 +134,11 @@ export const pagesRouter = createTRPCRouter({
     }),
 
   add: protectedProcedure
-    .input(z.object({ projectName: z.string(), pageName: z.string() }))
+    .input(z.object({ project: z.string(), pageName: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          name: input.projectName,
+          name: input.project,
           ownerId: ctx.session.user.id,
         },
       });
@@ -162,7 +162,7 @@ export const pagesRouter = createTRPCRouter({
   update: protectedProcedure
     .input(
       z.object({
-        projectName: z.string(),
+        project: z.string(),
         pagePath: z.string(),
         page: PageSchema,
       })
@@ -170,7 +170,7 @@ export const pagesRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          name: input.projectName,
+          name: input.project,
           ownerId: ctx.session.user.id,
         },
         select: {

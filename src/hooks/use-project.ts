@@ -15,7 +15,10 @@ export const useProjectList = () => {
 export const useAddProject = () => {
   const context = api.useContext();
   const { mutate, isLoading: isAdding } = api.projects.create.useMutation({
-    onSuccess: async () => context.projects.listAll.invalidate(),
+    onSuccess: () => {
+      void context.projects.listAll.invalidate();
+      window.location.reload();
+    },
   });
 
   const addProject = () => {

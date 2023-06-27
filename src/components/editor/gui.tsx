@@ -1,49 +1,45 @@
+"use client";
+
 import React, { useState } from "react";
 
 import { type Page } from "@/data/page";
+import { api } from "@/utils/api";
 
 import { Forms, Preview } from "./panels";
 
 type GUIEditorProperties = {
   page: Page;
-  setLocalPage: (page: Page) => void;
-  tryAutoSaveToDatabase: () => void;
-  projectName: string;
+  project: string;
+  index?: number;
 };
 
-export const GUIEditor: React.FC<GUIEditorProperties> = ({
-  page,
-  setLocalPage,
-  tryAutoSaveToDatabase,
-  projectName,
-}) => {
-  const [dashboardIndex, setDashboardIndex] = useState(-1);
-  function wrapSetDashboardIndex(index: number): void {
-    if (index === dashboardIndex) {
-      setDashboardIndex(-1);
-    } else {
-      setDashboardIndex(index);
-      tryAutoSaveToDatabase();
+export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
+  const [localPage, setLocalPage] = useState<Page>(page);
+  const { mutate } = api.pages.update.useMutation();
+
+  const [index, setIndex] = useState<number>(-1);
+  function switchIndex(newIndex: number): void {
+    if (index === newIndex) setIndex(-1);
+    else {
+      setIndex(newIndex);
+      mutate({ project, pagePath: localPage.path, page: localPage });
     }
   }
+
   return (
     <div className="flex h-full flex-row">
       <div className="w-full">
         <Preview
-          page={page}
+          page={localPage}
           showBorders={true}
-          setDashboardIndex={wrapSetDashboardIndex}
-          index={dashboardIndex}
-          projectName={projectName}
+          index={index}
+          setIndex={switchIndex}
+          projectName={project}
         />
       </div>
-      {dashboardIndex !== -1 && (
+      {index !== -1 && (
         <div className="w-80 overflow-hidden">
-          <Forms
-            page={page}
-            setLocalPage={setLocalPage}
-            index={dashboardIndex}
-          />
+          <Forms page={localPage} setLocalPage={setLocalPage} index={index} />
         </div>
       )}
     </div>
