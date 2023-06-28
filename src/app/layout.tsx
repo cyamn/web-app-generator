@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
 
 import { TrpcProvider } from "@/components/providers";
 
@@ -20,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Toaster position="bottom-center" reverseOrder={false} />
         <TrpcProvider>{children}</TrpcProvider>
       </body>
     </html>

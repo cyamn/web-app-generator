@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 
+import { PageMode } from "@/components/tabs";
 import { Page } from "@/data/page";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
@@ -59,7 +60,7 @@ export const PageDetailedItem: React.FC<PageDetailedItemProperties> = ({
   updatedAt,
 }) => {
   return (
-    <Link href={`/${project}/page/${page.path}`}>
+    <Link href={`/${project}/page/${page.path}/${PageMode.Preview}`}>
       <div className="m-2">
         <div className="grid w-full grid-cols-2">
           <div>

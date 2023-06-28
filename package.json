@@ -35,6 +35,7 @@
     "prettier-plugin-prisma": "^4.13.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-markdown": "^8.0.7",
     "superjson": "1.12.2",
     "zod": "^3.21.4"

@@ -1,9 +1,19 @@
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
+import { faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 import { DashboardRender } from "@/components/renderers/dashboard";
+import { Dashboard } from "@/data/dashboard/library/dashboard";
+import { defaultDatabaseView } from "@/data/dashboard/library/database-view";
+import { defaultMarkdown } from "@/data/dashboard/library/markdown";
 import { type Page } from "@/data/page";
+
+// dictionary of dashboard types to icons
+const DashboardTypeToIcon = {
+  markdown: faMarkdown,
+  databaseView: faTable,
+};
 
 type NameTagProperties = {
   visible: boolean;
@@ -19,7 +29,12 @@ const NameTag: React.FC<NameTagProperties> = ({ visible, name, active }) => {
   return (
     <div className={"w-10 rounded-l-lg  py-[2px] " + colors}>
       <div className="flex flex-col">
-        <FontAwesomeIcon className="text-2xl" icon={faMarkdown} />
+        <FontAwesomeIcon
+          className="pt-1 text-2xl"
+          icon={
+            DashboardTypeToIcon[name as keyof typeof DashboardTypeToIcon] ?? ""
+          }
+        />
         <div
           className="py-1 pr-2 font-mono uppercase"
           style={{
@@ -41,6 +56,7 @@ type PreviewProperties = {
   index?: number;
   setIndex?: (index: number) => void;
   projectName: string;
+  addDashboard: (index: number, dashboard: Dashboard) => void;
 };
 
 export const Preview: React.FC<PreviewProperties> = ({
@@ -51,6 +67,7 @@ export const Preview: React.FC<PreviewProperties> = ({
     return;
   },
   projectName,
+  addDashboard,
 }) => {
   return (
     <div className="flex h-full flex-col overflow-scroll p-4 font-sans leading-normal tracking-normal">
@@ -60,14 +77,13 @@ export const Preview: React.FC<PreviewProperties> = ({
           ? "rounded-r-lg border-2 border-slate-800"
           : "rounded-r-lg border-2 border-slate-300";
         return (
-          <div
-            key={id}
-            className="my-1 cursor-pointer"
-            onClick={() => {
-              setIndex(id);
-            }}
-          >
-            <div className="flex flex-row">
+          <div key={id} className="cursor-pointer">
+            <div
+              className="flex flex-row"
+              onClick={() => {
+                setIndex(id);
+              }}
+            >
               <NameTag
                 visible={showBorders}
                 name={dashboard.type}
@@ -86,9 +102,30 @@ export const Preview: React.FC<PreviewProperties> = ({
                 />
               </div>
             </div>
+            <div className="group h-2 w-full hover:h-min">
+              <div className="-mx-1 hidden flex-row py-1 text-3xl text-slate-800 group-hover:flex">
+                <button
+                  className="mx-1 w-full rounded-md bg-slate-300 p-1 shadow-lg hover:bg-slate-800 hover:text-slate-300"
+                  onClick={() => {
+                    addDashboard(id + 1, defaultMarkdown);
+                  }}
+                >
+                  +<FontAwesomeIcon icon={faMarkdown} />
+                </button>
+                <button
+                  className="mx-1 w-full rounded-md bg-slate-300 p-1 shadow-lg hover:bg-slate-800 hover:text-slate-300"
+                  onClick={() => {
+                    addDashboard(id + 1, defaultDatabaseView);
+                  }}
+                >
+                  +<FontAwesomeIcon icon={faTable} />
+                </button>
+              </div>
+            </div>
           </div>
         );
       })}
+      <div className="py-10"></div>
     </div>
   );
 };

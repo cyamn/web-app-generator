@@ -8,12 +8,14 @@ type FormProperties = {
   page: Page;
   setLocalPage: (page: Page) => void;
   index?: number;
+  removeDashboard: (index: number) => void;
 };
 
 export const Forms: React.FC<FormProperties> = ({
   page,
   setLocalPage,
   index = -1,
+  removeDashboard,
 }) => {
   if (
     index >= page.dashboards.length ||
@@ -31,12 +33,25 @@ export const Forms: React.FC<FormProperties> = ({
   }
 
   return (
-    <div className="h-full overflow-scroll bg-white p-4 font-sans leading-normal tracking-normal">
-      <h2>{dashboard.type}</h2>
-      <DashboardForm
-        dashboard={dashboard}
-        setLocalDashboard={setLocalDashboard}
-      />
+    <div className="flex h-full flex-col overflow-scroll bg-white p-4 font-sans leading-normal tracking-normal">
+      <div className="h-full">
+        <h2>{dashboard.type}</h2>
+        <DashboardForm
+          dashboard={dashboard}
+          setLocalDashboard={setLocalDashboard}
+        />
+        {/* evil looking button on bottom */}
+      </div>
+      <button
+        onClick={() => {
+          removeDashboard(index);
+        }}
+        className="
+         w-full rounded-lg bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-800
+      "
+      >
+        Delete
+      </button>
     </div>
   );
 };

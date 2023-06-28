@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 import { type Page, PageSchema } from "@/data/page";
 import { useKey } from "@/hooks/use-key";
@@ -51,6 +52,7 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
       alert("could not save page");
       return;
     }
+    toast.success(`Saved page to database!`);
     mutate({ project, pagePath: localPage.path, page: localPage });
   }
 
