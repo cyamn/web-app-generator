@@ -1,10 +1,11 @@
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
-import { faTable } from "@fortawesome/free-solid-svg-icons";
+import { faKeyboard, faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 import { DashboardRender } from "@/components/renderers/dashboard";
 import { Dashboard } from "@/data/dashboard/library/dashboard";
+import { defaultDatabaseInputForm } from "@/data/dashboard/library/database-input-form";
 import { defaultDatabaseView } from "@/data/dashboard/library/database-view";
 import { defaultMarkdown } from "@/data/dashboard/library/markdown";
 import { type Page } from "@/data/page";
@@ -13,6 +14,7 @@ import { type Page } from "@/data/page";
 const DashboardTypeToIcon = {
   markdown: faMarkdown,
   databaseView: faTable,
+  databaseInputForm: faKeyboard,
 };
 
 type NameTagProperties = {
@@ -119,6 +121,14 @@ export const Preview: React.FC<PreviewProperties> = ({
                   }}
                 >
                   +<FontAwesomeIcon icon={faTable} />
+                </button>
+                <button
+                  className="mx-1 w-full rounded-md bg-slate-300 p-1 shadow-lg hover:bg-slate-800 hover:text-slate-300"
+                  onClick={() => {
+                    addDashboard(id + 1, defaultDatabaseInputForm);
+                  }}
+                >
+                  +<FontAwesomeIcon icon={faKeyboard} />
                 </button>
               </div>
             </div>

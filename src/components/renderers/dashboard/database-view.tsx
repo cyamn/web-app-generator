@@ -20,10 +20,11 @@ export const DatabaseViewRender: React.FC<{
   } = api.tables.get.useQuery({
     projectName,
     tableName,
+    columns: Object.keys(dashboard.parameters.data.columns ?? {}),
   });
 
   if (isError) return <div>{error.message}</div>;
-  if (isLoading) return <SkeletonTableView />;
+  if (isLoading || table === undefined) return <SkeletonTableView />;
 
   return (
     <div>

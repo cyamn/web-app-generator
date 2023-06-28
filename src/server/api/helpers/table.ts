@@ -53,7 +53,7 @@ async function buildRows(rowSchema: Row[], tableId: string): Promise<string[]> {
   return rowCuids;
 }
 
-async function buildCells(
+export async function buildCells(
   rowSchema: Row[],
   columnCuids: Record<string, string>,
   rowCuids: string[]
@@ -69,12 +69,29 @@ async function buildCells(
   });
 }
 
+type Filter = {
+  column: string;
+  operator: string;
+  value: string;
+};
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function getProjectTableDeep(
   projectName: string,
   tableName: string,
-  sessionUserId: string
+  sessionUserId: string,
+  columns?: string[]
 ) {
+  const columnsFilter = columns
+    ? {
+        where: {
+          key: {
+            in: columns,
+          },
+        },
+      }
+    : undefined;
+
   return await prisma.project.findFirst({
     where: {
       name: projectName,
@@ -96,6 +113,7 @@ export async function getProjectTableDeep(
               key: true,
               type: true,
             },
+            ...columnsFilter,
           },
           rows: {
             select: {

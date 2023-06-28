@@ -1,9 +1,11 @@
 import React from "react";
 
 import { type Dashboard } from "@/data/dashboard/library/dashboard";
+import { DatabaseInputForm } from "@/data/dashboard/library/database-input-form";
 import { DatabaseView } from "@/data/dashboard/library/database-view";
 import { type Markdown } from "@/data/dashboard/library/markdown";
 
+import { DatabaseInputFormRender } from "./database-input-form";
 import { DatabaseViewRender } from "./database-view";
 import { MarkdownRender } from "./markdown";
 
@@ -20,6 +22,14 @@ export const DashboardRender: React.FC<{
       return (
         <DatabaseViewRender
           dashboard={dashboard as DatabaseView}
+          projectName={projectName}
+        />
+      );
+    }
+    case "databaseInputForm": {
+      return (
+        <DatabaseInputFormRender
+          dashboard={dashboard as DatabaseInputForm}
           projectName={projectName}
         />
       );

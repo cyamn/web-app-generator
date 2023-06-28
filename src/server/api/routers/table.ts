@@ -1,11 +1,13 @@
 import { TRPCError } from "@trpc/server";
+import cuid from "cuid";
 import { z } from "zod";
 
 import { defaultTable, type Table, TableSchema } from "@/data/table";
 import { ColumnSchema } from "@/data/table/column";
+import { RowSchema } from "@/data/table/row";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
-import { createTable, getProjectTableDeep } from "../helpers/table";
+import { buildCells, createTable, getProjectTableDeep } from "../helpers/table";
 
 export const tablesRouter = createTRPCRouter({
   add: protectedProcedure
@@ -139,13 +141,20 @@ export const tablesRouter = createTRPCRouter({
     }),
 
   get: protectedProcedure
-    .input(z.object({ projectName: z.string(), tableName: z.string() }))
+    .input(
+      z.object({
+        projectName: z.string(),
+        tableName: z.string(),
+        columns: z.array(z.string()).optional(),
+      })
+    )
     .output(TableSchema)
     .query(async ({ ctx, input }) => {
       const project = await getProjectTableDeep(
         input.projectName,
         input.tableName,
-        ctx.session.user.id
+        ctx.session.user.id,
+        input.columns
       );
       if (!project) {
         throw new TRPCError({
@@ -186,5 +195,64 @@ export const tablesRouter = createTRPCRouter({
         }),
       };
       return outputTable;
+    }),
+
+  insert: protectedProcedure
+    .input(
+      z.object({
+        projectName: z.string(),
+        tableName: z.string(),
+        row: RowSchema,
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const InputRow = input.row;
+      const project = await getProjectTableDeep(
+        input.projectName,
+        input.tableName,
+        ctx.session.user.id
+      );
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+      if (project.tables.length === 0 || !project.tables[0]) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Table not found",
+        });
+      }
+      const table = project.tables[0];
+      const rowID = cuid();
+      const row = await ctx.prisma.row.create({
+        data: {
+          id: rowID,
+          table: {
+            connect: {
+              id: table.id,
+            },
+          },
+        },
+      });
+      // get ids for each column
+      const columnCuids = {};
+      for (const column of table.columns) {
+        const col = await ctx.prisma.column.findFirst({
+          where: {
+            table: {
+              id: table.id,
+            },
+            key: column.key,
+          },
+          select: {
+            id: true,
+          },
+        });
+        columnCuids[column.key] = col.id;
+      }
+      await buildCells([InputRow], columnCuids, [rowID]);
+      return;
     }),
 });
