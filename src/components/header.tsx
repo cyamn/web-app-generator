@@ -17,10 +17,12 @@ export const Header: React.FC<HeaderProperties> = ({ item, user, tabs }) => {
   const [show, setShow] = React.useState(false);
   return (
     <div className="flex h-11 w-full justify-center bg-slate-800 py-1">
-      <div className="grid w-full grid-cols-3 gap-4 text-slate-50">
+      <div className="grid w-full grid-cols-4 gap-4 text-slate-50">
         <div className="pl-3 pt-1 text-xl">{item}</div>
-        {tabs !== undefined && tabs}
-        {tabs === undefined && <div></div>}
+        <div className="col-span-2">
+          {tabs !== undefined && tabs}
+          {tabs === undefined && <div></div>}
+        </div>
 
         <div className="relative inline-block text-right">
           {user && <User user={user} show={show} setShow={setShow} />}

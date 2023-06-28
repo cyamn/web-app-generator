@@ -1,5 +1,6 @@
 import {
   faCode,
+  faCog,
   faEye,
   faFile,
   faWandMagicSparkles,
@@ -51,6 +52,7 @@ const Tab: React.FC<TabProperties> = ({
 };
 
 export enum PageMode {
+  Settings = "settings",
   JSON = "json",
   Edit = "edit",
   Preview = "preview",
@@ -66,9 +68,15 @@ export const Tabs: React.FC<TabsProperties> = ({ mode, base }) => {
     <div className="text-center">
       <ul className="hidden rounded-lg text-center shadow sm:flex">
         <Tab
+          mode={PageMode.Settings}
+          icon={faCog}
+          first
+          active={mode === PageMode.Settings}
+          base={base}
+        />
+        <Tab
           mode={PageMode.JSON}
           icon={faCode}
-          first
           active={mode === PageMode.JSON}
           base={base}
         />

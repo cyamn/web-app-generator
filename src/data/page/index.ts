@@ -11,6 +11,7 @@ export const PageSchema = z
     name: z.string(),
     path: z.string(),
     dashboards: z.array(DashboardSchema),
+    public: z.boolean().optional(),
   })
   .strict();
 
