@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { z } from "zod";
 
 import { SkeletonTableView } from "@/components/skeletons/table-view";
 import { DatabaseInputForm } from "@/data/dashboard/library/database-input-form";
 import { Row } from "@/data/table/row";
+import { Dict } from "@/data/types";
 import { api } from "@/utils/api";
 
 type InputFieldProperties = {
@@ -16,35 +16,21 @@ type InputFieldProperties = {
 };
 
 // dict type to regex
-const regexDict = {
+const regexDict: Dict = {
   boolean: "^(true|false)$",
   number: "^d+$",
   string: ".*",
   date: "^d{4}-d{2}-d{2}$",
 };
 
-const InputTypeDict = {
+const InputTypeDict: Dict = {
   boolean: "text",
   number: "number",
   string: "text",
   date: "date",
 };
 
-const ZodSchemaDict = {
-  boolean: z.boolean(),
-  number: z.number(),
-  string: z.string(),
-  date: z.date(),
-};
-
 function InputField({ label, data, type, setData }: InputFieldProperties) {
-  function onInput(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value;
-    if (value.match(regexDict[type])) {
-      setData(z.parse(value, ZodSchemaDict[type]));
-    }
-  }
-
   return (
     <tr className="w-full border-b bg-white p-10 hover:bg-slate-50">
       <td className="px-6 py-2">
@@ -54,11 +40,11 @@ function InputField({ label, data, type, setData }: InputFieldProperties) {
       </td>
       <td className="w-full px-4 py-2">
         <input
-          value={data}
+          value={data.toString()}
           onChange={(event) => {
             setData(event.target.value);
           }}
-          type={InputTypeDict[type]}
+          type={InputTypeDict[type] ?? "text"}
           pattern={regexDict[type] ?? ".*"}
           placeholder={type}
           id="default-input"
@@ -151,7 +137,6 @@ const CreateButton: React.FC<ButtonProperties> = ({
   return (
     <button
       onClick={() => {
-        alert(JSON.stringify(row));
         mutate({
           projectName: project,
           tableName,

@@ -5,6 +5,7 @@ import { z } from "zod";
 import { defaultTable, type Table, TableSchema } from "@/data/table";
 import { ColumnSchema } from "@/data/table/column";
 import { RowSchema } from "@/data/table/row";
+import { Dict } from "@/data/types";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
 import { buildCells, createTable, getProjectTableDeep } from "../helpers/table";
@@ -237,7 +238,7 @@ export const tablesRouter = createTRPCRouter({
         },
       });
       // get ids for each column
-      const columnCuids = {};
+      const columnCuids: Dict = {};
       for (const column of table.columns) {
         const col = await ctx.prisma.column.findFirst({
           where: {
@@ -250,6 +251,12 @@ export const tablesRouter = createTRPCRouter({
             id: true,
           },
         });
+        if (!col) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Column not found",
+          });
+        }
         columnCuids[column.key] = col.id;
       }
       await buildCells([InputRow], columnCuids, [rowID]);
