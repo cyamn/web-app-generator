@@ -201,7 +201,7 @@ export const tablesRouter = createTRPCRouter({
       return outputTable;
     }),
 
-  insert: protectedProcedure
+  insert: publicProcedure
     .input(
       z.object({
         projectName: z.string(),
