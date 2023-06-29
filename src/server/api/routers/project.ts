@@ -13,6 +13,7 @@ export const projectsRouter = createTRPCRouter({
         name: true,
         updatedAt: true,
         description: true,
+        id: true,
       },
       where: {
         ownerId: ctx.session.user.id,

@@ -79,7 +79,6 @@ type Filter = {
 export async function getProjectTableDeep(
   projectName: string,
   tableName: string,
-  sessionUserId: string,
   columns?: string[]
 ) {
   const columnsFilter = columns
@@ -94,8 +93,7 @@ export async function getProjectTableDeep(
 
   return await prisma.project.findFirst({
     where: {
-      name: projectName,
-      ownerId: sessionUserId,
+      id: projectName,
     },
     select: {
       tables: {

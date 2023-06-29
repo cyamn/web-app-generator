@@ -6,14 +6,18 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 export const settingsRouter = createTRPCRouter({
   setPagePublic: protectedProcedure
     .input(
-      z.object({ project: z.string(), pagePath: z.string(), public: z.boolean() })
+      z.object({
+        project: z.string(),
+        pagePath: z.string(),
+        public: z.boolean(),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       const id = await ctx.prisma.page.findFirst({
         where: {
           path: input.pagePath,
           project: {
-            name: input.project,
+            id: input.project,
             ownerId: ctx.session.user.id,
           },
         },

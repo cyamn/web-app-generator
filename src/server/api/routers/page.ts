@@ -3,7 +3,12 @@ import { z } from "zod";
 
 import { DashboardSchema } from "@/data/dashboard/library/dashboard";
 import { defaultPage, PageSchema } from "@/data/page";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
+import { prisma } from "@/server/database";
 import { nameToInternal } from "@/utils/name-to-internal";
 
 export const pagesRouter = createTRPCRouter({
@@ -13,7 +18,7 @@ export const pagesRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          name: input,
+          id: input,
           ownerId: ctx.session.user.id,
         },
         select: {
@@ -43,7 +48,7 @@ export const pagesRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          name: input,
+          id: input,
           ownerId: ctx.session.user.id,
         },
         select: {
@@ -85,13 +90,64 @@ export const pagesRouter = createTRPCRouter({
       return pages;
     }),
 
+  //TODO: make not copy of above
+  getPublic: publicProcedure
+    .input(z.object({ project: z.string(), page: z.string() }))
+    .output(z.object({ page: PageSchema, updatedAt: z.date() }))
+    .query(async ({ input }) => {
+      const project = await prisma.project.findFirst({
+        where: {
+          id: input.project,
+        },
+        select: {
+          pages: {
+            where: {
+              path: {
+                equals: input.page,
+              },
+              public: {
+                equals: true,
+              },
+            },
+          },
+        },
+      });
+      if (!project || project.pages.length === 0 || !project.pages[0]) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Page not found",
+        });
+      }
+      const page = project.pages[0];
+      const unsafeDashboards: unknown = JSON.parse(page.dashboards as string);
+
+      const parsedDashboards = z
+        .array(DashboardSchema)
+        .safeParse(unsafeDashboards);
+
+      if (!parsedDashboards.success) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to parse page",
+        });
+      }
+      return {
+        page: {
+          name: page.name,
+          path: page.path,
+          dashboards: parsedDashboards.data,
+        },
+        updatedAt: page.updatedAt,
+      };
+    }),
+
   get: protectedProcedure
     .input(z.object({ project: z.string(), page: z.string() }))
     .output(z.object({ page: PageSchema, updatedAt: z.date() }))
     .query(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          name: input.project,
+          id: input.project,
           ownerId: ctx.session.user.id,
         },
         select: {
@@ -138,7 +194,7 @@ export const pagesRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          name: input.project,
+          id: input.project,
           ownerId: ctx.session.user.id,
         },
       });
@@ -170,7 +226,7 @@ export const pagesRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          name: input.project,
+          id: input.project,
           ownerId: ctx.session.user.id,
         },
         select: {

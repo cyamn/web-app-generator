@@ -6,7 +6,11 @@ import { defaultTable, type Table, TableSchema } from "@/data/table";
 import { ColumnSchema } from "@/data/table/column";
 import { RowSchema } from "@/data/table/row";
 import { Dict } from "@/data/types";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 
 import { buildCells, createTable, getProjectTableDeep } from "../helpers/table";
 
@@ -17,7 +21,7 @@ export const tablesRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          name: input.project,
+          id: input.project,
           owner: ctx.session.user,
         },
       });
@@ -141,7 +145,7 @@ export const tablesRouter = createTRPCRouter({
       });
     }),
 
-  get: protectedProcedure
+  get: publicProcedure
     .input(
       z.object({
         projectName: z.string(),
@@ -154,7 +158,6 @@ export const tablesRouter = createTRPCRouter({
       const project = await getProjectTableDeep(
         input.projectName,
         input.tableName,
-        ctx.session.user.id,
         input.columns
       );
       if (!project) {
@@ -210,8 +213,7 @@ export const tablesRouter = createTRPCRouter({
       const InputRow = input.row;
       const project = await getProjectTableDeep(
         input.projectName,
-        input.tableName,
-        ctx.session.user.id
+        input.tableName
       );
       if (!project) {
         throw new TRPCError({
