@@ -66,8 +66,8 @@ export const DatabaseInputFormRender: React.FC<{
     isError,
     isLoading,
   } = api.tables.get.useQuery({
-    projectName,
-    tableName,
+    project: projectName,
+    table: tableName,
     columns: Object.keys(dashboard.parameters.data.columns ?? {}),
   });
 

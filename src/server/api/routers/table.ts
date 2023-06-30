@@ -44,7 +44,7 @@ export const tablesRouter = createTRPCRouter({
         where: {
           project: {
             owner: ctx.session.user,
-            name: input,
+            id: input,
           },
         },
         select: {
@@ -72,7 +72,7 @@ export const tablesRouter = createTRPCRouter({
         where: {
           project: {
             owner: ctx.session.user,
-            name: input,
+            id: input,
           },
         },
         select: {
@@ -148,16 +148,16 @@ export const tablesRouter = createTRPCRouter({
   get: publicProcedure
     .input(
       z.object({
-        projectName: z.string(),
-        tableName: z.string(),
+        project: z.string(),
+        table: z.string(),
         columns: z.array(z.string()).optional(),
       })
     )
     .output(TableSchema)
     .query(async ({ ctx, input }) => {
       const project = await getProjectTableDeep(
-        input.projectName,
-        input.tableName,
+        input.project,
+        input.table,
         input.columns
       );
       if (!project) {
