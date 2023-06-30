@@ -18,7 +18,10 @@ import { AddPageCard } from "./add-page-card";
 dayjs.extend(relativeTime);
 
 type PagesOverviewProperties = {
-  project: string;
+  project: {
+    id: string;
+    name: string;
+  };
 };
 
 export const PagesOverview: React.FC<PagesOverviewProperties> = async ({
@@ -28,21 +31,21 @@ export const PagesOverview: React.FC<PagesOverviewProperties> = async ({
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const pagesWithMeta = await caller.pages.getAll(project);
+  const pagesWithMeta = await caller.pages.getAll(project.id);
 
   return (
     <>
-      <h1 className="p-3 text-center">All Pages in {project}</h1>
+      <h1 className="p-3 text-center">All Pages in {project.name}</h1>
       <div className="grid grid-cols-3 px-20">
         {pagesWithMeta.map((pageWithMeta) => (
           <PageDetailedItem
             updatedAt={pageWithMeta.updatedAt}
             key={pageWithMeta.page.name}
             page={pageWithMeta.page}
-            project={project}
+            project={project.id}
           />
         ))}
-        <AddPageCard project={project} />
+        <AddPageCard project={project.id} />
       </div>
     </>
   );

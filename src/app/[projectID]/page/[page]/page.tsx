@@ -9,19 +9,20 @@ dayjs.extend(relativeTime);
 
 type PageProperties = {
   params: {
-    project: string;
+    projectID: string;
     page: string;
   };
 };
 
 const Page = async ({ params }: PageProperties) => {
   const caller = appRouter.createCaller({ prisma, session: null });
+  const project = await caller.projects.get(params.projectID);
   const pageWithMeta = await caller.pages.getPublic({
-    project: params.project,
+    project: project.id,
     page: params.page,
   });
 
-  return <Previewer page={pageWithMeta.page} project={params.project} />;
+  return <Previewer page={pageWithMeta.page} project={project.id} />;
 };
 
 export default Page;

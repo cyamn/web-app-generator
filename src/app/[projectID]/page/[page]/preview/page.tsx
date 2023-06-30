@@ -16,7 +16,7 @@ dayjs.extend(relativeTime);
 
 type PageProperties = {
   params: {
-    project: string;
+    projectID: string;
     page: string;
   };
 };
@@ -26,8 +26,9 @@ const Page = async ({ params }: PageProperties) => {
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
+  const project = await caller.projects.get(params.projectID);
   const pageWithMeta = await caller.pages.get({
-    project: params.project,
+    project: project.id,
     page: params.page,
   });
 
@@ -38,7 +39,7 @@ const Page = async ({ params }: PageProperties) => {
           item={
             <div className="flex flex-row items-center">
               <div>
-                {params.project} 👉 {pageWithMeta.page.name}
+                {project.name} 👉 {pageWithMeta.page.name}
               </div>
               <div className="pl-2 text-sm text-slate-400">
                 last saved {dayjs(pageWithMeta.updatedAt).fromNow()}
@@ -49,21 +50,18 @@ const Page = async ({ params }: PageProperties) => {
           tabs={
             <Tabs
               mode={PageMode.Preview}
-              base={`/${params.project}/page/${params.page}`}
+              base={`/${project.id}/page/${params.page}`}
             />
           }
         />
       }
       sidebarLeft={
         <div className="flex h-full flex-row">
-          <ViewList activeView={"page"} projectName={params.project} />
-          <PageList
-            project={params.project}
-            pagePath={pageWithMeta.page.path}
-          />
+          <ViewList activeView={"page"} projectName={project.id} />
+          <PageList project={project.id} pagePath={pageWithMeta.page.path} />
         </div>
       }
-      content={<Previewer page={pageWithMeta.page} project={params.project} />}
+      content={<Previewer page={pageWithMeta.page} project={project.id} />}
     />
   );
 };

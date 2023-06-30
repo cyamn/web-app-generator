@@ -1,8 +1,13 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { defaultPage } from "@/data/page";
 import { defaultWebApp } from "@/data/webapp";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 
 import { createTable } from "../helpers/table";
 
@@ -48,6 +53,24 @@ export const projectsRouter = createTRPCRouter({
       await createTable(project.id);
 
       // return table.id;
+      return project;
+    }),
+
+  get: publicProcedure
+    .input(z.string())
+    .output(z.object({ name: z.string(), id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.findFirst({
+        where: {
+          id: input,
+        },
+      });
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
       return project;
     }),
 });
