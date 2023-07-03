@@ -75,6 +75,7 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
             setLocalPage={setLocalPage}
             index={index}
             removeDashboard={removeDashboard}
+            project={project}
           />
         </div>
       )}

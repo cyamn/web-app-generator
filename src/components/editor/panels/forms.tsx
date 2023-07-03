@@ -1,7 +1,11 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 import { DashboardForm } from "@/components/renderers/forms";
-import { type Dashboard } from "@/data/dashboard/library/dashboard";
+import {
+  type Dashboard,
+  DashboardTypeToIcon,
+} from "@/data/dashboard/library/dashboard";
 import { type Page } from "@/data/page";
 
 type FormProperties = {
@@ -9,6 +13,7 @@ type FormProperties = {
   setLocalPage: (page: Page) => void;
   index?: number;
   removeDashboard: (index: number) => void;
+  project: string;
 };
 
 export const Forms: React.FC<FormProperties> = ({
@@ -16,6 +21,7 @@ export const Forms: React.FC<FormProperties> = ({
   setLocalPage,
   index = -1,
   removeDashboard,
+  project,
 }) => {
   if (
     index >= page.dashboards.length ||
@@ -35,10 +41,21 @@ export const Forms: React.FC<FormProperties> = ({
   return (
     <div className="flex h-full flex-col overflow-scroll bg-white p-4 font-sans leading-normal tracking-normal">
       <div className="h-full">
-        <h2>{dashboard.type}</h2>
+        <h2 className="flex flex-row overflow-hidden">
+          <FontAwesomeIcon
+            className="pr-2 pt-1 text-2xl"
+            icon={
+              DashboardTypeToIcon[
+                dashboard.type as keyof typeof DashboardTypeToIcon
+              ] ?? ""
+            }
+          />
+          <span className="font-mono text-xl uppercase">{dashboard.type}</span>
+        </h2>
         <DashboardForm
           dashboard={dashboard}
           setLocalDashboard={setLocalDashboard}
+          project={project}
         />
         {/* evil looking button on bottom */}
       </div>

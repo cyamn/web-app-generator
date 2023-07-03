@@ -130,7 +130,7 @@ const CreateButton: React.FC<ButtonProperties> = ({
     isError,
   } = api.tables.insert.useMutation({
     onSuccess: () => {
-      void context.tables.get.invalidate({ projectName: project, tableName });
+      void context.tables.get.invalidate({ project, table: tableName });
       onReset();
     },
   });

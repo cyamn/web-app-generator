@@ -4,18 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 import { DashboardRender } from "@/components/renderers/dashboard";
-import { Dashboard } from "@/data/dashboard/library/dashboard";
+import {
+  Dashboard,
+  DashboardTypeToIcon,
+} from "@/data/dashboard/library/dashboard";
 import { defaultDatabaseInputForm } from "@/data/dashboard/library/database-input-form";
 import { defaultDatabaseView } from "@/data/dashboard/library/database-view";
 import { defaultMarkdown } from "@/data/dashboard/library/markdown";
 import { type Page } from "@/data/page";
-
-// dictionary of dashboard types to icons
-const DashboardTypeToIcon = {
-  markdown: faMarkdown,
-  databaseView: faTable,
-  databaseInputForm: faKeyboard,
-};
 
 type NameTagProperties = {
   visible: boolean;

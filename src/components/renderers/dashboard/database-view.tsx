@@ -28,7 +28,7 @@ export const DatabaseViewRender: React.FC<{
 
   return (
     <div>
-      <TableView table={table} />
+      <TableView table={table} columns={dashboard.parameters.data.columns} />
     </div>
   );
 };

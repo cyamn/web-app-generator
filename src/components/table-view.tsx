@@ -2,10 +2,14 @@ import { Table } from "@/data/table";
 
 type TableViewProperties = {
   table: Table;
+  columns?: Record<string, string>;
 };
 
 // eslint-disable-next-line max-lines-per-function
-export const TableView: React.FC<TableViewProperties> = ({ table }) => {
+export const TableView: React.FC<TableViewProperties> = ({
+  table,
+  columns,
+}) => {
   return (
     <div className="">
       <div className="max-h-full overflow-x-auto shadow-md sm:rounded-lg">
@@ -18,7 +22,7 @@ export const TableView: React.FC<TableViewProperties> = ({ table }) => {
                   scope="col"
                   className="px-6 py-3 font-medium tracking-wider"
                 >
-                  {column.key}
+                  {columns ? columns[column.key] : column.key}
                 </th>
               ))}
             </tr>
