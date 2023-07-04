@@ -1,3 +1,7 @@
+import { faSquare } from "@fortawesome/free-regular-svg-icons";
+import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { Table } from "@/data/table";
 
 type TableViewProperties = {
@@ -31,8 +35,11 @@ export const TableView: React.FC<TableViewProperties> = ({
             {table.rows.map((row, index) => (
               <tr key={index} className="border-b bg-white hover:bg-slate-50 ">
                 {table.columns.map((column) => (
-                  <td key={column.key} className="px-6 py-4">
-                    {row[column.key]?.toString()}
+                  <td key={column.key} className="px-6 py-3">
+                    <Cell
+                      value={row[column.key]?.toString() ?? ""}
+                      type={column.type}
+                    />
                   </td>
                 ))}
               </tr>
@@ -42,4 +49,29 @@ export const TableView: React.FC<TableViewProperties> = ({
       </div>
     </div>
   );
+};
+
+type CellProperties = {
+  value: string;
+  type: string;
+};
+
+const Cell: React.FC<CellProperties> = ({ value, type }) => {
+  switch (type) {
+    case "number": {
+      return <span className="text-right font-mono">{value}</span>;
+    }
+    case "boolean": {
+      return (
+        <FontAwesomeIcon
+          className={`w-full px-2 text-center text-2xl 
+          `}
+          icon={value === "true" ? faSquareCheck : faSquare}
+        />
+      );
+    }
+    default: {
+      return <span>{value}</span>;
+    }
+  }
 };
