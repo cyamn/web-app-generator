@@ -58,7 +58,14 @@ export const projectsRouter = createTRPCRouter({
 
   get: publicProcedure
     .input(z.string())
-    .output(z.object({ name: z.string(), id: z.string() }))
+    .output(
+      z.object({
+        name: z.string(),
+        id: z.string(),
+        createdAt: z.date(),
+        description: z.string(),
+      })
+    )
     .query(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
@@ -71,6 +78,30 @@ export const projectsRouter = createTRPCRouter({
           message: "Project not found",
         });
       }
-      return project;
+      return {
+        ...project,
+        description: project.description ?? "",
+      };
+    }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        data: z
+          .object({
+            name: z.string().optional(),
+            description: z.string().optional(),
+          })
+          .nonstrict(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.project.update({
+        where: {
+          id: input.id,
+        },
+        data: input.data,
+      });
     }),
 });

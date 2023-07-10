@@ -1,5 +1,5 @@
 import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faFile, faTable } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faFile, faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type ViewListProperties = {
@@ -14,6 +14,12 @@ export const ViewList: React.FC<ViewListProperties> = ({
   return (
     <div className="flex h-full flex-col justify-between bg-slate-800 text-slate-400">
       <nav className="mr-1 flex h-full flex-col overflow-scroll p-1">
+        <ViewItem
+          icon={faCog}
+          view={"settings"}
+          activeView={activeView}
+          projectName={projectName}
+        />
         <ViewItem
           icon={faFile}
           view={"page"}
