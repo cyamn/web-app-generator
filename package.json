@@ -61,7 +61,7 @@
     "eslint-plugin-spellcheck": "^0.0.20",
     "eslint-plugin-tailwindcss": "^3.12.1",
     "eslint-plugin-tsdoc": "^0.2.17",
-    "eslint-plugin-unicorn": "^46.0.0",
+    "eslint-plugin-unicorn": "^48.0.1",
     "eslint-plugin-unused-imports": "^2.0.0",
     "jscpd": "^3.5.9",
     "postcss": "^8.4.21",
