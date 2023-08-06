@@ -154,7 +154,7 @@ export const tablesRouter = createTRPCRouter({
       })
     )
     .output(TableSchema)
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       const project = await getProjectTableDeep(
         input.project,
         input.table,
@@ -229,7 +229,7 @@ export const tablesRouter = createTRPCRouter({
       }
       const table = project.tables[0];
       const rowID = cuid();
-      const row = await ctx.prisma.row.create({
+      await ctx.prisma.row.create({
         data: {
           id: rowID,
           table: {

@@ -43,16 +43,16 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
 
   const { mutate, isLoading: isSaving } = api.pages.update.useMutation({
     onSuccess: () => {
-      location.reload();
+      // location.reload();
+      toast.success(`Saved page to database!`);
     },
   });
 
   function trySaveToDatabase(): void {
     if (error !== IDEError.NONE) {
-      alert("could not save page");
+      toast.error("could not save page");
       return;
     }
-    toast.success(`Saved page to database!`);
     mutate({ project, pagePath: localPage.path, page: localPage });
   }
 

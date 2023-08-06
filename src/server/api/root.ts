@@ -2,6 +2,7 @@ import { createTRPCRouter } from "@/server/api/trpc";
 
 import { pagesRouter } from "./routers/page";
 import { projectsRouter } from "./routers/project";
+import { rolesRouter } from "./routers/roles";
 import { settingsRouter } from "./routers/settings";
 import { tablesRouter } from "./routers/table";
 
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   pages: pagesRouter,
   tables: tablesRouter,
   settings: settingsRouter,
+  roles: rolesRouter,
 });
 
 // export type definition of API

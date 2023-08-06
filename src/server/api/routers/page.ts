@@ -120,7 +120,6 @@ export const pagesRouter = createTRPCRouter({
       }
       const page = project.pages[0];
       const unsafeDashboards: unknown = JSON.parse(page.dashboards as string);
-
       const parsedDashboards = z
         .array(DashboardSchema)
         .safeParse(unsafeDashboards);
@@ -145,30 +144,58 @@ export const pagesRouter = createTRPCRouter({
     .input(z.object({ project: z.string(), page: z.string() }))
     .output(z.object({ page: PageSchema, updatedAt: z.date() }))
     .query(async ({ ctx, input }) => {
-      const project = await ctx.prisma.project.findFirst({
+      const page = await ctx.prisma.page.findFirst({
         where: {
-          id: input.project,
-          ownerId: ctx.session.user.id,
+          path: input.page,
+          projectId: input.project,
+          OR: [
+            {
+              project: {
+                ownerId: ctx.session.user.id,
+              },
+            },
+            {
+              public: true,
+            },
+            {
+              canView: {
+                some: {
+                  role: {
+                    users: {
+                      some: {
+                        id: ctx.session.user.id,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          ],
         },
         select: {
-          pages: {
-            where: {
-              path: {
-                equals: input.page,
+          name: true,
+          path: true,
+          dashboards: true,
+          updatedAt: true,
+          public: true,
+          canView: {
+            select: {
+              role: {
+                select: {
+                  name: true,
+                },
               },
             },
           },
         },
       });
-      if (!project || project.pages.length === 0 || !project.pages[0]) {
+      if (!page) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Page not found",
         });
       }
-      const page = project.pages[0];
       const unsafeDashboards: unknown = JSON.parse(page.dashboards as string);
-
       const parsedDashboards = z
         .array(DashboardSchema)
         .safeParse(unsafeDashboards);
@@ -184,6 +211,10 @@ export const pagesRouter = createTRPCRouter({
           name: page.name,
           path: page.path,
           dashboards: parsedDashboards.data,
+          access: {
+            public: page.public,
+            canView: page.canView.map((canView) => canView.role.name),
+          },
         },
         updatedAt: page.updatedAt,
       };
@@ -264,7 +295,6 @@ export const pagesRouter = createTRPCRouter({
           dashboards: JSON.stringify(input.page.dashboards),
         },
       });
-
       return page;
     }),
 });

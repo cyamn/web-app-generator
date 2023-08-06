@@ -53,6 +53,28 @@ model User {
   accounts      Account[]
   sessions      Session[]
   projects      Project[]
+  roles         Role[]
+}
+
+model Role {
+  id    String @id @default(cuid())
+  name  String
+  users User[]
+  rules Rule[]
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  roleAccessPages RoleAccessPage[]
+
+  @@unique([name, projectId])
+}
+
+model Rule {
+  id     String @id @default(cuid())
+  regex  String
+  roleID String
+  role   Role   @relation(fields: [roleID], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -76,19 +98,32 @@ model Project {
   pages       Page[]
   tables      Table[]
 
+  roles Role[]
+
   @@index([ownerId])
 }
 
 model Page {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id         String           @id @default(cuid())
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
   name       String
   path       String
   dashboards Json
   projectId  String
-  public     Boolean  @default(false)
-  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  public     Boolean          @default(false)
+  canView    RoleAccessPage[]
+  project    Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model RoleAccessPage {
+  id     String @id @default(cuid())
+  pageId String
+  page   Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, roleId])
 }
 
 model Table {
