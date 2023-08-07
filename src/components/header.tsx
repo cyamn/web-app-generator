@@ -16,9 +16,9 @@ type HeaderProperties = {
 export const Header: React.FC<HeaderProperties> = ({ item, user, tabs }) => {
   const [show, setShow] = React.useState(false);
   return (
-    <div className="flex h-11 w-full justify-center bg-slate-800 py-1">
-      <div className="grid w-full grid-cols-4 gap-4 text-slate-50">
-        <div className="pl-3 pt-1 text-xl">{item}</div>
+    <div className="flex h-11 w-full justify-center border-b border-slate-300 bg-white py-1">
+      <div className="grid w-full grid-cols-4 gap-4 text-slate-700">
+        <div className="pl-3 pt-1">{item}</div>
         <div className="col-span-2">
           {tabs !== undefined && tabs}
           {tabs === undefined && <div></div>}
@@ -29,7 +29,7 @@ export const Header: React.FC<HeaderProperties> = ({ item, user, tabs }) => {
           {!user && <UserSkeleton />}
           {show && (
             <div
-              className="absolute right-0 z-10 mr-2 mt-2 w-56 origin-top-right divide-y divide-slate-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              className="absolute right-0 z-10 mr-2 mt-2 w-56 origin-top-right divide-y divide-slate-50 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="menu-button"
@@ -66,14 +66,16 @@ export const User: React.FC<UserProperties> = ({ user, show, setShow }) => {
           setShow(!show);
         }}
       >
-        <div className="flex flex-row-reverse p-1 text-xl text-white">
-          <Image
-            src={user.image?.toString() ?? ""}
-            width={32}
-            height={32}
-            alt={user.name ?? "user"}
-            className="rounded-full"
-          />
+        <div className="flex flex-row-reverse justify-center p-1 text-black">
+          <div className="">
+            <Image
+              src={user.image?.toString() ?? ""}
+              width={32}
+              height={32}
+              alt={user.name ?? "user"}
+              className="rounded-full"
+            />
+          </div>
           <div className="px-2">{user.name}</div>
         </div>
       </button>

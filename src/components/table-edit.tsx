@@ -28,7 +28,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
     <div className="">
       <div className="max-h-full overflow-x-auto shadow-md">
         <div className="flex flex-row">
-          <table className="w-full overflow-scroll text-left text-sm text-slate-500 ">
+          <table className="w-full overflow-auto text-left text-sm text-slate-500 ">
             <thead className="sticky top-0 bg-slate-50 text-xs uppercase text-slate-700">
               <tr>
                 {controls && <th></th>}
@@ -51,7 +51,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
                 >
                   {controls && (
                     // delete col
-                    <td className="max-w-fit border-r bg-slate-100 p-2 pl-4 text-right text-lg">
+                    <td className="max-w-fit border-r bg-slate-50 p-2 pl-4 text-right text-lg">
                       {index + 1}
                     </td>
                   )}

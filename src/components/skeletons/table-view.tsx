@@ -29,7 +29,7 @@ export const SkeletonTableView: React.FC = () => {
                   <td key={index_} className="px-6 py-4">
                     <SkeletonText
                       index={index + index_ + 9}
-                      className="bg-slate-100"
+                      className="bg-slate-50"
                     />
                   </td>
                 ))}

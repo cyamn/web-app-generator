@@ -74,7 +74,7 @@ export const PageDetailedItem: React.FC<PageDetailedItemProperties> = ({
             {dayjs(updatedAt).fromNow()}
           </div>
         </div>
-        <div className="h-64 overflow-scroll overflow-x-hidden rounded-lg  border border-slate-300 bg-white hover:shadow-2xl">
+        <div className="h-64 overflow-auto overflow-x-hidden rounded-lg  border border-slate-300 bg-white hover:shadow-2xl">
           <div className="col-span-6">
             <div className="-translate-x-1/4 -translate-y-1/4  scale-50">
               <div className="h-[200%] w-[200%]">

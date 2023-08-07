@@ -29,6 +29,6 @@ const SkeletonPageCard: React.FC = () => (
         <div className="h-4 w-1/4"></div>
       </div>
     </div>
-    <div className="h-64 overflow-scroll overflow-x-hidden rounded-lg border border-slate-300 bg-gray-200"></div>
+    <div className="h-64 overflow-auto overflow-x-hidden rounded-lg border border-slate-300 bg-gray-200"></div>
   </div>
 );

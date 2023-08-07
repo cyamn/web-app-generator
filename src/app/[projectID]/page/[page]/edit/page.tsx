@@ -37,8 +37,8 @@ const Page = async ({ params }: PageProperties) => {
       header={
         <Header
           item={
-            <div className="flex flex-row items-center">
-              <div>
+            <div className="flex flex-row items-center justify-center">
+              <div className="flex flex-row items-center justify-center">
                 {project.name} 👉 {pageWithMeta.page.name}
               </div>
               <div className="pl-2 text-sm text-slate-400">
@@ -56,7 +56,7 @@ const Page = async ({ params }: PageProperties) => {
         />
       }
       sidebarLeft={
-        <div className="flex h-full flex-row">
+        <div className="flex h-full flex-row border">
           <ViewList activeView={"page"} projectName={project.id} />
           <PageList project={project.id} pagePath={pageWithMeta.page.path} />
         </div>

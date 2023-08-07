@@ -12,8 +12,8 @@ export const ViewList: React.FC<ViewListProperties> = ({
   projectName,
 }) => {
   return (
-    <div className="flex h-full flex-col justify-between bg-slate-800 text-slate-400">
-      <nav className="mr-1 flex h-full flex-col overflow-scroll p-1">
+    <div className="z-10 flex h-full flex-col justify-between border-r border-slate-300 bg-white text-slate-800 shadow-xl">
+      <nav className="flex h-full flex-col overflow-auto px-1">
         <ViewItem
           icon={faCog}
           view={"settings"}
@@ -52,11 +52,11 @@ const ViewItem: React.FC<ViewItemProperties> = ({
 }) => {
   const active = activeView === view;
   const style = active
-    ? "bg-slate-200 text-slate-700"
-    : "bg-slate-700 text-slate-200";
+    ? " bg-blue-100 rounded-xl text-blue-500"
+    : " bg-white text-slate-600";
   return (
     <a
-      className={"mb-2 h-12 w-12 rounded-lg p-1 pt-2 text-center " + style}
+      className={"mb-1 h-12 w-12 p-1 pt-2 text-center " + style}
       href={`/${projectName}/${view}`}
     >
       <FontAwesomeIcon className="text-3xl" icon={icon} />

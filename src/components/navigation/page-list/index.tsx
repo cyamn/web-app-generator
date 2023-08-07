@@ -26,8 +26,8 @@ export const PageList: React.FC<PageListProperties> = async ({
   const pagesWithMeta = await caller.pages.listAll(project);
 
   return (
-    <div className="flex h-full w-full flex-col justify-between bg-slate-700">
-      <nav className="flex h-full flex-col overflow-scroll p-1">
+    <div className="flex h-full w-full flex-col justify-between border-r border-slate-300 bg-white">
+      <nav className="flex h-full flex-col overflow-auto">
         {pagesWithMeta.map((page, id) => (
           <PageItem
             key={id}
@@ -54,20 +54,29 @@ export const PageItem: React.FC<PageItemProperties> = ({
   project,
 }) => {
   const shadow = active
-    ? " text-green-900 bg-gradient-to-r from-teal-400 to-emerald-400"
-    : " bg-slate-600 text-slate-200";
+    ? " bg-blue-100 text-blue-500"
+    : " bg-white text-slate-600";
+
+  const border = active ? "border-l-4 border-blue-500" : "";
 
   return (
-    <div className={"m-[1px] grid grid-cols-6 rounded-lg" + shadow}>
-      <Link
-        href={`/${project}/page/${page.path}/${PageMode.Preview}`}
-        className="col-span-6 items-center  p-2"
+    <div className={border}>
+      <div
+        className={
+          "grid grid-cols-6 border-b border-l border-r border-slate-100" +
+          shadow
+        }
       >
-        <span className="mx-1 text-base font-medium">
-          {" "}
-          {page.name} {}
-        </span>
-      </Link>
+        <Link
+          href={`/${project}/page/${page.path}/${PageMode.Preview}`}
+          className="col-span-6 items-center  p-2"
+        >
+          <span className="mx-1 text-base font-medium">
+            {" "}
+            {page.name} {}
+          </span>
+        </Link>
+      </div>
     </div>
   );
 };

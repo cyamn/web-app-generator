@@ -21,7 +21,7 @@ export const Monaco: React.FC<MonacoProperties> = ({
   };
 
   return (
-    <div className="h-full bg-slate-100 font-sans leading-normal tracking-normal">
+    <div className="h-full bg-slate-50 font-sans leading-normal tracking-normal">
       <MonacoEditor content={content} handleChange={handleChange} />
     </div>
   );

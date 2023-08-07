@@ -27,7 +27,7 @@ export const AddTableCard: React.FC<AddTableCardProperties> = ({ project }) => {
       <button
         disabled={isCreating}
         onClick={addTable}
-        className="mt-6 flex h-64 w-full flex-row items-center justify-center rounded-lg bg-slate-400 p-2 text-slate-100 hover:bg-slate-500"
+        className="mt-6 flex h-64 w-full flex-row items-center justify-center rounded-lg bg-slate-400 p-2 text-slate-50 hover:bg-slate-500"
       >
         <h1>{isCreating ? "creating..." : "+ Add Table"}</h1>
       </button>

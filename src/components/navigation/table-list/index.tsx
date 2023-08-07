@@ -26,7 +26,7 @@ export const TableList: React.FC<TableListProperties> = async ({
 
   return (
     <>
-      <nav className="flex h-full flex-col overflow-scroll p-1">
+      <nav className="flex h-full flex-col overflow-auto p-1">
         {tablesWithMeta.map((table, id) => (
           <TableItem
             key={id}
@@ -53,7 +53,7 @@ export const TableItem: React.FC<TableItemProperties> = ({
   active,
 }) => {
   const shadow = active
-    ? " text-slate-900 bg-gradient-to-r from-fuchsia-400 to-purple-400"
+    ? " bg-blue-500 text-white"
     : " bg-slate-600 text-slate-200";
 
   return (

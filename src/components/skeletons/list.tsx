@@ -1,7 +1,7 @@
 export const SkeletonList: React.FC = () => {
   return (
     <>
-      <nav className="flex h-full flex-col overflow-scroll p-1">
+      <nav className="flex h-full flex-col overflow-auto p-1">
         {/* Skeleton loader */}
         {Array.from({ length: 5 }).map((_, id) => (
           <SkeletonPageItem key={id} />

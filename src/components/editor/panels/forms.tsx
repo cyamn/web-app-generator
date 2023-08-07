@@ -39,7 +39,7 @@ export const Forms: React.FC<FormProperties> = ({
   }
 
   return (
-    <div className="flex h-full flex-col overflow-scroll bg-white p-4 font-sans leading-normal tracking-normal">
+    <div className="flex h-full flex-col overflow-auto bg-white p-4 font-sans leading-normal tracking-normal">
       <div className="h-full">
         <h2 className="flex flex-row overflow-hidden">
           <FontAwesomeIcon

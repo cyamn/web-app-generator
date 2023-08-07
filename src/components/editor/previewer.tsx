@@ -10,7 +10,7 @@ type PreviewerProperties = {
 
 export const Previewer: React.FC<PreviewerProperties> = ({ page, project }) => {
   return (
-    <div className="flex h-full flex-col overflow-scroll p-8 font-sans leading-normal tracking-normal">
+    <div className="flex h-full flex-col overflow-auto p-8 font-sans leading-normal tracking-normal">
       {page.dashboards.map((dashboard, id) => (
         <div key={id} className="py-2">
           <DashboardRender

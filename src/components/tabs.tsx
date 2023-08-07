@@ -28,8 +28,8 @@ const Tab: React.FC<TabProperties> = ({
   base,
 }) => {
   const backgroundColor = active
-    ? " bg-slate-200 text-slate-800"
-    : " bg-slate-600 text-slate-200";
+    ? " bg-blue-100 text-blue-500 border border-blue-500"
+    : " bg-white text-slate-600 border border-slate-300";
 
   const rightS = first ? " rounded-l-lg" : "";
   const leftS = last ? " rounded-r-lg" : "";
@@ -38,10 +38,7 @@ const Tab: React.FC<TabProperties> = ({
       <Link href={`${base}/${mode}`}>
         <button
           className={
-            "inline-block w-full border-2 border-slate-200 p-[3px]" +
-            backgroundColor +
-            rightS +
-            leftS
+            "inline-block w-full p-[3px]" + backgroundColor + rightS + leftS
           }
         >
           <FontAwesomeIcon className="text-xl" icon={icon} />
@@ -66,7 +63,7 @@ type TabsProperties = {
 export const Tabs: React.FC<TabsProperties> = ({ mode, base }) => {
   return (
     <div className="text-center">
-      <ul className="hidden rounded-lg text-center shadow sm:flex">
+      <ul className="hidden rounded-lg text-center sm:flex">
         <Tab
           mode={PageMode.Settings}
           icon={faCog}

@@ -68,7 +68,7 @@ export const Preview: React.FC<PreviewProperties> = ({
   addDashboard,
 }) => {
   return (
-    <div className="flex h-full flex-col overflow-scroll p-4 font-sans leading-normal tracking-normal">
+    <div className="flex h-full flex-col overflow-auto p-4 font-sans leading-normal tracking-normal">
       {page.dashboards.map((dashboard, id) => {
         const active = id === index;
         const border = active

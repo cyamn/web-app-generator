@@ -30,7 +30,7 @@ export const AddPageButton: React.FC<AddPageButtonProperties> = ({
   return (
     <a
       onClick={addPage}
-      className="m-1 flex cursor-pointer items-center rounded-lg px-4 py-3 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+      className="m-1 flex cursor-pointer items-center rounded-lg px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-slate-700"
     >
       <FontAwesomeIcon icon={faPlus} />
       <button disabled={isCreating} className="ml-3 text-sm font-medium">

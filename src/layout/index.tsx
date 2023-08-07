@@ -16,7 +16,7 @@ export const Layout: React.FC<LayoutProperties> = ({
   footer,
 }) => {
   return (
-    <div className="h-screen max-h-screen overflow-auto bg-slate-100">
+    <div className="h-screen max-h-screen overflow-auto bg-slate-50">
       <div className={l.container}>
         {header !== undefined && <div className={l.header}>{header}</div>}
         <div className={l.main}>
