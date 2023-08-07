@@ -29,6 +29,7 @@
     "@trpc/next": "^10.26.0",
     "@trpc/react-query": "^10.26.0",
     "@trpc/server": "^10.26.0",
+    "boring-avatars": "^1.10.1",
     "cuid": "^3.0.0",
     "dayjs": "^1.11.8",
     "next": "^13.4.2",

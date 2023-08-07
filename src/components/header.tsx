@@ -2,6 +2,7 @@
 
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Avatar from "boring-avatars";
 import Image from "next/image";
 import { type Session } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -11,19 +12,31 @@ type HeaderProperties = {
   item: React.ReactNode;
   user?: Session["user"];
   tabs?: React.ReactNode;
+  project?: string;
 };
 
-export const Header: React.FC<HeaderProperties> = ({ item, user, tabs }) => {
+export const Header: React.FC<HeaderProperties> = ({
+  item,
+  user,
+  tabs,
+  project,
+}) => {
   const [show, setShow] = React.useState(false);
   return (
-    <div className="flex h-11 w-full justify-center border-b border-slate-300 bg-white py-1">
-      <div className="grid w-full grid-cols-4 gap-4 text-slate-700">
+    <div className="flex h-11 w-full justify-center border-b border-slate-300 bg-white">
+      <Avatar
+        size={44}
+        name={project}
+        square={true}
+        variant="bauhaus"
+        colors={["#FFE6BD", "#FFCC7A", "#E68A6C", "#8A2F62", "#260016"]}
+      />
+      <div className="grid w-full grid-cols-4 gap-4 py-1 text-slate-700">
         <div className="pl-3 pt-1">{item}</div>
         <div className="col-span-2">
           {tabs !== undefined && tabs}
           {tabs === undefined && <div></div>}
         </div>
-
         <div className="relative inline-block text-right">
           {user && <User user={user} show={show} setShow={setShow} />}
           {!user && <UserSkeleton />}

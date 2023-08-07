@@ -22,8 +22,8 @@ type NameTagProperties = {
 const NameTag: React.FC<NameTagProperties> = ({ visible, name, active }) => {
   if (!visible) return null;
   const colors = active
-    ? "bg-slate-800 text-slate-300"
-    : "bg-slate-300 text-slate-800";
+    ? "bg-blue-100 text-blue-500 shadow-lg border border-blue-500"
+    : "bg-white text-slate-500 shadow-lg border border-slate-300";
   return (
     <div className={"w-10 rounded-l-lg  py-[2px] " + colors}>
       <div className="flex flex-col">
@@ -72,8 +72,8 @@ export const Preview: React.FC<PreviewProperties> = ({
       {page.dashboards.map((dashboard, id) => {
         const active = id === index;
         const border = active
-          ? "rounded-r-lg border-2 border-slate-800"
-          : "rounded-r-lg border-2 border-slate-300";
+          ? "rounded-r-lg border border-blue-500"
+          : "rounded-r-lg border border-slate-300";
         return (
           <div key={id} className="cursor-pointer">
             <div
@@ -103,7 +103,7 @@ export const Preview: React.FC<PreviewProperties> = ({
             <div className="group h-2 w-full hover:h-min">
               <div className="-mx-1 hidden flex-row py-1 text-3xl text-slate-800 group-hover:flex">
                 <button
-                  className="mx-1 w-full rounded-md bg-slate-300 p-1 shadow-lg hover:bg-slate-800 hover:text-slate-300"
+                  className="mx-1 w-full rounded-md border border-slate-300 bg-white p-1 hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
                   onClick={() => {
                     addDashboard(id + 1, defaultMarkdown);
                   }}
@@ -111,7 +111,7 @@ export const Preview: React.FC<PreviewProperties> = ({
                   +<FontAwesomeIcon icon={faMarkdown} />
                 </button>
                 <button
-                  className="mx-1 w-full rounded-md bg-slate-300 p-1 shadow-lg hover:bg-slate-800 hover:text-slate-300"
+                  className="mx-1 w-full rounded-md border border-slate-300 bg-white p-1 hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
                   onClick={() => {
                     addDashboard(id + 1, defaultDatabaseView);
                   }}
@@ -119,7 +119,7 @@ export const Preview: React.FC<PreviewProperties> = ({
                   +<FontAwesomeIcon icon={faTable} />
                 </button>
                 <button
-                  className="mx-1 w-full rounded-md bg-slate-300 p-1 shadow-lg hover:bg-slate-800 hover:text-slate-300"
+                  className="mx-1 w-full rounded-md border border-slate-300 bg-white p-1 hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
                   onClick={() => {
                     addDashboard(id + 1, defaultDatabaseInputForm);
                   }}

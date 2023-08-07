@@ -64,7 +64,7 @@ export const Forms: React.FC<FormProperties> = ({
           removeDashboard(index);
         }}
         className="
-         w-full rounded-lg bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-800
+         w-full rounded-lg border border-red-500 bg-red-100 px-4 py-2 font-bold text-red-600 hover:bg-red-600 hover:text-white
       "
       >
         Delete

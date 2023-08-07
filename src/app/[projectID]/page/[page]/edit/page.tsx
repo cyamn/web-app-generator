@@ -36,9 +36,10 @@ const Page = async ({ params }: PageProperties) => {
     <Layout
       header={
         <Header
+          project={project.id}
           item={
-            <div className="flex flex-row items-center justify-center">
-              <div className="flex flex-row items-center justify-center">
+            <div className="flex flex-row items-center">
+              <div>
                 {project.name} 👉 {pageWithMeta.page.name}
               </div>
               <div className="pl-2 text-sm text-slate-400">
