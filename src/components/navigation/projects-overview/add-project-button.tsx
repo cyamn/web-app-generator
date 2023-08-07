@@ -10,7 +10,7 @@ export const AddProjectButton = () => {
       onClick={() => {
         addProject();
       }}
-      className="m-3 grid h-48 min-h-min select-none place-items-center rounded-md bg-slate-300 text-center text-5xl text-slate-600 hover:bg-gradient-to-br hover:from-slate-400 hover:via-slate-200 hover:to-slate-400 "
+      className="m-3 mt-4 grid h-48 min-h-min select-none place-items-center rounded-xl border border-blue-500 bg-blue-100 text-center text-5xl text-blue-500 hover:bg-blue-500 hover:text-white "
     >
       {isAdding ? "...creating" : "+ new app"}
     </button>

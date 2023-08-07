@@ -12,7 +12,7 @@ const Page = () => {
       sidebarLeft={
         <div className="flex h-full flex-row">
           <ViewList activeView={"page"} projectName={"loading"} />
-          <div className="flex h-full w-full flex-col justify-between bg-slate-700">
+          <div className="flex h-full w-full flex-col justify-between bg-white">
             <SkeletonList />
           </div>
         </div>

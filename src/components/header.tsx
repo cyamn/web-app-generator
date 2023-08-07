@@ -19,18 +19,22 @@ export const Header: React.FC<HeaderProperties> = ({
   item,
   user,
   tabs,
-  project,
+  project = null,
 }) => {
   const [show, setShow] = React.useState(false);
   return (
     <div className="flex h-11 w-full justify-center border-b border-slate-300 bg-white">
-      <Avatar
-        size={44}
-        name={project}
-        square={true}
-        variant="bauhaus"
-        colors={["#FFE6BD", "#FFCC7A", "#E68A6C", "#8A2F62", "#260016"]}
-      />
+      {project !== null && (
+        <a href="/projects">
+          <Avatar
+            size={44}
+            name={project}
+            square={true}
+            variant="bauhaus"
+            colors={["#3b82f6", "#473f47", "#FFFFFF", "#68a4fd", "#E4EFFF"]}
+          />
+        </a>
+      )}
       <div className="grid w-full grid-cols-4 gap-4 py-1 text-slate-700">
         <div className="pl-3 pt-1">{item}</div>
         <div className="col-span-2">

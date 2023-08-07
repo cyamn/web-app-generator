@@ -1,3 +1,4 @@
+import Avatar from "boring-avatars";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
@@ -32,10 +33,21 @@ type ProjectCardProperties = {
 export const ProjectCard: React.FC<ProjectCardProperties> = ({ project }) => {
   return (
     <Link href={`/${project.id}/page`}>
-      <div className="m-3 grid h-48 min-h-min select-none place-items-center rounded-md bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-500 text-center text-3xl font-bold text-slate-50 hover:bg-gradient-to-tl">
-        <div>{dayjs(project.updatedAt).fromNow()}</div>
-        <div className="text-5xl">{project.name}</div>
-        <div>{project.description}</div>
+      <div className="m-4 flex h-48 flex-row items-center overflow-hidden rounded-xl bg-slate-50">
+        <div className="h-48 w-48">
+          <Avatar
+            size={200}
+            name={project.id}
+            square={true}
+            variant="bauhaus"
+            colors={["#3b82f6", "#473f47", "#FFFFFF", "#68a4fd", "#E4EFFF"]}
+          />
+        </div>
+        <div className="m-3 grid min-h-min w-full select-none place-items-center text-center text-xl font-bold text-slate-900">
+          <div>{dayjs(project.updatedAt).fromNow()}</div>
+          <div className="text-3xl">{project.name}</div>
+          <div>{project.description}</div>
+        </div>
       </div>
     </Link>
   );
