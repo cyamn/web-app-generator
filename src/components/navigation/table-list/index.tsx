@@ -25,8 +25,8 @@ export const TableList: React.FC<TableListProperties> = async ({
   const tablesWithMeta = await caller.tables.listAll(project);
 
   return (
-    <>
-      <nav className="flex h-full flex-col overflow-auto p-1">
+    <div className="flex h-full w-full flex-col justify-between border-r border-slate-300 bg-white">
+      <nav className="flex h-full flex-col overflow-auto">
         {tablesWithMeta.map((table, id) => (
           <TableItem
             key={id}
@@ -37,7 +37,7 @@ export const TableList: React.FC<TableListProperties> = async ({
         ))}
       </nav>
       <AddTableButton project={project} />
-    </>
+    </div>
   );
 };
 
@@ -53,20 +53,29 @@ export const TableItem: React.FC<TableItemProperties> = ({
   active,
 }) => {
   const shadow = active
-    ? " bg-blue-500 text-white"
-    : " bg-slate-600 text-slate-200";
+    ? " bg-blue-100 text-blue-500"
+    : " bg-white text-slate-600";
+
+  const border = active ? "border-l-4 border-blue-500" : "";
 
   return (
-    <div className={"m-[1px] grid grid-cols-6 rounded-lg" + shadow}>
-      <Link
-        href={`/${project}/table/${table.name}`}
-        className="col-span-6 items-center  p-2"
+    <div className={border}>
+      <div
+        className={
+          "grid grid-cols-6 border-b border-l border-r border-slate-100" +
+          shadow
+        }
       >
-        <span className="mx-1 text-base font-medium">
-          {" "}
-          {table.name} {}
-        </span>
-      </Link>
+        <Link
+          href={`/${project}/table/${table.name}`}
+          className="col-span-6 items-center  p-2"
+        >
+          <span className="mx-1 text-base font-medium">
+            {" "}
+            {table.name} {}
+          </span>
+        </Link>
+      </div>
     </div>
   );
 };

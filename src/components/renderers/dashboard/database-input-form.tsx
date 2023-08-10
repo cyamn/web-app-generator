@@ -97,7 +97,7 @@ export const DatabaseInputFormRender: React.FC<{
             <CreateButton
               row={row}
               project={projectName}
-              tableName={tableName}
+              table={tableName}
               onReset={() => {
                 setRow({});
               }}
@@ -112,14 +112,14 @@ export const DatabaseInputFormRender: React.FC<{
 type ButtonProperties = {
   row: Row;
   project: string;
-  tableName: string;
+  table: string;
   onReset: () => void;
 };
 
 const CreateButton: React.FC<ButtonProperties> = ({
   row,
   project,
-  tableName,
+  table,
   onReset,
 }) => {
   const context = api.useContext();
@@ -130,7 +130,7 @@ const CreateButton: React.FC<ButtonProperties> = ({
     isError,
   } = api.tables.insert.useMutation({
     onSuccess: () => {
-      void context.tables.get.invalidate({ project, table: tableName });
+      void context.tables.get.invalidate({ project, table: table });
       onReset();
     },
   });
@@ -138,8 +138,8 @@ const CreateButton: React.FC<ButtonProperties> = ({
     <button
       onClick={() => {
         mutate({
-          projectName: project,
-          tableName,
+          project,
+          table,
           row,
         });
       }}

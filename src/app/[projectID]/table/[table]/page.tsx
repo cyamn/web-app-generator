@@ -26,10 +26,6 @@ const Page = async ({ params }: PageProperties) => {
 
   const caller = appRouter.createCaller({ prisma, session });
   const project = await caller.projects.get(params.projectID);
-  const table = await caller.tables.get({
-    project: project.id,
-    table: params.table,
-  });
 
   return (
     <Layout
@@ -44,26 +40,15 @@ const Page = async ({ params }: PageProperties) => {
             </div>
           }
           user={session.user}
-          // tabs={
-          //   <Tabs
-          //     mode={PageMode.Settings}
-          //     base={`/${project.id}/table/${params.table}`}
-          //   />
-          // }
         />
       }
       sidebarLeft={
-        <div className="flex h-full flex-col bg-slate-700">
-          <div className="flex h-full flex-row">
-            <ViewList activeView={"table"} projectName={project.id} />
-            <div className="flex h-full w-full flex-col justify-between bg-slate-700">
-              <TableList project={project.id} tableName={params.table} />
-            </div>
-          </div>
-          {/* <StatusBar /> */}
+        <div className="flex h-full flex-row border">
+          <ViewList activeView={"table"} projectName={project.id} />
+          <TableList project={project.id} tableName={params.table} />
         </div>
       }
-      content={<TableEdit table={table} />}
+      content={<TableEdit table={params.table} project={params.projectID} />}
     />
   );
 };

@@ -4,14 +4,15 @@ import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect } from "react";
+import toast from "react-hot-toast";
 
-import { Table } from "@/data/table";
-import { defaultColumn } from "@/data/table/column";
+import { api } from "@/utils/api";
 
 // TODO: make functional
 
 type TableEditProperties = {
-  table: Table;
+  table: string;
+  project: string;
   columns?: Record<string, string>;
   controls?: boolean;
 };
@@ -19,10 +20,40 @@ type TableEditProperties = {
 // eslint-disable-next-line max-lines-per-function
 export const TableEdit: React.FC<TableEditProperties> = ({
   table: table_,
+  project,
   columns,
   controls = true,
 }) => {
-  const [table, setTable] = React.useState(table_);
+  const {
+    data: table,
+    isLoading,
+    isError,
+    error,
+  } = api.tables.get.useQuery({
+    project,
+    table: table_,
+  });
+
+  const context = api.useContext();
+
+  const { mutate: insert, isLoading: isInserting } =
+    api.tables.insert.useMutation({
+      onSuccess: () => {
+        void context.tables.get.invalidate({ project, table: table_ });
+        toast.success("Row added");
+      },
+    });
+
+  if (isError) return <div>{error.message}</div>;
+  if (isLoading || table === undefined) return <div>Loading...</div>;
+
+  function createRow() {
+    insert({
+      project,
+      table: table_,
+      row: {},
+    });
+  }
 
   return (
     <div className="">
@@ -74,10 +105,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
           <button
             className="p-3"
             onClick={() => {
-              setTable({
-                ...table,
-                columns: [...table.columns, defaultColumn],
-              });
+              toast.success("TODO: add column");
             }}
           >
             +
@@ -86,16 +114,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
         <button
           className="w-full p-2"
           onClick={() => {
-            setTable({
-              ...table,
-              rows: [
-                ...table.rows,
-                // empty row
-                Object.fromEntries(
-                  table.columns.map((column) => [column.key, ""])
-                ),
-              ],
-            });
+            createRow();
           }}
         >
           + Add row
@@ -137,7 +156,7 @@ const Cell: React.FC<CellProperties> = ({ value: value_, type, controls }) => {
     case "boolean": {
       return (
         <FontAwesomeIcon
-          className={`w-full px-2 text-center text-2xl 
+          className={`w-full px-2 text-center text-2xl text-blue-500 
              ${controls ? "cursor-pointer" : ""}
           `}
           icon={value === "true" ? faSquareCheck : faSquare}
