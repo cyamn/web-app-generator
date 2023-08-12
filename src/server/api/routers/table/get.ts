@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { TableSchema } from "@/data/table";
 import { publicProcedure } from "@/server/api/trpc";
 
 import { NotFoundError } from "../shared/errors";
+import { TableSchema } from "./shared/schema";
 import { deserialize } from "./shared/serialization";
 import { get } from "./shared/table";
 

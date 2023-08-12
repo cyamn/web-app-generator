@@ -17,6 +17,6 @@ export const OUTPUT = z.object({
 export const SET_CELL = publicProcedure
   .input(INPUT)
   .output(OUTPUT)
-  .query(async ({ input }) => {
+  .mutation(async ({ input }) => {
     return set(input.id, input.value);
   });

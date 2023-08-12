@@ -1,6 +1,7 @@
 import { createTRPCRouter } from "@/server/api/trpc";
 
 import { ADD } from "./add";
+import { SET_CELL } from "./cell";
 import { GET } from "./get";
 import { GETALL } from "./get-all";
 import { INSERT } from "./insert";
@@ -12,4 +13,5 @@ export const tablesRouter = createTRPCRouter({
   getAll: GETALL,
   get: GET,
   insert: INSERT,
+  setCell: SET_CELL,
 });

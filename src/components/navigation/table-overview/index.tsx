@@ -5,9 +5,9 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 
 import { TableView } from "@/components/table-view";
-import { Table } from "@/data/table";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
+import { Table } from "@/server/api/routers/table/shared/schema";
 import { authOptions } from "@/server/auth";
 import { prisma } from "@/server/database";
 

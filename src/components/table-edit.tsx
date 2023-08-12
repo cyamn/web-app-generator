@@ -47,11 +47,17 @@ export const TableEdit: React.FC<TableEditProperties> = ({
   if (isError) return <div>{error.message}</div>;
   if (isLoading || table === undefined) return <div>Loading...</div>;
 
+  const empty: Record<string, string | number | boolean | Date> = {};
+
+  for (const column of table.columns) {
+    empty[column.key] = "";
+  }
+
   function createRow() {
     insert({
       project,
       table: table_,
-      row: {},
+      row: empty ?? {},
     });
   }
 
@@ -75,7 +81,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
               </tr>
             </thead>
             <tbody className="overflow-y-auto">
-              {table.rows.map((row, index) => (
+              {table.cells.map((row, index) => (
                 <tr
                   key={index}
                   className="border-b bg-white hover:bg-slate-50 "
@@ -86,15 +92,16 @@ export const TableEdit: React.FC<TableEditProperties> = ({
                       {index + 1}
                     </td>
                   )}
-                  {table.columns.map((column) => (
+                  {row.map((cell, id) => (
                     <td
-                      key={column.key}
+                      key={id}
                       className={`${controls ? "border-r" : "px-6 py-4"}`}
                     >
                       <Cell
-                        value={row[column.key]?.toString() ?? ""}
-                        type={column.type}
+                        value={cell.value ?? "???"}
+                        type={table.columns[id]?.type ?? "string"}
                         controls={controls}
+                        id={cell.id}
                       />
                     </td>
                   ))}
@@ -128,14 +135,42 @@ type CellProperties = {
   value: string;
   type: string;
   controls: boolean;
+  id: string;
 };
 
-const Cell: React.FC<CellProperties> = ({ value: value_, type, controls }) => {
+const Cell: React.FC<CellProperties> = ({
+  value: value_,
+  type,
+  controls,
+  id,
+}) => {
   const [value, setValue] = React.useState(value_);
+
+  const { mutate: update, isLoading: isUpdating } =
+    api.tables.setCell.useMutation({
+      onSuccess: () => {
+        toast.success("Cell updated");
+      },
+    });
 
   useEffect(() => {
     setValue(value_);
   }, [value_]);
+
+  // when enter pressed
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      updateCell();
+    }
+  }
+
+  function updateCell(customValue?: string) {
+    if (customValue === null && value === value_) return;
+    update({
+      id,
+      value: customValue ?? value,
+    });
+  }
 
   switch (type) {
     case "number": {
@@ -147,6 +182,10 @@ const Cell: React.FC<CellProperties> = ({ value: value_, type, controls }) => {
             value={value}
             onChange={(event) => {
               setValue(event.target.value);
+            }}
+            onKeyDown={handleKeyDown}
+            onBlur={() => {
+              updateCell();
             }}
           />
         );
@@ -162,6 +201,7 @@ const Cell: React.FC<CellProperties> = ({ value: value_, type, controls }) => {
           icon={value === "true" ? faSquareCheck : faSquare}
           onClick={() => {
             if (!controls) return;
+            updateCell(value === "true" ? "false" : "true");
             setValue(value === "true" ? "false" : "true");
           }}
         />
@@ -176,6 +216,10 @@ const Cell: React.FC<CellProperties> = ({ value: value_, type, controls }) => {
             value={value}
             onChange={(event) => {
               setValue(event.target.value);
+            }}
+            onKeyDown={handleKeyDown}
+            onBlur={() => {
+              updateCell();
             }}
           />
         );
