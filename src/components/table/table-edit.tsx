@@ -1,12 +1,14 @@
 "use client";
 
-import { faSquare } from "@fortawesome/free-regular-svg-icons";
-import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect } from "react";
+import React from "react";
 import toast from "react-hot-toast";
 
 import { api } from "@/utils/api";
+import { internalToName } from "@/utils/internal-to-name";
+import { nameToInternal } from "@/utils/name-to-internal";
+
+import { CellEdit } from "./cell-edit";
+import { ColumnHeader } from "./column-header";
 
 // TODO: make functional
 
@@ -44,6 +46,14 @@ export const TableEdit: React.FC<TableEditProperties> = ({
       },
     });
 
+  const { mutate: addColumn, isLoading: isAdding } =
+    api.tables.addColumn.useMutation({
+      onSuccess: () => {
+        void context.tables.get.invalidate({ project, table: table_ });
+        toast.success("Column added");
+      },
+    });
+
   if (isError) return <div>{error.message}</div>;
   if (isLoading || table === undefined) return <div>Loading...</div>;
 
@@ -61,6 +71,20 @@ export const TableEdit: React.FC<TableEditProperties> = ({
     });
   }
 
+  function createColumn() {
+    if (table === undefined) return;
+    // count columns
+    const count = table.columns.length + 1 ?? 1;
+    const name = `Column ${count}`;
+    const key = nameToInternal(name);
+
+    addColumn({
+      table: table.id,
+      key,
+      type: "string",
+    });
+  }
+
   return (
     <div className="">
       <div className="max-h-full overflow-x-auto shadow-md">
@@ -73,9 +97,16 @@ export const TableEdit: React.FC<TableEditProperties> = ({
                   <th
                     key={column.key}
                     scope="col"
-                    className="px-6 py-3 font-medium tracking-wider"
+                    className="border-r border-slate-300 py-3 font-medium tracking-wider"
                   >
-                    {columns ? columns[column.key] : column.key}
+                    <ColumnHeader
+                      value={internalToName(
+                        (columns ? columns[column.key] : column.key) ?? ""
+                      )}
+                      column={column}
+                      project={project}
+                      table={table_}
+                    />
                   </th>
                 ))}
               </tr>
@@ -84,7 +115,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
               {table.cells.map((row, index) => (
                 <tr
                   key={index}
-                  className="border-b bg-white hover:bg-slate-50 "
+                  className="border-b border-slate-300 bg-white hover:bg-slate-50 "
                 >
                   {controls && (
                     // delete col
@@ -95,13 +126,16 @@ export const TableEdit: React.FC<TableEditProperties> = ({
                   {row.map((cell, id) => (
                     <td
                       key={id}
-                      className={`${controls ? "border-r" : "px-6 py-4"}`}
+                      className={`${
+                        controls ? "border-r border-slate-300" : "px-6 py-4"
+                      }`}
                     >
-                      <Cell
+                      <CellEdit
                         value={cell.value ?? "???"}
                         type={table.columns[id]?.type ?? "string"}
                         controls={controls}
                         id={cell.id}
+                        cell={cell}
                       />
                     </td>
                   ))}
@@ -112,7 +146,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
           <button
             className="p-3"
             onClick={() => {
-              toast.success("TODO: add column");
+              createColumn();
             }}
           >
             +
@@ -129,102 +163,4 @@ export const TableEdit: React.FC<TableEditProperties> = ({
       </div>
     </div>
   );
-};
-
-type CellProperties = {
-  value: string;
-  type: string;
-  controls: boolean;
-  id: string;
-};
-
-const Cell: React.FC<CellProperties> = ({
-  value: value_,
-  type,
-  controls,
-  id,
-}) => {
-  const [value, setValue] = React.useState(value_);
-
-  const { mutate: update, isLoading: isUpdating } =
-    api.tables.setCell.useMutation({
-      onSuccess: () => {
-        toast.success("Cell updated");
-      },
-    });
-
-  useEffect(() => {
-    setValue(value_);
-  }, [value_]);
-
-  // when enter pressed
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "Enter") {
-      updateCell();
-    }
-  }
-
-  function updateCell(customValue?: string) {
-    if (customValue === null && value === value_) return;
-    update({
-      id,
-      value: customValue ?? value,
-    });
-  }
-
-  switch (type) {
-    case "number": {
-      if (controls) {
-        return (
-          <input
-            className="w-full border-none text-right font-mono"
-            type="number"
-            value={value}
-            onChange={(event) => {
-              setValue(event.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-            onBlur={() => {
-              updateCell();
-            }}
-          />
-        );
-      }
-      return <span className="text-right font-mono">{value}</span>;
-    }
-    case "boolean": {
-      return (
-        <FontAwesomeIcon
-          className={`w-full px-2 text-center text-2xl text-blue-500 
-             ${controls ? "cursor-pointer" : ""}
-          `}
-          icon={value === "true" ? faSquareCheck : faSquare}
-          onClick={() => {
-            if (!controls) return;
-            updateCell(value === "true" ? "false" : "true");
-            setValue(value === "true" ? "false" : "true");
-          }}
-        />
-      );
-    }
-    default: {
-      if (controls) {
-        return (
-          <input
-            className="w-full border-none"
-            type="text"
-            value={value}
-            onChange={(event) => {
-              setValue(event.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-            onBlur={() => {
-              updateCell();
-            }}
-          />
-        );
-      }
-      return <span>{value}</span>;
-    }
-  }
 };

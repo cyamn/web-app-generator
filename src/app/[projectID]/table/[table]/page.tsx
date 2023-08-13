@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth/next";
 
 import { Header } from "@/components/header";
 import { TableList, ViewList } from "@/components/navigation";
-import { TableEdit } from "@/components/table-edit";
+import { TableEdit } from "@/components/table/table-edit";
 import { Layout } from "@/layout";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
