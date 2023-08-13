@@ -62,3 +62,12 @@ export function deserialize(table: SerializedTable): DeserializedTable {
   };
   return outputTable;
 }
+
+export function deserializeCSV(table: SerializedTable): string {
+  const deserialized = deserialize(table);
+  const header = deserialized.columns.map((col) => col.key).join(",");
+  const rows = deserialized.cells.map((row) => {
+    return row.map((cell) => cell.value).join(",");
+  });
+  return [header, ...rows].join("\n");
+}

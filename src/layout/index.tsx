@@ -25,7 +25,7 @@ export const Layout: React.FC<LayoutProperties> = ({
           )}
           <div className={l.content}>{content}</div>
           {sidebarRight !== undefined && (
-            <div className={l.sidebar}>{sidebarRight}</div>
+            <div className="border-l border-slate-300">{sidebarRight}</div>
           )}
         </div>
         {footer !== undefined && <div className={l.footer}>{footer}</div>}

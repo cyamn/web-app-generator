@@ -135,6 +135,8 @@ model Table {
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   columns   Column[]
   rows      Row[]
+
+  @@unique([name, projectId])
 }
 
 model Column {
