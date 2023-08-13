@@ -2,6 +2,8 @@ import cuid from "cuid";
 
 import { prisma } from "@/server/database";
 
+import { InternalError } from "../../../shared/errors";
+
 export async function importCSV(
   csv: string,
   name: string,
@@ -29,6 +31,9 @@ export async function importCSV(
   });
   // create columns
   const rows = csv.split("\n");
+  if (rows[0] === undefined) {
+    throw new InternalError("Failed to import CSV");
+  }
   const columns = rows[0].split(",");
   const columnIds = [];
   for (const column of columns) {
@@ -50,7 +55,10 @@ export async function importCSV(
 
   // create rows
   for (let index = 1; index < rows.length; index++) {
-    const row = rows[index].split(",");
+    if (rows[index] === undefined) {
+      continue;
+    }
+    const row = rows[index]!.split(",");
     const rowId = cuid();
     const cells = [];
     await prisma.row.create({
