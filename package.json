@@ -11,7 +11,10 @@
     "lint:duplicates": "jscpd",
     "lint": "npm run lint:types && npm run lint:conventions && npm run lint:duplicates",
     "format": "eslint src --fix && prettier --write .",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:build": "cd database && npm run build && cd ..",
+    "db:start": "cd database && npm run start && cd ..",
+    "db": "npm run db:build && npm run db:start"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -41,6 +44,7 @@
     "react-hot-toast": "^2.4.1",
     "react-markdown": "^8.0.7",
     "superjson": "1.12.2",
+    "trpc-panel": "^1.3.4",
     "zod": "^3.21.4"
   },
   "devDependencies": {
