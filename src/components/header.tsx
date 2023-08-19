@@ -2,11 +2,12 @@
 
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Avatar from "boring-avatars";
-import Image from "next/image";
+import { default as ProjectAvatar } from "boring-avatars";
 import { type Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import React from "react";
+
+import { UserAvatar } from "./user/avatar";
 
 type HeaderProperties = {
   item: React.ReactNode;
@@ -26,7 +27,7 @@ export const Header: React.FC<HeaderProperties> = ({
     <div className="flex h-11 w-full justify-center border-b border-slate-300 bg-white">
       {project !== null && (
         <a href="/projects">
-          <Avatar
+          <ProjectAvatar
             size={44}
             name={project}
             square={true}
@@ -84,15 +85,7 @@ export const User: React.FC<UserProperties> = ({ user, show, setShow }) => {
         }}
       >
         <div className="flex flex-row-reverse justify-center p-1 text-black">
-          <div className="">
-            <Image
-              src={user.image?.toString() ?? ""}
-              width={32}
-              height={32}
-              alt={user.name ?? "user"}
-              className="rounded-full"
-            />
-          </div>
+          <UserAvatar user={user} />
           <div className="px-2">{user.name}</div>
         </div>
       </button>

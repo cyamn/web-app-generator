@@ -1,9 +1,10 @@
 "use client";
-import Image from "next/image";
 import { FC } from "react";
 
 import { api } from "@/utils/api";
 import { combine } from "@/utils/combine";
+
+import { UserAvatar } from "../user/avatar";
 
 type RoleSettingsProperties = {
   projectID: string;
@@ -70,13 +71,9 @@ export const RoleSettings: FC<RoleSettingsProperties> = ({ projectID }) => {
               <tr key={id}>
                 <td />
                 <td className="flex flex-row items-center py-3">
-                  <Image
-                    src={tuple[0]?.image?.toString() ?? ""}
-                    width={32}
-                    height={32}
-                    alt={tuple[0]?.email ?? ""}
-                    className="mr-4 rounded-full"
-                  />
+                  <div className="mr-4 rounded-full">
+                    <UserAvatar user={tuple[0]!} />
+                  </div>
                   {tuple[0]?.email ?? ""}
                 </td>
                 <td className="py-3">{tuple[1]?.regex ?? ""}</td>
