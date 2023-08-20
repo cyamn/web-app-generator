@@ -18,7 +18,7 @@ export const DeleteTableButton: React.FC<DeleteTableButtonProperties> = ({
   const { mutate: deleteTable, isLoading: isDeleting } =
     api.tables.delete.useMutation({
       onSuccess: () => {
-        void context.tables.get.invalidate({ project, table });
+        void context.tables.get.invalidate({ project, tableName: table });
         toast.success("Table deleted");
       },
     });
@@ -31,7 +31,7 @@ export const DeleteTableButton: React.FC<DeleteTableButtonProperties> = ({
             "Are you sure you want to delete this table? At least you should export it first."
           )
         ) {
-          deleteTable({ project, table });
+          deleteTable({ project, tableName: table });
         }
       }}
       className="

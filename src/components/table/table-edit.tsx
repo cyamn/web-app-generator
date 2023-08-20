@@ -33,23 +33,23 @@ export const TableEdit: React.FC<TableEditProperties> = ({
     error,
   } = api.tables.get.useQuery({
     project,
-    table: table_,
+    tableName: table_,
   });
 
   const context = api.useContext();
 
   const { mutate: insert, isLoading: isInserting } =
-    api.tables.insert.useMutation({
+    api.tables.row.add.useMutation({
       onSuccess: () => {
-        void context.tables.get.invalidate({ project, table: table_ });
+        void context.tables.get.invalidate({ project, tableName: table_ });
         toast.success("Row added");
       },
     });
 
   const { mutate: addColumn, isLoading: isAdding } =
-    api.tables.addColumn.useMutation({
+    api.tables.column.add.useMutation({
       onSuccess: () => {
-        void context.tables.get.invalidate({ project, table: table_ });
+        void context.tables.get.invalidate({ project, tableName: table_ });
         toast.success("Column added");
       },
     });
@@ -66,7 +66,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
   function createRow() {
     insert({
       project,
-      table: table_,
+      tableName: table_,
       row: empty ?? {},
     });
   }
@@ -79,7 +79,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
     const key = nameToInternal(name);
 
     addColumn({
-      table: table.id,
+      tableID: table.id,
       key,
       type: "string",
     });

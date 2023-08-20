@@ -36,7 +36,8 @@
     ".next/types/**/*.ts",
     "src/pages/index.tsx.off",
     "src/server/api/express.js",
-    "src/server/api/express.js"
+    "src/server/api/express.js",
+    "src/server/api/routers/table/index.ts.bak"
   ],
   "exclude": ["node_modules"]
 }

@@ -19,7 +19,7 @@ export const DatabaseViewRender: React.FC<{
     isLoading,
   } = api.tables.get.useQuery({
     project: projectName,
-    table: tableName,
+    tableName,
     columns: Object.keys(dashboard.parameters.data.columns ?? {}),
   });
 

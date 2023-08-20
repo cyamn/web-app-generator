@@ -4,11 +4,25 @@ import { Row } from "@/data/table/row";
 import { Dict } from "@/data/types";
 import { prisma } from "@/server/database";
 
-import { InternalError } from "../../../shared/errors";
-import { createCells } from "./create";
-import { Table } from "./get";
+import { InternalError } from "../../shared/errors";
+import { createCells } from "../cell/add";
+import { Table } from "../get";
 
-export async function insert(table: Table, row: Row): Promise<void> {
+export async function createRows(
+  rowSchema: Row[],
+  tableId: string
+): Promise<string[]> {
+  const rowIDs = rowSchema.map(() => cuid());
+  await prisma.row.createMany({
+    data: rowSchema.map((_, index) => ({
+      id: rowIDs[index],
+      tableId,
+    })),
+  });
+  return rowIDs;
+}
+
+export async function addRow(table: Table, row: Row): Promise<string> {
   const rowID = cuid();
   await prisma.row.create({
     data: {
@@ -39,4 +53,5 @@ export async function insert(table: Table, row: Row): Promise<void> {
     columnCuids[column.key] = col.id;
   }
   await createCells([row], columnCuids, [rowID]);
+  return rowID;
 }

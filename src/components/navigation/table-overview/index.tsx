@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import { TableView } from "@/components/table-view";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
-import { Table } from "@/server/api/routers/table/shared/schema";
+import { Table } from "@/server/api/routers/table/schema";
 import { authOptions } from "@/server/auth";
 import { prisma } from "@/server/database";
 
@@ -27,7 +27,7 @@ export const TablesOverview: React.FC<TablesOverviewProperties> = async ({
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const tablesWithMeta = await caller.tables.getAll(project.id);
+  const tablesWithMeta = await caller.tables.getAll({ project: project.id });
 
   return (
     <>

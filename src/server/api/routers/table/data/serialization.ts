@@ -1,7 +1,7 @@
 import { InternalError } from "../../shared/errors";
-import { ColumnSchema } from "./schema";
-import { Table as DeserializedTable } from "./schema";
-import { Table as SerializedTable } from "./table/get";
+import { Table as SerializedTable } from "../get";
+import { ColumnSchema } from "../schema";
+import { Table as DeserializedTable } from "../schema";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function deserialize(table: SerializedTable): DeserializedTable {

@@ -17,7 +17,7 @@ export const ExportButton: FC<ExportButtonProperties> = ({
   table,
 }) => {
   const { mutate: toCSV, isLoading: isExporting } =
-    api.tables.toCSV.useMutation({
+    api.tables.data.exportCSV.useMutation({
       onSuccess: (data) => {
         handleDownload(data.name, data.csv, "text/csv");
       },
@@ -29,7 +29,7 @@ export const ExportButton: FC<ExportButtonProperties> = ({
         className="w-full rounded-md bg-slate-700 p-2 text-slate-200 hover:bg-slate-600"
         type="button"
         onClick={() => {
-          toCSV({ project, table });
+          toCSV({ project, tableName: table });
         }}
       >
         <FontAwesomeIcon icon={faDownload} />

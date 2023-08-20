@@ -19,9 +19,9 @@ export const ImportButton: FC<ImportButtonProperties> = ({
   const context = api.useContext();
 
   const { mutate: importCSV, isLoading: isImporting } =
-    api.tables.import.useMutation({
+    api.tables.data.importCSV.useMutation({
       onSuccess: () => {
-        void context.tables.get.invalidate({ project, table });
+        void context.tables.get.invalidate({ project, tableName: table });
       },
     });
 

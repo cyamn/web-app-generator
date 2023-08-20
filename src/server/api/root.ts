@@ -5,7 +5,7 @@ import { pagesRouter } from "./routers/page";
 import { projectsRouter } from "./routers/project";
 import { rolesRouter } from "./routers/roles";
 import { settingsRouter } from "./routers/settings";
-import { tablesRouter } from "./routers/table";
+import { tablesRouter } from "./routers/table/router";
 
 /**
  * This is the primary router for your server.

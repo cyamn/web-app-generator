@@ -9,7 +9,7 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 
-import { createTable } from "./table/shared/table";
+import { createTable } from "./table/add";
 
 export const projectsRouter = createTRPCRouter({
   listAll: protectedProcedure.query(async ({ ctx }) => {

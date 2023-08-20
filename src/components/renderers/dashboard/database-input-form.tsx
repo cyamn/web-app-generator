@@ -67,7 +67,7 @@ export const DatabaseInputFormRender: React.FC<{
     isLoading,
   } = api.tables.get.useQuery({
     project: projectName,
-    table: tableName,
+    tableName,
     columns: Object.keys(dashboard.parameters.data.columns ?? {}),
   });
 
@@ -128,9 +128,9 @@ const CreateButton: React.FC<ButtonProperties> = ({
     mutate,
     isLoading: isCreating,
     isError,
-  } = api.tables.insert.useMutation({
+  } = api.tables.row.add.useMutation({
     onSuccess: () => {
-      void context.tables.get.invalidate({ project, table: table });
+      void context.tables.get.invalidate({ project, tableName: table });
       onReset();
     },
   });
@@ -139,7 +139,7 @@ const CreateButton: React.FC<ButtonProperties> = ({
       onClick={() => {
         mutate({
           project,
-          table,
+          tableName: table,
           row,
         });
       }}

@@ -1,36 +1,48 @@
 import { TRPCError } from "@trpc/server";
-import { z } from "zod";
 
-import { defaultTable } from "@/data/table";
-import { protectedProcedure } from "@/server/api/trpc";
+import { defaultTable, Table } from "@/data/table";
+import { prisma } from "@/server/database";
 
-import { createTable } from "./shared/table";
+import { createCells } from "./cell/add";
+import { createColumns } from "./column/add";
+import { createRows } from "./row/add";
 
-export const INPUT = z.object({
-  project: z.string(),
-  tableName: z.string(),
-});
-
-export const OUTPUT = z.string();
-
-export const ADD = protectedProcedure
-  .meta({ openapi: { method: "POST", path: "/table/add" } })
-  .input(INPUT)
-  .output(OUTPUT)
-  .mutation(async ({ ctx, input }) => {
-    const project = await ctx.prisma.project.findFirst({
-      where: {
-        id: input.project,
-        owner: ctx.session.user,
-      },
-    });
-    if (!project) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Project not found",
-      });
-    }
-    const tableSchema = defaultTable;
-    tableSchema.name = input.tableName;
-    return await createTable(project.id, tableSchema);
+export async function addTable(
+  userID: string,
+  projectID: string,
+  tableName: string
+) {
+  const project = await prisma.project.findFirst({
+    where: {
+      id: projectID,
+      ownerId: userID,
+    },
   });
+  if (!project) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Project not found",
+    });
+  }
+  const tableSchema = defaultTable;
+  tableSchema.name = tableName;
+  return await createTable(project.id, tableSchema);
+}
+
+export async function createTable(
+  projectID: string,
+  tableSchema: Table = defaultTable
+): Promise<string> {
+  const table = await prisma.table.create({
+    data: {
+      name: tableSchema.name,
+      projectId: projectID,
+    },
+  });
+
+  const columnIDs = await createColumns(tableSchema.columns, table.id);
+  const rowIDs = await createRows(tableSchema.rows, table.id);
+  await createCells(tableSchema.rows, columnIDs, rowIDs);
+
+  return table.id;
+}

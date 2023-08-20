@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import React from "react";
 import toast from "react-hot-toast";
 
-import { Cell } from "@/server/api/routers/table/shared/schema";
+import { Cell } from "@/server/api/routers/table/schema";
 import { api } from "@/utils/api";
 
 type CellProperties = {
@@ -26,14 +26,14 @@ export const CellEdit: React.FC<CellProperties> = ({
   const [value, setValue] = React.useState(value_);
 
   const { mutate: update, isLoading: isUpdating } =
-    api.tables.setCell.useMutation({
+    api.tables.cell.update.useMutation({
       onSuccess: () => {
         toast.success("Cell updated");
       },
     });
 
   const { mutate: createCell, isLoading: isCreating } =
-    api.tables.createCell.useMutation({
+    api.tables.cell.add.useMutation({
       onSuccess: () => {
         toast.success("Cell created");
       },
@@ -58,14 +58,14 @@ export const CellEdit: React.FC<CellProperties> = ({
       return;
     }
     update({
-      id,
+      cellID: id,
       value: customValue ?? value,
     });
   }
 
   function addCell(customValue?: string) {
     createCell({
-      col: cell.col,
+      column: cell.col,
       row: cell.row,
       value: customValue ?? value,
     });

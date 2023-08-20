@@ -1,42 +1,96 @@
-import { z } from "zod";
+import { prisma } from "@/server/database";
 
-import { publicProcedure } from "@/server/api/trpc";
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export async function get(
+  name: string,
+  project: string,
+  columns?: string[]
+): Promise<Table | null> {
+  return await prisma.table.findFirst(tablesQuery(project, name, columns));
+}
 
-import { NotFoundError } from "../shared/errors";
-import { TableSchema } from "./shared/schema";
-import { deserialize, deserializeCSV } from "./shared/serialization";
-import { get } from "./shared/table";
-
-export const INPUT = z.object({
-  table: z.string(),
-  project: z.string(),
-  columns: z.array(z.string()).optional(),
-});
-
-export const OUTPUT = TableSchema;
-
-export const GET = publicProcedure
-  .input(INPUT)
-  .output(OUTPUT)
-  .query(async ({ input }) => {
-    const table = await get(input.table, input.project, input.columns);
-    if (!table) throw new NotFoundError("table");
-    return deserialize(table);
+export async function getAll(
+  project: string,
+  columns?: string[]
+): Promise<Table[]> {
+  return await prisma.table.findMany({
+    ...tablesQuery(project, undefined, columns),
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
+}
 
-export const OUTPUT_CSV = z.object({
-  csv: z.string(),
-  name: z.string(),
-});
+export type Table = {
+  name: string;
+  columns: {
+    type: string;
+    key: string;
+    id: string;
+  }[];
+  rows: {
+    cells: {
+      value: string;
+      column: {
+        key: string;
+      };
+      id: string;
+    }[];
+    id: string;
+  }[];
+  id: string;
+  updatedAt: Date;
+};
 
-export const TABLE_TO_CSV = publicProcedure
-  .input(INPUT)
-  .output(OUTPUT_CSV)
-  .mutation(async ({ input }) => {
-    const table = await get(input.table, input.project, input.columns);
-    if (!table) throw new NotFoundError("table");
-    return {
-      csv: deserializeCSV(table),
-      name: table.name,
-    };
-  });
+// eslint-disable-next-line max-lines-per-function
+function tablesQuery(project: string, name?: string, columns?: string[]) {
+  const nameFilter = name === undefined ? {} : { name: name };
+  return {
+    where: {
+      project: {
+        id: project,
+      },
+      ...nameFilter,
+    },
+    select: {
+      id: true,
+      name: true,
+      updatedAt: true,
+      columns: {
+        select: {
+          id: true,
+          key: true,
+          type: true,
+        },
+        ...columnsFilter(columns),
+      },
+      rows: {
+        select: {
+          id: true,
+          cells: {
+            select: {
+              column: {
+                select: {
+                  key: true,
+                },
+              },
+              value: true,
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  };
+}
+
+function columnsFilter(columns?: string[]) {
+  if (!columns) return {};
+  return {
+    where: {
+      key: {
+        in: columns,
+      },
+    },
+  };
+}

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 
-import { Column } from "@/server/api/routers/table/shared/schema";
+import { Column } from "@/server/api/routers/table/schema";
 import { api } from "@/utils/api";
 import { nameToInternal } from "@/utils/name-to-internal";
 
@@ -25,9 +25,9 @@ export const ColumnHeader: React.FC<ColumnHeaderProperties> = ({
   const context = api.useContext();
 
   const { mutate: update, isLoading: isUpdating } =
-    api.tables.setColumn.useMutation({
+    api.tables.column.update.useMutation({
       onSuccess: () => {
-        void context.tables.get.invalidate({ project, table });
+        void context.tables.get.invalidate({ project, tableName: table });
         toast.success("Column updated");
       },
     });
@@ -47,7 +47,7 @@ export const ColumnHeader: React.FC<ColumnHeaderProperties> = ({
     if (customValue === undefined && value === savedValue) return;
     setSavedValue(customValue ?? value);
     update({
-      id: column.id,
+      columnID: column.id,
       key: nameToInternal(customValue ?? value),
       type: column.type,
     });
@@ -56,7 +56,7 @@ export const ColumnHeader: React.FC<ColumnHeaderProperties> = ({
   function updateType(type: string) {
     setType(type);
     update({
-      id: column.id,
+      columnID: column.id,
       key: column.key,
       type,
     });

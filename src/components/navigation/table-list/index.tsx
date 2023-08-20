@@ -22,7 +22,9 @@ export const TableList: React.FC<TableListProperties> = async ({
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const tablesWithMeta = await caller.tables.listAll(project);
+  const tablesWithMeta = await caller.tables.list({
+    project,
+  });
 
   return (
     <div className="flex h-full w-full flex-col justify-between border-r border-slate-300 bg-white">

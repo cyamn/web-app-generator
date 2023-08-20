@@ -1,10 +1,36 @@
+import { InternalError, NotFoundError } from "../../shared/errors";
+import { get } from "../get";
+
+export async function importCSV(
+  project: string,
+  csv: string,
+  name: string,
+  tableName?: string
+) {
+  let id;
+  try {
+    if (tableName !== undefined) {
+      const table = await get(tableName, project);
+      if (table) {
+        id = table.id;
+      } else {
+        throw new NotFoundError("Table");
+      }
+    }
+  } catch (error: unknown) {
+    console.log(error);
+  }
+
+  const imported = await importCSVIntoExisting(csv, name, project, id);
+  if (!imported) throw new InternalError("Failed to import CSV");
+  return imported;
+}
+
 import cuid from "cuid";
 
 import { prisma } from "@/server/database";
 
-import { InternalError } from "../../../shared/errors";
-
-export async function importCSV(
+async function importCSVIntoExisting(
   csv: string,
   name: string,
   project: string,

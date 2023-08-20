@@ -52,7 +52,7 @@ export const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
   debug: env.NODE_ENV === "development",
   callbacks: {
-    session: ({ session, token, user }) => {
+    session: ({ session, token }) => {
       return {
         ...session,
         user: {
@@ -61,7 +61,7 @@ export const authOptions: NextAuthOptions = {
         },
       };
     },
-    jwt({ session, token, user }) {
+    jwt({ token, user }) {
       if (user !== undefined) {
         token.id = user.id;
       }
@@ -80,7 +80,7 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, request) {
+      async authorize(credentials) {
         // Add logic here to look up the user from the credentials supplied
         const user = await prisma.user.findUnique({
           where: { email: credentials?.email },

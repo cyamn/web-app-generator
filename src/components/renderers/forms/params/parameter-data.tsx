@@ -36,7 +36,7 @@ const TableSelection: React.FC<DataProperties> = ({
     error,
     isError,
     isLoading,
-  } = api.tables.listAll.useQuery(project);
+  } = api.tables.list.useQuery({ project });
   if (isError) return <div>{error.message}</div>;
   if (isLoading || tables === undefined) return <div>Loading...</div>;
   return (
@@ -80,7 +80,7 @@ const ColumnSelection: React.FC<DataProperties> = ({
     isLoading,
   } = api.tables.get.useQuery({
     project,
-    table: data.table,
+    tableName: data.table,
   });
 
   if (isError) return <div>{error.message}</div>;
