@@ -31,7 +31,7 @@ export const PagesOverview: React.FC<PagesOverviewProperties> = async ({
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const pagesWithMeta = await caller.pages.getAll(project.id);
+  const pagesWithMeta = await caller.pages.getAll({ project: project.id });
 
   return (
     <>

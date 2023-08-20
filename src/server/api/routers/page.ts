@@ -13,12 +13,15 @@ import { nameToInternal } from "@/utils/name-to-internal";
 
 export const pagesRouter = createTRPCRouter({
   listAll: protectedProcedure
-    .input(z.string())
+    .meta({
+      openapi: { tags: ["page"], method: "GET", path: "/page/list" },
+    })
+    .input(z.object({ project: z.string() }))
     .output(z.array(PageSchema.pick({ name: true, path: true })))
     .query(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          id: input,
+          id: input.project,
           ownerId: ctx.session.user.id,
         },
         select: {
@@ -43,12 +46,15 @@ export const pagesRouter = createTRPCRouter({
     }),
 
   getAll: protectedProcedure
-    .input(z.string())
+    .meta({
+      openapi: { tags: ["page"], method: "GET", path: "/page/get/all" },
+    })
+    .input(z.object({ project: z.string() }))
     .output(z.array(z.object({ page: PageSchema, updatedAt: z.date() })))
     .query(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
         where: {
-          id: input,
+          id: input.project,
           ownerId: ctx.session.user.id,
         },
         select: {
@@ -92,6 +98,9 @@ export const pagesRouter = createTRPCRouter({
 
   //TODO: make not copy of above
   getPublic: publicProcedure
+    .meta({
+      openapi: { tags: ["page"], method: "GET", path: "/page/get/public" },
+    })
     .input(z.object({ project: z.string(), page: z.string() }))
     .output(z.object({ page: PageSchema, updatedAt: z.date() }))
     .query(async ({ input }) => {
@@ -141,6 +150,9 @@ export const pagesRouter = createTRPCRouter({
     }),
 
   get: protectedProcedure
+    .meta({
+      openapi: { tags: ["page"], method: "GET", path: "/page/get" },
+    })
     .input(z.object({ project: z.string(), page: z.string() }))
     .output(z.object({ page: PageSchema, updatedAt: z.date() }))
     .query(async ({ ctx, input }) => {
@@ -166,6 +178,7 @@ export const pagesRouter = createTRPCRouter({
                         id: ctx.session.user.id,
                       },
                     },
+                    admin: true,
                   },
                 },
               },
@@ -221,6 +234,9 @@ export const pagesRouter = createTRPCRouter({
     }),
 
   add: protectedProcedure
+    // .meta({
+    //   openapi: { tags: ["page"], method: "POST", path: "/page/add" },
+    // })
     .input(z.object({ project: z.string(), pageName: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const project = await ctx.prisma.project.findFirst({
@@ -247,6 +263,9 @@ export const pagesRouter = createTRPCRouter({
     }),
 
   update: protectedProcedure
+    // .meta({
+    //   openapi: { tags: ["page"], method: "PATCH", path: "/page/patch" },
+    // })
     .input(
       z.object({
         project: z.string(),

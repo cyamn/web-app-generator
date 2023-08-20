@@ -14,6 +14,7 @@ export const INPUT = z.object({
 export const OUTPUT = z.string();
 
 export const ADD = protectedProcedure
+  .meta({ openapi: { method: "POST", path: "/table/add" } })
   .input(INPUT)
   .output(OUTPUT)
   .mutation(async ({ ctx, input }) => {

@@ -34,7 +34,9 @@
     "**/*.cjs",
     "**/*.mjs",
     ".next/types/**/*.ts",
-    "src/pages/index.tsx.off"
+    "src/pages/index.tsx.off",
+    "src/server/api/express.js",
+    "src/server/api/express.js"
   ],
   "exclude": ["node_modules"]
 }
