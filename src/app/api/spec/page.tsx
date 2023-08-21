@@ -1,12 +1,20 @@
-"use client";
+import { getServerSession } from "next-auth/next";
+import React from "react";
 
-import "swagger-ui-react/swagger-ui.css";
+import OpenApiPanel from "@/components/api/openapi";
+import { Header } from "@/components/header";
+import { Navbar } from "@/components/navbar";
+import { Layout } from "@/layout";
+import { authOptions } from "@/server/auth";
 
-import { NextPage } from "next";
-import SwaggerUI from "swagger-ui-react";
-
-const Home: NextPage = () => {
-  return <SwaggerUI url="http://localhost:3000/api/openapi.json" />;
+const Page = async () => {
+  const session = await getServerSession(authOptions);
+  return (
+    <Layout
+      header={<Header item={<Navbar />} user={session?.user} />}
+      content={<OpenApiPanel />}
+    />
+  );
 };
 
-export default Home;
+export default Page;

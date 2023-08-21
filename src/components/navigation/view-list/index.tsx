@@ -1,5 +1,10 @@
 import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faCog, faFile, faTable } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCog,
+  faFile,
+  faSignsPost,
+  faTable,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type ViewListProperties = {
@@ -29,6 +34,12 @@ export const ViewList: React.FC<ViewListProperties> = ({
         <ViewItem
           icon={faTable}
           view={"table"}
+          activeView={activeView}
+          projectName={projectName}
+        />
+        <ViewItem
+          icon={faSignsPost}
+          view={"api"}
           activeView={activeView}
           projectName={projectName}
         />

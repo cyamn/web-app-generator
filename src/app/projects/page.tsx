@@ -1,6 +1,8 @@
 import { getServerSession } from "next-auth/next";
+import React from "react";
 
 import { Header } from "@/components/header";
+import { Navbar } from "@/components/navbar";
 import { ProjectOverview } from "@/components/navigation/projects-overview";
 import { Layout } from "@/layout";
 import { AuthRequiredError } from "@/lib/exceptions";
@@ -17,7 +19,7 @@ const Projects = async () => {
 
   return (
     <Layout
-      header={<Header item="Apps" user={session.user} />}
+      header={<Header item={<Navbar />} user={session.user} />}
       content={
         <div className="h-full bg-gradient-to-b from-slate-100 to-slate-200 px-64">
           <h1 className="py-8 text-center text-4xl font-extrabold tracking-tight text-slate-700 sm:text-[5rem]">

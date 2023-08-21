@@ -44,7 +44,6 @@ export const Header: React.FC<HeaderProperties> = ({
         </div>
         <div className="relative inline-block text-right">
           {user && <User user={user} show={show} setShow={setShow} />}
-          {!user && <UserSkeleton />}
           {show && (
             <div
               className="absolute right-0 z-10 mr-2 mt-2 w-56 origin-top-right divide-y divide-slate-50 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
