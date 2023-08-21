@@ -53,7 +53,7 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
       toast.error("could not save page");
       return;
     }
-    mutate({ project, pagePath: localPage.path, page: localPage });
+    mutate({ project, page: localPage });
   }
 
   useKey("ctrls", () => {

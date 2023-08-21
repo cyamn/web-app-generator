@@ -23,7 +23,7 @@ export const PageList: React.FC<PageListProperties> = async ({
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const pagesWithMeta = await caller.pages.listAll({ project: project });
+  const pagesWithMeta = await caller.pages.list({ project: project });
 
   return (
     <div className="flex h-full w-full flex-col justify-between border-r border-slate-300 bg-white">

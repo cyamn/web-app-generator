@@ -1,7 +1,7 @@
 import { createTRPCRouter } from "@/server/api/trpc";
 
 import { adminRouter } from "./routers/admin";
-import { pagesRouter } from "./routers/page";
+import { pageRouter } from "./routers/page/router";
 import { projectsRouter } from "./routers/project";
 import { rolesRouter } from "./routers/roles";
 import { settingsRouter } from "./routers/settings";
@@ -14,7 +14,7 @@ import { tablesRouter } from "./routers/table/router";
  */
 export const appRouter = createTRPCRouter({
   projects: projectsRouter,
-  pages: pagesRouter,
+  pages: pageRouter,
   tables: tablesRouter,
   settings: settingsRouter,
   roles: rolesRouter,

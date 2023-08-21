@@ -29,7 +29,7 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
       setIndex(newIndex);
       if (!deepEqual(localPage, page)) {
         toast.success(`Saved page to database!`);
-        mutate({ project, pagePath: localPage.path, page: localPage });
+        mutate({ project, page: localPage });
       }
     }
   }
@@ -39,7 +39,7 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
     dashboards.splice(index, 0, dashboard);
     setLocalPage({ ...localPage, dashboards });
     toast.success(`Added ${dashboard.type} to ${localPage.name}!`);
-    mutate({ project, pagePath: localPage.path, page: localPage });
+    mutate({ project, page: localPage });
   }
 
   function removeDashboard(index: number): void {
@@ -47,13 +47,13 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
     dashboards.splice(index, 1);
     setLocalPage({ ...localPage, dashboards });
     toast.success(`Removed dashboard from ${localPage.name}!`);
-    mutate({ project, pagePath: localPage.path, page: localPage });
+    mutate({ project, page: localPage });
     setIndex(index - 1);
   }
 
   useKey("ctrls", () => {
     toast.success(`Saved page to database!`);
-    mutate({ project, pagePath: localPage.path, page: localPage });
+    mutate({ project, page: localPage });
   });
 
   return (

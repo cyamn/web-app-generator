@@ -42,7 +42,7 @@ const PrivatePage = async ({
 const PublicPage = async ({ params }: PageProperties) => {
   const caller = appRouter.createCaller({ prisma, session: null });
   const project = await caller.projects.get(params.projectID);
-  const pageWithMeta = await caller.pages.getPublic({
+  const pageWithMeta = await caller.pages.get({
     project: project.id,
     page: params.page,
   });
