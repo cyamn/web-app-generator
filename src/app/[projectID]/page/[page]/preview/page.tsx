@@ -62,7 +62,13 @@ const Page = async ({ params }: PageProperties) => {
           <PageList project={project.id} pagePath={pageWithMeta.page.path} />
         </div>
       }
-      content={<Previewer page={pageWithMeta.page} project={project.id} />}
+      content={
+        <Previewer
+          page={pageWithMeta.page}
+          variables={pageWithMeta.variables}
+          project={project.id}
+        />
+      }
     />
   );
 };

@@ -22,6 +22,7 @@ export async function addPage(
     data: {
       name: pageName,
       path: nameToInternal(pageName),
+      variables: JSON.stringify(defaultPage.variables),
       dashboards: JSON.stringify(defaultPage.dashboards),
       projectId: project.id,
     },

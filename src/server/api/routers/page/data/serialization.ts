@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { DashboardSchema } from "@/data/dashboard/library/dashboard";
 import { Page as DeserializedPage } from "@/data/page";
+import { VariablesSchema } from "@/data/page/variables";
 
 import { InternalError } from "../../shared/errors";
 
@@ -23,12 +24,13 @@ export function deserialize(page_: SerializedPage): {
   const parsedDashboards = z.array(DashboardSchema).safeParse(unsafeDashboards);
 
   if (!parsedDashboards.success) {
-    throw new InternalError("Failed to parse page");
+    throw new InternalError("Failed to parse page dashboards");
   }
   return {
     page: {
       name: page_.name,
       path: page_.path,
+      variables: parseVariables(page_.variables),
       dashboards: parsedDashboards.data,
       access: {
         public: page_.public,
@@ -37,4 +39,19 @@ export function deserialize(page_: SerializedPage): {
     },
     updatedAt: page_.updatedAt,
   };
+}
+
+function parseVariables(
+  unknownVariables: unknown
+): z.infer<typeof VariablesSchema> {
+  const stringVariables = unknownVariables as string;
+  if (stringVariables === "{}") return {};
+  const unsafeVariables: unknown = JSON.parse(stringVariables);
+
+  const parsedVariables = VariablesSchema.safeParse(unsafeVariables);
+
+  if (!parsedVariables.success) {
+    throw new InternalError("Failed to parse page variables");
+  }
+  return parsedVariables.data;
 }

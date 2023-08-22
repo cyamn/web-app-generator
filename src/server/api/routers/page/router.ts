@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { PageSchema } from "@/data/page";
+import { VariablesSchema } from "@/data/page/variables";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { protectedProcedure } from "@/server/api/trpc";
 
@@ -15,8 +16,19 @@ export const pageRouter = createTRPCRouter({
     .meta({
       openapi: { tags: ["page"], method: "GET", path: "/page" },
     })
-    .input(z.object({ project: z.string(), page: z.string() }))
-    .output(z.object({ page: PageSchema, updatedAt: z.date() }))
+    .input(
+      z.object({
+        project: z.string(),
+        page: z.string(),
+      })
+    )
+    .output(
+      z.object({
+        page: PageSchema,
+        variables: VariablesSchema,
+        updatedAt: z.date(),
+      })
+    )
     .query(async ({ ctx, input }) => {
       if (ctx.session?.user) {
         return await getPage(ctx.session.user.id, input.project, input.page);

@@ -36,7 +36,13 @@ const PrivatePage = async ({
     page: params.page,
   });
 
-  return <Previewer page={pageWithMeta.page} project={project.id} />;
+  return (
+    <Previewer
+      page={pageWithMeta.page}
+      variables={pageWithMeta.variables}
+      project={project.id}
+    />
+  );
 };
 
 const PublicPage = async ({ params }: PageProperties) => {
@@ -47,7 +53,13 @@ const PublicPage = async ({ params }: PageProperties) => {
     page: params.page,
   });
 
-  return <Previewer page={pageWithMeta.page} project={project.id} />;
+  return (
+    <Previewer
+      page={pageWithMeta.page}
+      variables={pageWithMeta.variables}
+      project={project.id}
+    />
+  );
 };
 
 export default Page;

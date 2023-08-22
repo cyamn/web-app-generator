@@ -17,6 +17,7 @@ export async function updatePage(
     data: {
       name: page.name,
       path: page.path,
+      variables: JSON.stringify(page.variables),
       dashboards: JSON.stringify(page.dashboards),
       public: page.access?.public ?? false,
     },

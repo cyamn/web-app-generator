@@ -1,8 +1,10 @@
 import { Page } from "@/data/page";
+import { Variables } from "@/data/page/variables";
 import { prisma } from "@/server/database";
 
 import { NotFoundError } from "../shared/errors";
 import { deserialize } from "./data/serialization";
+import { hydratePage } from "./hydrate";
 
 const pageSelector = {
   id: true,
@@ -10,6 +12,7 @@ const pageSelector = {
   createdAt: true,
   name: true,
   path: true,
+  variables: true,
   dashboards: true,
   updatedAt: true,
   public: true,
@@ -55,6 +58,7 @@ export async function getPage(
 ): Promise<{
   page: Page;
   updatedAt: Date;
+  variables: Variables;
 }> {
   const page = await prisma.page.findFirst({
     where: {
@@ -78,7 +82,6 @@ export async function getPage(
                     id: userID,
                   },
                 },
-                admin: true,
               },
             },
           },
@@ -92,7 +95,7 @@ export async function getPage(
     throw new NotFoundError("Page");
   }
 
-  return deserialize(page);
+  return hydratePage(deserialize(page));
 }
 
 export async function getPublicPage(
@@ -101,6 +104,7 @@ export async function getPublicPage(
 ): Promise<{
   page: Page;
   updatedAt: Date;
+  variables: Variables;
 }> {
   const page = await prisma.page.findFirst({
     where: {
@@ -115,5 +119,5 @@ export async function getPublicPage(
     throw new NotFoundError("Page");
   }
 
-  return deserialize(page);
+  return hydratePage(deserialize(page));
 }

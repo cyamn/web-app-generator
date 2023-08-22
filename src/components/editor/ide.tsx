@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import { type Page, PageSchema } from "@/data/page";
@@ -24,6 +24,11 @@ type IDEProperties = {
 export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
   const [localPage, setLocalPage] = useState<Page>(page);
   const [error, setError] = useState<IDEError>(IDEError.NONE);
+
+  useEffect(() => {
+    trySetLocalPageFromString(JSON.stringify(page));
+  }, [page]);
+
   function trySetLocalPageFromString(pageString: string): void {
     let parsed: unknown;
     try {
@@ -72,7 +77,11 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
         <div className="mx-5 flex justify-center bg-red-800 font-mono text-3xl text-red-300">
           {error}
         </div>
-        <Previewer page={localPage} project={project} />
+        <Previewer
+          page={localPage}
+          variables={localPage.variables}
+          project={project}
+        />
       </div>
     </div>
   );

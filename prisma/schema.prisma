@@ -110,6 +110,7 @@ model Page {
   updatedAt  DateTime         @updatedAt
   name       String
   path       String
+  variables  String           @default("{}")
   dashboards Json
   projectId  String
   public     Boolean          @default(false)

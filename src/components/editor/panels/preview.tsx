@@ -12,6 +12,7 @@ import { defaultDatabaseInputForm } from "@/data/dashboard/library/database-inpu
 import { defaultDatabaseView } from "@/data/dashboard/library/database-view";
 import { defaultMarkdown } from "@/data/dashboard/library/markdown";
 import { type Page } from "@/data/page";
+import { hydratePage } from "@/utils/hydrate-page";
 
 type NameTagProperties = {
   visible: boolean;
@@ -67,9 +68,11 @@ export const Preview: React.FC<PreviewProperties> = ({
   projectName,
   addDashboard,
 }) => {
+  const page_ = hydratePage(page, page.variables ?? {});
+
   return (
     <div className="flex h-full flex-col overflow-auto p-4 font-sans leading-normal tracking-normal">
-      {page.dashboards.map((dashboard, id) => {
+      {page_.dashboards.map((dashboard, id) => {
         const active = id === index;
         const border = active
           ? "rounded-r-lg border border-blue-500"
