@@ -1,13 +1,19 @@
 "use client";
 
-import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowUpRightFromSquare,
+  faDownload,
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
-import { Page } from "@/data/page";
+import { Page, PageSchema } from "@/data/page";
 import { api } from "@/utils/api";
+import { handleDownload } from "@/utils/download";
+import { handleImport } from "@/utils/import";
 
 type SettingsProperties = {
   page: Page;
@@ -33,9 +39,35 @@ export const Settings: React.FC<SettingsProperties> = ({ page, project }) => {
     }
   );
 
+  const { mutate: updatePage, isLoading: isUpdating } =
+    api.pages.update.useMutation({
+      onSuccess: () => {
+        toast.success(`Updated page ${page.name}!`);
+        void context.pages.get.invalidate({ project, page: page.path });
+      },
+    });
+
   function togglePublic() {
     setIsPublic(!isPublic);
     mutate({ project, pagePath: page.path, public: !isPublic });
+  }
+
+  function downloadJSON() {
+    const data = JSON.stringify(page, null, 2);
+    handleDownload(`${page.name}.json`, data, "text/json");
+  }
+
+  async function importJSON() {
+    const json = await handleImport([".json"]);
+    if (json === null) return;
+    if (json[0] === undefined) return;
+    const data: unknown = JSON.parse(json[0]);
+    const page = PageSchema.safeParse(data);
+    if (!page.success) {
+      toast.error("Invalid JSON file!");
+      return;
+    }
+    updatePage({ project, page: page.data });
   }
 
   return (
@@ -62,6 +94,27 @@ export const Settings: React.FC<SettingsProperties> = ({ page, project }) => {
           </td>
         </tr>
         {!isPublic && <CanView project={project} page={page.path} />}
+        <tr>
+          <td className="w-52 px-6 py-2">Data</td>
+          <td className="flex w-full flex-row gap-2 p-2">
+            <button
+              className="w-full rounded-md bg-slate-700 p-2 text-slate-200 hover:bg-slate-600"
+              type="button"
+              onClick={downloadJSON}
+            >
+              <FontAwesomeIcon icon={faDownload} />
+              <span className="ml-2">Export</span>
+            </button>
+            <button
+              className="w-full rounded-md bg-slate-700 p-2 text-slate-200 hover:bg-slate-600"
+              type="button"
+              onClick={() => void importJSON()}
+            >
+              <FontAwesomeIcon icon={faUpload} />
+              <span className="ml-2">Import</span>
+            </button>
+          </td>
+        </tr>
       </table>
     </div>
   );

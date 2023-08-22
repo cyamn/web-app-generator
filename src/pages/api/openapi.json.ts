@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { generateOpenApiDocument } from "trpc-openapi";
 
 import { name, version } from "@/../package.json";
+import { getNextUrl } from "@/utils/get-next-url";
 
 import { appRouter } from "../../server/api/root";
 
@@ -14,7 +15,7 @@ export default function handler(_: NextApiRequest, response: NextApiResponse) {
       description:
         "Read examples how to consume the API endpoints here: TODO or try them out headers.",
       version,
-      baseUrl: "http://localhost:3000/api",
+      baseUrl: `${getNextUrl()}/api`,
       tags: ["debug", "auth", "users", "table", "page", "project"],
     })
   );

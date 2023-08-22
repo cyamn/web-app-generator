@@ -18,6 +18,7 @@ export async function updatePage(
       name: page.name,
       path: page.path,
       dashboards: JSON.stringify(page.dashboards),
+      public: page.access?.public ?? false,
     },
   });
   return delta.count.toString();
