@@ -9,6 +9,7 @@ import { useKey } from "@/hooks/use-key";
 import { api } from "@/utils/api";
 import { deepEqual } from "@/utils/deep-equal";
 
+import { BottomPanel } from "./bottom-panel/panel";
 import { Forms, Preview } from "./panels";
 
 type GUIEditorProperties = {
@@ -57,19 +58,22 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
   });
 
   return (
-    <div className="flex h-full flex-row">
+    <div className="flex h-full flex-row overflow-auto">
       <div className="w-full">
-        <Preview
-          page={localPage}
-          showBorders={true}
-          index={index}
-          setIndex={switchIndex}
-          projectName={project}
-          addDashboard={addDashboard}
-        />
+        <div className="flex h-full flex-col">
+          <Preview
+            page={localPage}
+            showBorders={true}
+            index={index}
+            setIndex={switchIndex}
+            projectName={project}
+            addDashboard={addDashboard}
+          />
+          <BottomPanel />
+        </div>
       </div>
       {index !== -1 && (
-        <div className="w-80 overflow-hidden">
+        <div className="w-80 overflow-hidden border-l border-slate-300">
           <Forms
             page={localPage}
             setLocalPage={setLocalPage}
