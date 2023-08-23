@@ -1,9 +1,10 @@
 type TabProperties = {
-  activeTab: string;
-  setTab: (tab: string) => void;
+  activeTab: number;
+  setTab: (tab: number) => void;
   visibilty: boolean;
   setVisibility: (visibility: boolean) => void;
   tab: string;
+  id: number;
 };
 
 export const Tab: React.FC<TabProperties> = ({
@@ -12,8 +13,9 @@ export const Tab: React.FC<TabProperties> = ({
   tab,
   visibilty,
   setVisibility,
+  id,
 }) => {
-  if (activeTab === tab)
+  if (activeTab === id)
     return (
       <div
         onClick={() => {
@@ -27,7 +29,7 @@ export const Tab: React.FC<TabProperties> = ({
   return (
     <div
       onClick={() => {
-        setTab(tab);
+        setTab(id);
         setVisibility(true);
       }}
       className="cursor-pointer border-b-4 border-transparent hover:border-blue-500"

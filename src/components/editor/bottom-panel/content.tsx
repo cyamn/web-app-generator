@@ -2,20 +2,28 @@ import { faHammer } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type PanelContentProperties = {
-  activeTab: string;
+  activeTab: number;
+  tabNames: string[];
+  tabs: (React.ReactNode | undefined)[];
 };
 
 export const PanelContent: React.FC<PanelContentProperties> = ({
   activeTab,
+  tabNames,
+  tabs,
 }) => {
-  switch (activeTab) {
-    default: {
-      return <ToBeDonePanel activeTab={activeTab} />;
-    }
-  }
+  return tabs[activeTab] === undefined ? (
+    <ToBeDonePanel activeTab={tabNames[activeTab] ?? "unknown"} />
+  ) : (
+    (tabs[activeTab] as React.ReactElement)
+  );
 };
 
-export const ToBeDonePanel: React.FC<PanelContentProperties> = ({
+type ToBeDonePanelProperties = {
+  activeTab: string;
+};
+
+export const ToBeDonePanel: React.FC<ToBeDonePanelProperties> = ({
   activeTab,
 }) => {
   return (

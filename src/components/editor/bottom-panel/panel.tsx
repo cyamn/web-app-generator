@@ -3,17 +3,25 @@ import { useState } from "react";
 import { PanelContent } from "./content";
 import { PanelHeader } from "./header";
 
-export const Tabs = ["Variables", "Tables"];
+type BottomPanelProperties = {
+  tabNames: string[];
+  tabs: (React.ReactNode | undefined)[];
+};
 
-export const BottomPanel: React.FC = () => {
+export const BottomPanel: React.FC<BottomPanelProperties> = ({
+  tabNames,
+  tabs,
+}) => {
   const [visibility, setVisibility] = useState(false);
-  const [tab, setTab] = useState(Tabs[0] ?? "");
+  const [tab, setTab] = useState(0);
 
   if (!visibility) {
     return (
       <PanelHeader
         activeTab={tab}
         setTab={setTab}
+        tabNames={tabNames}
+        tabs={tabs}
         visibilty={visibility}
         setVisibility={setVisibility}
       />
@@ -26,12 +34,14 @@ export const BottomPanel: React.FC = () => {
         <PanelHeader
           activeTab={tab}
           setTab={setTab}
+          tabNames={tabNames}
+          tabs={tabs}
           visibilty={visibility}
           setVisibility={setVisibility}
         />
       </div>
       <div className="h-full overflow-scroll">
-        <PanelContent activeTab={tab} />
+        <PanelContent activeTab={tab} tabNames={tabNames} tabs={tabs} />
       </div>
     </div>
   );

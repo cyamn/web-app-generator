@@ -69,7 +69,10 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
             projectName={project}
             addDashboard={addDashboard}
           />
-          <BottomPanel />
+          <BottomPanel
+            tabNames={["Variables", "Tables"]}
+            tabs={[<div key={"variables"}>TODO</div>, undefined]}
+          />
         </div>
       </div>
       {index !== -1 && (

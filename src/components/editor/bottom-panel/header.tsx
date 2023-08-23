@@ -1,14 +1,15 @@
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { Tabs } from "./panel";
 import { Tab } from "./tab";
 
 type PanelHeaderProperties = {
-  activeTab: string;
-  setTab: (tab: string) => void;
+  activeTab: number;
+  setTab: (tab: number) => void;
   visibilty: boolean;
   setVisibility: (visibility: boolean) => void;
+  tabNames: string[];
+  tabs: React.ReactNode[];
 };
 
 export const PanelHeader: React.FC<PanelHeaderProperties> = ({
@@ -16,17 +17,20 @@ export const PanelHeader: React.FC<PanelHeaderProperties> = ({
   setTab,
   visibilty,
   setVisibility,
+  tabNames,
+  tabs,
 }) => {
   return (
     <div className="flex w-full flex-col border-t border-slate-300 bg-white p-1">
       <div className="flex w-full flex-row justify-between">
         <div className="flex flex-row gap-4">
-          {Tabs.map((tab) => {
+          {tabNames.map((tab, index) => {
             return (
               <Tab
                 key={tab}
                 setTab={setTab}
                 activeTab={activeTab}
+                id={index}
                 tab={tab}
                 visibilty={visibilty}
                 setVisibility={setVisibility}
