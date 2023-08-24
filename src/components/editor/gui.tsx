@@ -5,11 +5,13 @@ import toast from "react-hot-toast";
 
 import { Dashboard } from "@/data/dashboard/library/dashboard";
 import { type Page } from "@/data/page";
+import { Variables } from "@/data/page/variables";
 import { useKey } from "@/hooks/use-key";
 import { api } from "@/utils/api";
 import { deepEqual } from "@/utils/deep-equal";
 
 import { BottomPanel } from "./bottom-panel/panel";
+import { VariablesPanel } from "./bottom-panel/variables-panel";
 import { Forms, Preview } from "./panels";
 
 type GUIEditorProperties = {
@@ -52,6 +54,11 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
     setIndex(index - 1);
   }
 
+  function updateVariables(variables: Variables): void {
+    setLocalPage({ ...localPage, variables });
+    mutate({ project, page: { ...localPage, variables } });
+  }
+
   useKey("ctrls", () => {
     toast.success(`Saved page to database!`);
     mutate({ project, page: localPage });
@@ -70,8 +77,14 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
             addDashboard={addDashboard}
           />
           <BottomPanel
-            tabNames={["Variables", "Tables"]}
-            tabs={[<div key={"variables"}>TODO</div>, undefined]}
+            tabNames={["Variables"]}
+            tabs={[
+              <VariablesPanel
+                key={"Variables"}
+                variables={page.variables ?? {}}
+                updateVariables={updateVariables}
+              />,
+            ]}
           />
         </div>
       </div>

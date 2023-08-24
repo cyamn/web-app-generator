@@ -1,7 +1,9 @@
+"use client";
+
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import { faKeyboard, faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { DashboardRender } from "@/components/renderers/dashboard";
 import {
@@ -12,6 +14,7 @@ import { defaultDatabaseInputForm } from "@/data/dashboard/library/database-inpu
 import { defaultDatabaseView } from "@/data/dashboard/library/database-view";
 import { defaultMarkdown } from "@/data/dashboard/library/markdown";
 import { type Page } from "@/data/page";
+import { api } from "@/utils/api";
 import { hydratePage } from "@/utils/hydrate-page";
 
 type NameTagProperties = {
@@ -68,11 +71,27 @@ export const Preview: React.FC<PreviewProperties> = ({
   projectName,
   addDashboard,
 }) => {
-  const page_ = hydratePage(page, page.variables ?? {});
+  const [localPage, setLocalPage] = useState<Page>(page);
+
+  const { data, isLoading, isError } = api.variables.calculate.useQuery(
+    page.variables ?? {}
+  );
+
+  useEffect(() => {
+    loadPage(page);
+  }, [page]);
+
+  function loadPage(page: Page): void {
+    let variables_ = page.variables ?? {};
+    if (!isLoading && !isError) {
+      variables_ = data;
+    }
+    setLocalPage(hydratePage(page, variables_));
+  }
 
   return (
     <div className="flex h-full flex-col overflow-auto p-4 font-sans leading-normal tracking-normal">
-      {page_.dashboards.map((dashboard, id) => {
+      {localPage.dashboards.map((dashboard, id) => {
         const active = id === index;
         const border = active
           ? "rounded-r-lg border border-blue-500"
