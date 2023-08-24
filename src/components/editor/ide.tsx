@@ -7,6 +7,8 @@ import { type Page, PageSchema } from "@/data/page";
 import { useKey } from "@/hooks/use-key";
 import { api } from "@/utils/api";
 
+import { Console, LogMessage } from "./bottom-panel/console";
+import { BottomPanel } from "./bottom-panel/panel";
 import { Monaco } from "./panels/monaco";
 import { Previewer } from "./previewer";
 
@@ -24,6 +26,26 @@ type IDEProperties = {
 export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
   const [localPage, setLocalPage] = useState<Page>(page);
   const [error, setError] = useState<IDEError>(IDEError.NONE);
+  const [cliLog, setCliLog] = useState<LogMessage[]>([
+    {
+      message: "page loaded",
+      type: "info",
+    },
+  ]);
+
+  function addCliLog(log: string, type: string): void {
+    const last = cliLog[cliLog.length - 1];
+    if (last?.message === log) {
+      setCliLog((previous: LogMessage[]) => {
+        const amount = last.amount === undefined ? 1 : last.amount + 1;
+        return [...previous.slice(0, -1), { ...last, amount }];
+      });
+    } else
+      setCliLog((previous: LogMessage[]) => [
+        ...previous,
+        { message: log, type },
+      ]);
+  }
 
   useEffect(() => {
     trySetLocalPageFromString(JSON.stringify(page));
@@ -35,14 +57,17 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
       parsed = JSON.parse(pageString);
     } catch {
       setError(IDEError.INVALID_JSON);
+      addCliLog("invalid json", "error");
       return;
     }
     const verify = PageSchema.safeParse(parsed);
     if (!verify.success) {
       setError(IDEError.INVALID_PAGE);
+      addCliLog(`invalid page:\n ${verify.error.message}`, "error");
       return;
     }
     setLocalPage(verify.data);
+    addCliLog("page parsed successfully", "info");
     setError(IDEError.NONE);
   }
 
@@ -55,10 +80,11 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
 
   function trySaveToDatabase(): void {
     if (error !== IDEError.NONE) {
-      toast.error("could not save page");
+      toast.error("could not save page check console");
       return;
     }
     mutate({ project, page: localPage });
+    addCliLog("page saved successfully", "success");
   }
 
   useKey("ctrls", () => {
@@ -67,20 +93,21 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
 
   return (
     <div className="flex h-full flex-row">
-      <div className="w-1/2">
+      <div className="h-full w-1/2 overflow-auto bg-green-500">
         <Monaco
           page={page}
           trySetLocalPageFromString={trySetLocalPageFromString}
         />
       </div>
-      <div className="w-1/2">
-        <div className="mx-5 flex justify-center bg-red-800 font-mono text-3xl text-red-300">
-          {error}
-        </div>
+      <div className="flex w-1/2 flex-col">
         <Previewer
           page={localPage}
           variables={localPage.variables}
           project={project}
+        />
+        <BottomPanel
+          tabNames={["Console"]}
+          tabs={[<Console key={"Console"} messages={cliLog} />]}
         />
       </div>
     </div>

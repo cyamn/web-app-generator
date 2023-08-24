@@ -30,7 +30,7 @@ export const VariablesPanel: React.FC<VariablesPanelProperties> = ({
   }
 
   return (
-    <div className="m-2 h-full">
+    <div className="m-2 h-screen">
       <table className="w-full table-fixed font-mono">
         <thead className="sticky">
           <tr>

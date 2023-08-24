@@ -21,8 +21,7 @@ export const BottomPanel: React.FC<BottomPanelProperties> = ({
         activeTab={tab}
         setTab={setTab}
         tabNames={tabNames}
-        tabs={tabs}
-        visibilty={visibility}
+        visibility={visibility}
         setVisibility={setVisibility}
       />
     );
@@ -35,8 +34,7 @@ export const BottomPanel: React.FC<BottomPanelProperties> = ({
           activeTab={tab}
           setTab={setTab}
           tabNames={tabNames}
-          tabs={tabs}
-          visibilty={visibility}
+          visibility={visibility}
           setVisibility={setVisibility}
         />
       </div>

@@ -6,19 +6,17 @@ import { Tab } from "./tab";
 type PanelHeaderProperties = {
   activeTab: number;
   setTab: (tab: number) => void;
-  visibilty: boolean;
+  visibility: boolean;
   setVisibility: (visibility: boolean) => void;
   tabNames: string[];
-  tabs: React.ReactNode[];
 };
 
 export const PanelHeader: React.FC<PanelHeaderProperties> = ({
   activeTab,
   setTab,
-  visibilty,
+  visibility,
   setVisibility,
   tabNames,
-  tabs,
 }) => {
   return (
     <div className="flex w-full flex-col border-t border-slate-300 bg-white p-1">
@@ -32,18 +30,24 @@ export const PanelHeader: React.FC<PanelHeaderProperties> = ({
                 activeTab={activeTab}
                 id={index}
                 tab={tab}
-                visibilty={visibilty}
+                visibilty={visibility}
                 setVisibility={setVisibility}
               />
             );
           })}
         </div>
+        <div
+          className="w-full"
+          onClick={() => {
+            setVisibility(!visibility);
+          }}
+        ></div>
         <FontAwesomeIcon
           className="cursor-pointer px-2 pt-1 text-xl"
           onClick={() => {
-            setVisibility(!visibilty);
+            setVisibility(!visibility);
           }}
-          icon={visibilty ? faChevronDown : faChevronUp}
+          icon={visibility ? faChevronDown : faChevronUp}
         />
       </div>
     </div>
