@@ -9,9 +9,3 @@ export const defaultVariables: Variables = {
   a: "42",
   calculated: "=ADD(a,7)",
 };
-
-// "variables": {
-//   "foo": "bar",
-//   "a": "42",
-//   "sum": "=ADD(a,7)"
-// }

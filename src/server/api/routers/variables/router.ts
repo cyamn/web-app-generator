@@ -5,9 +5,6 @@ import { calculateVariables } from "./calculate";
 
 export const variablesRouter = createTRPCRouter({
   calculate: publicProcedure
-    .meta({
-      openapi: { tags: ["variables"], method: "GET", path: "/variables" },
-    })
     .input(VariablesSchema)
     .output(VariablesSchema)
     .query(({ input }) => {

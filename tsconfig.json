@@ -37,7 +37,7 @@
     "src/pages/index.tsx.off",
     "src/server/api/express.js",
     "src/server/api/express.js",
-    "src/server/api/routers/table/index.ts.bak"
+    "next.config.js"
   ],
   "exclude": ["node_modules"]
 }

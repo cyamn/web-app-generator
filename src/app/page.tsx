@@ -20,17 +20,68 @@ const Home = async () => {
       <Layout
         header={<Header item={<Navbar />} user={session?.user} />}
         content={
-          <main className="flex h-full flex-col items-center justify-center bg-white">
-            <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-              <h1 className="text-center text-5xl font-extrabold tracking-tight text-slate-600 sm:text-[5rem]">
-                <span className="bg-gradient-to-br from-blue-500 to-blue-300 bg-clip-text text-transparent">
-                  Business Apps
-                </span>
-                <br />
-                <span className="">in minutes</span>
-              </h1>
-              <Image src="/cto.svg" alt="logo" width={300} height={300} />
-              <Auth />
+          <main className="flex min-h-full flex-col items-center justify-center bg-slate-100">
+            <div className="flex flex-row items-center gap-28">
+              <div className="flex flex-col gap-10">
+                <div className="hover:scale-125">
+                  <Image
+                    className="animate-jump-in rounded-xl border-2 border-fuchsia-500 bg-white p-4 drop-shadow-xl animate-delay-200 animate-once animate-ease-in"
+                    src="/example/jsonExample.png"
+                    alt=""
+                    width={300}
+                    height={300}
+                  />
+                </div>
+                <div className="hover:scale-125">
+                  <Image
+                    className="animate-jump-in rounded-xl border-2 border-green-500 bg-white p-4 drop-shadow-xl animate-delay-[400ms] animate-once animate-ease-in"
+                    src="/example/csvExample.png"
+                    alt=""
+                    width={300}
+                    height={300}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+                <h1 className="text-center text-5xl font-bold tracking-tight text-slate-600 sm:text-[5rem]">
+                  KAROTTE
+                </h1>
+                <div className="flex flex-row items-center gap-2 text-5xl">
+                  <Image
+                    className="animate-jump-in animate-delay-200 animate-once animate-ease-in"
+                    src="/JSON.svg"
+                    alt="Json"
+                    width={80}
+                    height={80}
+                  />
+                  +
+                  <Image
+                    className="animate-jump-in animate-delay-[400ms] animate-once animate-ease-in"
+                    src="/CSV.svg"
+                    alt="Json"
+                    width={80}
+                    height={80}
+                  />
+                  =
+                  <Image
+                    className="animate-jump-in animate-delay-[800ms] animate-once animate-ease-in"
+                    src="/smilyface.png"
+                    alt="Json"
+                    width={90}
+                    height={80}
+                  />
+                </div>
+                <Auth />
+              </div>
+              <div className="hover:scale-125">
+                <Image
+                  className="animate-jump-in rounded-xl border-2 border-yellow-300 bg-white drop-shadow-xl animate-delay-[800ms] animate-once animate-ease-in"
+                  src="/example/appExample.png"
+                  alt=""
+                  width={300}
+                  height={300}
+                />
+              </div>
             </div>
           </main>
         }
