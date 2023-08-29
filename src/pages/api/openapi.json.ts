@@ -16,7 +16,7 @@ export default function handler(_: NextApiRequest, response: NextApiResponse) {
         "Read examples how to consume the API endpoints here: TODO or try them out headers.",
       version,
       baseUrl: `${getNextUrl()}/api`,
-      tags: ["debug", "auth", "users", "table", "page", "project"],
+      tags: ["debug", "project", "page", "table", "role"],
     })
   );
 }

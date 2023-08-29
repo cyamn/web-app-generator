@@ -4,7 +4,6 @@ import { adminRouter } from "./routers/admin";
 import { pageRouter } from "./routers/page/router";
 import { projectsRouter } from "./routers/project/router";
 import { rolesRouter } from "./routers/roles/router";
-import { settingsRouter } from "./routers/settings";
 import { tablesRouter } from "./routers/table/router";
 import { variablesRouter } from "./routers/variables/router";
 
@@ -17,7 +16,6 @@ export const appRouter = createTRPCRouter({
   projects: projectsRouter,
   pages: pageRouter,
   tables: tablesRouter,
-  settings: settingsRouter,
   roles: rolesRouter,
   admin: adminRouter,
   variables: variablesRouter,

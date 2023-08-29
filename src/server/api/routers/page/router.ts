@@ -9,6 +9,7 @@ import { addPage } from "./add";
 import { deletePage } from "./delete";
 import { getAllPages, getPage, getPublicPage } from "./get";
 import { listPages } from "./list";
+import { getRoleAccess, setPageVisibilty, setRoleAccess } from "./settings";
 import { updatePage } from "./update";
 
 export const pageRouter = createTRPCRouter({
@@ -89,5 +90,85 @@ export const pageRouter = createTRPCRouter({
     .output(z.array(z.object({ page: PageSchema, updatedAt: z.date() })))
     .query(async ({ ctx, input }) => {
       return await getAllPages(ctx.session.user.id, input.project);
+    }),
+
+  togglePublicVisibility: protectedProcedure
+    .meta({
+      openapi: { tags: ["page"], method: "POST", path: "/page/visibility" },
+    })
+    .input(
+      z.object({
+        project: z.string(),
+        pagePath: z.string(),
+        public: z.boolean(),
+      })
+    )
+    .output(z.string())
+    .mutation(async ({ ctx, input }) => {
+      return await setPageVisibilty(
+        input.project,
+        input.pagePath,
+        input.public
+      );
+    }),
+
+  roleAccess: protectedProcedure
+    .meta({
+      openapi: {
+        tags: ["page", "role"],
+        method: "GET",
+        path: "/page/role-access",
+      },
+    })
+    .input(
+      z.object({
+        project: z.string(),
+        page: z.string(),
+      })
+    )
+    .output(
+      z.array(
+        z.object({
+          name: z.string(),
+          id: z.string(),
+          access: z.boolean(),
+          users: z.array(
+            z.object({
+              id: z.string(),
+              name: z.string().nullable(),
+              image: z.string().nullable(),
+            })
+          ),
+        })
+      )
+    )
+    .query(async ({ ctx, input }) => {
+      return await getRoleAccess(input.project, input.page);
+    }),
+
+  setRoleAccess: protectedProcedure
+    .meta({
+      openapi: {
+        tags: ["page", "role"],
+        method: "POST",
+        path: "/page/role-access",
+      },
+    })
+    .input(
+      z.object({
+        project: z.string(),
+        page: z.string(),
+        role: z.string(),
+        access: z.boolean(),
+      })
+    )
+    .output(z.string())
+    .mutation(async ({ ctx, input }) => {
+      return await setRoleAccess(
+        input.project,
+        input.page,
+        input.role,
+        input.access
+      );
     }),
 });
