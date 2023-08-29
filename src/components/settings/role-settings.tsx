@@ -26,7 +26,7 @@ export const RoleSettings: FC<RoleSettingsProperties> = ({ projectID }) => {
     },
   });
 
-  const { mutate: addUser } = api.roles.addUser.useMutation({
+  const { mutate: addUser } = api.roles.assignUserToRoleByMail.useMutation({
     onSuccess: () => {
       void context.roles.list.invalidate({ project: projectID });
     },
