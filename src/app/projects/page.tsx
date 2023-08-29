@@ -15,7 +15,7 @@ const Projects = async () => {
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const projects = await caller.projects.listAll();
+  const projects = await caller.projects.list({});
 
   return (
     <Layout

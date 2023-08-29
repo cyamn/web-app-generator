@@ -2,7 +2,7 @@ import { createTRPCRouter } from "@/server/api/trpc";
 
 import { adminRouter } from "./routers/admin";
 import { pageRouter } from "./routers/page/router";
-import { projectsRouter } from "./routers/project";
+import { projectsRouter } from "./routers/project/router";
 import { rolesRouter } from "./routers/roles";
 import { settingsRouter } from "./routers/settings";
 import { tablesRouter } from "./routers/table/router";

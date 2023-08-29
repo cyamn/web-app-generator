@@ -1,11 +1,7 @@
 import { api } from "@/utils/api";
 
 export const useProjectList = () => {
-  const {
-    data: projects,
-    isError,
-    isLoading,
-  } = api.projects.listAll.useQuery();
+  const { data: projects, isError, isLoading } = api.projects.list.useQuery({});
 
   if (projects === undefined || projects === null)
     return { projects: [], isError, isLoading: true };
@@ -14,9 +10,9 @@ export const useProjectList = () => {
 
 export const useAddProject = () => {
   const context = api.useContext();
-  const { mutate, isLoading: isAdding } = api.projects.create.useMutation({
+  const { mutate, isLoading: isAdding } = api.projects.add.useMutation({
     onSuccess: () => {
-      void context.projects.listAll.invalidate();
+      void context.projects.list.invalidate();
       window.location.reload();
     },
   });

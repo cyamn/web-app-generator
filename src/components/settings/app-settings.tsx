@@ -13,13 +13,13 @@ export const AppSettings: FC<AppSettingsProperties> = ({ projectID }) => {
     isLoading,
     isError,
     error,
-  } = api.projects.get.useQuery(projectID);
+  } = api.projects.get.useQuery({ id: projectID });
 
   const context = api.useContext();
 
   const { mutate } = api.projects.update.useMutation({
     onSuccess: () => {
-      void context.projects.get.invalidate(projectID);
+      void context.projects.get.invalidate({ id: projectID });
     },
   });
 

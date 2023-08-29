@@ -26,7 +26,9 @@ const Page = async ({ params }: PageProperties) => {
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const project = await caller.projects.get(params.projectID);
+  const project = await caller.projects.get({
+    id: params.projectID,
+  });
   const pageWithMeta = await caller.pages.get({
     project: project.id,
     page: params.page,

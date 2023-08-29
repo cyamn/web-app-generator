@@ -57,7 +57,7 @@ export const PageItem: React.FC<PageItemProperties> = ({
     ? " bg-blue-100 text-blue-500"
     : " bg-white text-slate-600";
 
-  const border = active ? "border-l-4 border-blue-500" : "";
+  const border = active ? "border-r-4 border-blue-500" : "";
 
   return (
     <div className={border}>
