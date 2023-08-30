@@ -1,6 +1,8 @@
 import { Page } from "@/data/page";
 import { prisma } from "@/server/database";
 
+import { isProjectAdminFilter } from "./shared";
+
 export async function updatePage(
   userID: string,
   projectID: string,
@@ -11,7 +13,7 @@ export async function updatePage(
       path: page.path,
       project: {
         id: projectID,
-        ownerId: userID,
+        OR: isProjectAdminFilter(userID),
       },
     },
     data: {

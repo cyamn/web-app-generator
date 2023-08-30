@@ -5,6 +5,7 @@ import { prisma } from "@/server/database";
 import { NotFoundError } from "../shared/errors";
 import { deserialize } from "./data/serialization";
 import { hydratePage } from "./hydrate";
+import { isProjectAdminFilter } from "./shared";
 
 const pageSelector = {
   id: true,
@@ -39,7 +40,7 @@ export async function getAllPages(
   const pages = await prisma.page.findMany({
     where: {
       project: {
-        ownerId: userID,
+        OR: isProjectAdminFilter(userID),
         id: projectID,
       },
     },
@@ -67,7 +68,7 @@ export async function getPage(
       OR: [
         {
           project: {
-            ownerId: userID,
+            OR: isProjectAdminFilter(userID),
           },
         },
         {

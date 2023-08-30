@@ -1,6 +1,8 @@
 import { prisma } from "@/server/database";
 
-export async function listProjects(ownerId: string): Promise<
+import { isProjectAdminFilter } from "../page/shared";
+
+export async function listProjects(userID: string): Promise<
   Array<{
     name: string;
     updatedAt: Date;
@@ -16,7 +18,7 @@ export async function listProjects(ownerId: string): Promise<
       id: true,
     },
     where: {
-      ownerId: ownerId,
+      OR: isProjectAdminFilter(userID),
     },
     orderBy: [
       {

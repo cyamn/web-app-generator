@@ -1,6 +1,7 @@
 import { prisma } from "@/server/database";
 
 import { NotFoundError } from "../shared/errors";
+import { isProjectAdminFilter } from "./shared";
 
 export async function listPages(
   userID: string,
@@ -9,7 +10,7 @@ export async function listPages(
   const project = await prisma.project.findFirst({
     where: {
       id: projectID,
-      ownerId: userID,
+      OR: isProjectAdminFilter(userID),
     },
     select: {
       pages: {

@@ -1,5 +1,7 @@
 import { prisma } from "@/server/database";
 
+import { isProjectAdminFilter } from "./shared";
+
 export async function deletePage(
   userID: string,
   projectID: string,
@@ -10,7 +12,7 @@ export async function deletePage(
       path: pagePath,
       project: {
         id: projectID,
-        ownerId: userID,
+        OR: isProjectAdminFilter(userID),
       },
     },
   });

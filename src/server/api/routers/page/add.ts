@@ -3,16 +3,17 @@ import { prisma } from "@/server/database";
 import { nameToInternal } from "@/utils/name-to-internal";
 
 import { NotFoundError } from "../shared/errors";
+import { isProjectAdminFilter } from "./shared";
 
 export async function addPage(
-  userId: string,
+  userID: string,
   projectId: string,
   pageName: string
 ): Promise<string> {
   const project = await prisma.project.findFirst({
     where: {
       id: projectId,
-      ownerId: userId,
+      OR: isProjectAdminFilter(userID),
     },
   });
   if (!project) {

@@ -3,6 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { defaultTable, Table } from "@/data/table";
 import { prisma } from "@/server/database";
 
+import { isProjectAdminFilter } from "../page/shared";
 import { createCells } from "./cell/add";
 import { createColumns } from "./column/add";
 import { createRows } from "./row/add";
@@ -15,7 +16,7 @@ export async function addTable(
   const project = await prisma.project.findFirst({
     where: {
       id: projectID,
-      ownerId: userID,
+      OR: isProjectAdminFilter(userID),
     },
   });
   if (!project) {

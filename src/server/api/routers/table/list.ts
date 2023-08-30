@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { prisma } from "@/server/database";
 
+import { isProjectAdminFilter } from "../page/shared";
 import { idListSchema } from "../parameter-schemas";
 
 export async function listTables(
@@ -12,8 +13,8 @@ export async function listTables(
   const tables = await prisma.table.findMany({
     where: {
       project: {
-        ownerId: userID,
         id: projectID,
+        OR: isProjectAdminFilter(userID),
       },
     },
     select: {
