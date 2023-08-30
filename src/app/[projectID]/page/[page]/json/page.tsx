@@ -59,7 +59,7 @@ const Page = async ({ params }: PageProperties) => {
       }
       sidebarLeft={
         <div className="flex h-full flex-row">
-          <ViewList activeView={"page"} projectName={project.id} />
+          <ViewList activeView={"page"} project={project.id} />
           <PageList project={project.id} pagePath={pageWithMeta.page.path} />
         </div>
       }

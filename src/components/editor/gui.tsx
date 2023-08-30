@@ -73,7 +73,7 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
             showBorders={true}
             index={index}
             setIndex={switchIndex}
-            projectName={project}
+            project={project}
             addDashboard={addDashboard}
           />
           <BottomPanel

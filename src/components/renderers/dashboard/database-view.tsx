@@ -9,8 +9,8 @@ import { api } from "@/utils/api";
 
 export const DatabaseViewRender: React.FC<{
   dashboard: DatabaseView;
-  projectName: string;
-}> = ({ dashboard, projectName }) => {
+  project: string;
+}> = ({ dashboard, project }) => {
   const tableName = dashboard.parameters.data.table;
   const {
     data: table,
@@ -18,7 +18,7 @@ export const DatabaseViewRender: React.FC<{
     isError,
     isLoading,
   } = api.tables.get.useQuery({
-    project: projectName,
+    project,
     tableName,
     columns: Object.keys(dashboard.parameters.data.columns ?? {}),
   });

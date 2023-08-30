@@ -57,8 +57,8 @@ function InputField({ label, data, type, setData }: InputFieldProperties) {
 
 export const DatabaseInputFormRender: React.FC<{
   dashboard: DatabaseInputForm;
-  projectName: string;
-}> = ({ dashboard, projectName }) => {
+  project: string;
+}> = ({ dashboard, project }) => {
   const tableName = dashboard.parameters.data.table;
   const {
     data: table,
@@ -66,7 +66,7 @@ export const DatabaseInputFormRender: React.FC<{
     isError,
     isLoading,
   } = api.tables.get.useQuery({
-    project: projectName,
+    project: project,
     tableName,
     columns: Object.keys(dashboard.parameters.data.columns ?? {}),
   });
@@ -96,7 +96,7 @@ export const DatabaseInputFormRender: React.FC<{
           <td className="flex justify-end px-6 py-2">
             <CreateButton
               row={row}
-              project={projectName}
+              project={project}
               table={tableName}
               onReset={() => {
                 setRow({});

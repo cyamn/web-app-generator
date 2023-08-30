@@ -39,7 +39,7 @@ const Page = async ({ params }: PageProperties) => {
       sidebarLeft={
         <div className="flex h-full flex-col bg-slate-700">
           <div className="flex h-full flex-row">
-            <ViewList activeView={"table"} projectName={project.id} />
+            <ViewList activeView={"table"} project={project.id} />
             <div className="flex h-full w-full flex-col justify-between bg-slate-700">
               <TableList project={project.id} />
             </div>

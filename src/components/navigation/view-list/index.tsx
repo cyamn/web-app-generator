@@ -9,12 +9,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type ViewListProperties = {
   activeView: string;
-  projectName: string;
+  project: string;
 };
 
 export const ViewList: React.FC<ViewListProperties> = ({
   activeView,
-  projectName,
+  project,
 }) => {
   return (
     <div className="z-10 flex h-full w-11 flex-col justify-between border-r border-slate-300 bg-white pt-1 text-slate-800 shadow-xl">
@@ -23,25 +23,25 @@ export const ViewList: React.FC<ViewListProperties> = ({
           icon={faCog}
           view={"settings"}
           activeView={activeView}
-          projectName={projectName}
+          project={project}
         />
         <ViewItem
           icon={faFile}
           view={"page"}
           activeView={activeView}
-          projectName={projectName}
+          project={project}
         />
         <ViewItem
           icon={faTable}
           view={"table"}
           activeView={activeView}
-          projectName={projectName}
+          project={project}
         />
         <ViewItem
           icon={faSignsPost}
           view={"api"}
           activeView={activeView}
-          projectName={projectName}
+          project={project}
         />
       </nav>
     </div>
@@ -52,14 +52,14 @@ type ViewItemProperties = {
   icon: IconDefinition;
   view: string;
   activeView: string;
-  projectName: string;
+  project: string;
 };
 
 const ViewItem: React.FC<ViewItemProperties> = ({
   icon,
   view,
   activeView,
-  projectName,
+  project,
 }) => {
   const active = activeView === view;
   const style = active
@@ -68,7 +68,7 @@ const ViewItem: React.FC<ViewItemProperties> = ({
   return (
     <a
       className={"mb-1 h-10 w-10 pt-2 text-center " + style}
-      href={`/${projectName}/${view}`}
+      href={`/${project}/${view}`}
     >
       <FontAwesomeIcon className="text-2xl" icon={icon} />
     </a>

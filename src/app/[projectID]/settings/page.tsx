@@ -35,9 +35,7 @@ const Page = async ({ params }: PageProperties) => {
           user={session.user}
         />
       }
-      sidebarLeft={
-        <ViewList activeView={"settings"} projectName={project.id} />
-      }
+      sidebarLeft={<ViewList activeView={"settings"} project={project.id} />}
       content={
         <div className="m-4">
           <AppSettings projectID={params.projectID} />

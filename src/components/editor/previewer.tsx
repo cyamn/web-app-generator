@@ -40,11 +40,7 @@ export const Previewer: React.FC<PreviewerProperties> = ({
     <div className="flex h-full flex-col overflow-auto p-8 font-sans leading-normal tracking-normal">
       {localPage.dashboards.map((dashboard, id) => (
         <div key={id} className="py-2">
-          <DashboardRender
-            dashboard={dashboard}
-            index={id}
-            projectName={project}
-          />
+          <DashboardRender dashboard={dashboard} index={id} project={project} />
         </div>
       ))}
     </div>

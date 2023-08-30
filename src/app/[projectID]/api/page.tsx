@@ -38,7 +38,7 @@ const Page = async ({ params }: PageProperties) => {
           user={session.user}
         />
       }
-      sidebarLeft={<ViewList activeView={"api"} projectName={project.id} />}
+      sidebarLeft={<ViewList activeView={"api"} project={project.id} />}
       content={<OpenApiPanel />}
     />
   );

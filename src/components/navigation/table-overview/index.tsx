@@ -38,7 +38,7 @@ export const TablesOverview: React.FC<TablesOverviewProperties> = async ({
             updatedAt={tableWithMeta.updatedAt}
             key={tableWithMeta.table.name}
             table={tableWithMeta.table}
-            projectName={project.id}
+            project={project.id}
           />
         ))}
         <AddTableCard project={project.id} />
@@ -49,17 +49,17 @@ export const TablesOverview: React.FC<TablesOverviewProperties> = async ({
 
 interface TableDetailedItemProperties {
   table: Table;
-  projectName: string;
+  project: string;
   updatedAt: Date;
 }
 
 export const TableDetailedItem: React.FC<TableDetailedItemProperties> = ({
   table,
-  projectName,
+  project,
   updatedAt,
 }) => {
   return (
-    <Link href={`/${projectName}/table/${table.name}`}>
+    <Link href={`/${project}/table/${table.name}`}>
       <div className="m-2">
         <div className="grid w-full grid-cols-2">
           <div>

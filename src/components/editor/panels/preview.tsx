@@ -57,7 +57,7 @@ type PreviewProperties = {
   showBorders?: boolean;
   index?: number;
   setIndex?: (index: number) => void;
-  projectName: string;
+  project: string;
   addDashboard: (index: number, dashboard: Dashboard) => void;
 };
 
@@ -68,7 +68,7 @@ export const Preview: React.FC<PreviewProperties> = ({
   setIndex = (index: number) => {
     return;
   },
-  projectName,
+  project,
   addDashboard,
 }) => {
   const [localPage, setLocalPage] = useState<Page>(page);
@@ -118,7 +118,7 @@ export const Preview: React.FC<PreviewProperties> = ({
                 <DashboardRender
                   dashboard={dashboard}
                   index={index}
-                  projectName={projectName}
+                  project={project}
                 />
               </div>
             </div>

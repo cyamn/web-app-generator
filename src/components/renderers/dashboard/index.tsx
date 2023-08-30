@@ -12,8 +12,8 @@ import { MarkdownRender } from "./markdown";
 export const DashboardRender: React.FC<{
   dashboard: Dashboard;
   index: number;
-  projectName: string;
-}> = ({ dashboard, projectName }) => {
+  project: string;
+}> = ({ dashboard, project }) => {
   switch (dashboard.type) {
     case "markdown": {
       return <MarkdownRender dashboard={dashboard as Markdown} />;
@@ -22,7 +22,7 @@ export const DashboardRender: React.FC<{
       return (
         <DatabaseViewRender
           dashboard={dashboard as DatabaseView}
-          projectName={projectName}
+          project={project}
         />
       );
     }
@@ -30,7 +30,7 @@ export const DashboardRender: React.FC<{
       return (
         <DatabaseInputFormRender
           dashboard={dashboard as DatabaseInputForm}
-          projectName={projectName}
+          project={project}
         />
       );
     }
