@@ -1,5 +1,3 @@
-import l from "./layout.module.css";
-
 interface LayoutProperties {
   header?: React.ReactNode;
   sidebarLeft?: React.ReactNode;
@@ -16,20 +14,12 @@ export const Layout: React.FC<LayoutProperties> = ({
   footer,
 }) => {
   return (
-    <div className="h-screen max-h-screen overflow-auto bg-slate-50">
-      <div className={l.container}>
-        {header !== undefined && <div className={l.header}>{header}</div>}
-        <div className={l.main}>
-          {sidebarLeft !== undefined && (
-            <div className={l.sidebar}>{sidebarLeft}</div>
-          )}
-          <div className={l.content}>{content}</div>
-          {sidebarRight !== undefined && (
-            <div className="border-l border-slate-300">{sidebarRight}</div>
-          )}
-        </div>
-        {footer !== undefined && <div className={l.footer}>{footer}</div>}
-      </div>
+    <div className="flex h-full flex-row overflow-auto bg-slate-50">
+      {sidebarLeft !== undefined && <div>{sidebarLeft}</div>}
+      <div className="h-full w-full overflow-auto">{content}</div>
+      {sidebarRight !== undefined && (
+        <div className="border-l border-slate-300">{sidebarRight}</div>
+      )}
     </div>
   );
 };

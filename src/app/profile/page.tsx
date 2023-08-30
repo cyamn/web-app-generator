@@ -6,15 +6,12 @@ import { Header } from "@/components/header";
 import { Navbar } from "@/components/navbar";
 import { Layout } from "@/layout";
 import { AuthRequiredError } from "@/lib/exceptions";
-import { appRouter } from "@/server/api/root";
 import { authOptions } from "@/server/auth";
-import { prisma } from "@/server/database";
 
 const Projects = async () => {
   const session = await getServerSession(authOptions);
   if (!session) throw new AuthRequiredError();
 
-  const caller = appRouter.createCaller({ prisma, session });
   const user = session.user;
   return (
     <Layout

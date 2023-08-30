@@ -1,16 +1,14 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { getServerSession } from "next-auth/next";
 
 import { Previewer } from "@/components/editor/previewer";
-import { Header } from "@/components/header";
 import { PageList, ViewList } from "@/components/navigation";
 import { PageMode, Tabs } from "@/components/tabs";
 import { Layout } from "@/layout";
-import { AuthRequiredError } from "@/lib/exceptions";
-import { appRouter } from "@/server/api/root";
-import { authOptions } from "@/server/auth";
-import { prisma } from "@/server/database";
+import {
+  getServerSidePage,
+  getServerSideProject,
+} from "@/utils/get-serverside";
 
 dayjs.extend(relativeTime);
 
@@ -22,55 +20,31 @@ type PageProperties = {
 };
 
 const Page = async ({ params }: PageProperties) => {
-  const session = await getServerSession(authOptions);
-  if (!session) throw new AuthRequiredError();
-
-  const caller = appRouter.createCaller({ prisma, session });
-  const project = await caller.projects.get({ id: params.projectID });
-  const pageWithMeta = await caller.pages.get({
-    project: project.id,
-    page: params.page,
-  });
+  const project = await getServerSideProject(params.projectID);
+  const pageWithMeta = await getServerSidePage(project.id, params.page);
 
   return (
-    <Layout
-      header={
-        <Header
-          project={project.id}
-          projectName={project.name}
-          item={
-            <div className="flex flex-row items-center">
-              <div>
-                {project.name} 👉 {pageWithMeta.page.name}
-              </div>
-              <div className="pl-2 text-sm text-slate-400">
-                last saved {dayjs(pageWithMeta.updatedAt).fromNow()}
-              </div>
-            </div>
-          }
-          user={session.user}
-          tabs={
-            <Tabs
-              mode={PageMode.Preview}
-              base={`/${project.id}/page/${params.page}`}
-            />
-          }
-        />
-      }
-      sidebarLeft={
-        <div className="flex h-full flex-row">
-          <ViewList activeView={"page"} project={project.id} />
-          <PageList project={project.id} pagePath={pageWithMeta.page.path} />
-        </div>
-      }
-      content={
-        <Previewer
-          page={pageWithMeta.page}
-          variables={pageWithMeta.variables}
-          project={project.id}
-        />
-      }
-    />
+    <>
+      <Tabs
+        mode={PageMode.Preview}
+        base={`/${project.id}/page/${params.page}`}
+      />
+      <Layout
+        sidebarLeft={
+          <div className="flex h-full flex-row">
+            <ViewList activeView={"page"} project={project.id} />
+            <PageList project={project.id} pagePath={pageWithMeta.page.path} />
+          </div>
+        }
+        content={
+          <Previewer
+            page={pageWithMeta.page}
+            variables={pageWithMeta.variables}
+            project={project.id}
+          />
+        }
+      />
+    </>
   );
 };
 

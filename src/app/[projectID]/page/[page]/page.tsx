@@ -1,13 +1,5 @@
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import { getServerSession, Session } from "next-auth";
-
 import { Previewer } from "@/components/editor/previewer";
-import { appRouter } from "@/server/api/root";
-import { authOptions } from "@/server/auth";
-import { prisma } from "@/server/database";
-
-dayjs.extend(relativeTime);
+import { getServerSidePage } from "@/utils/get-serverside";
 
 type PageProperties = {
   params: {
@@ -17,47 +9,16 @@ type PageProperties = {
 };
 
 const Page = async ({ params }: PageProperties) => {
-  const session = await getServerSession(authOptions);
-  return session ? (
-    <PrivatePage params={params} session={session} />
-  ) : (
-    <PublicPage params={params} />
+  const pageWithMeta = await getServerSidePage(
+    params.projectID,
+    params.page,
+    false
   );
-};
-
-const PrivatePage = async ({
-  params,
-  session,
-}: PageProperties & { session: Session }) => {
-  const caller = appRouter.createCaller({ prisma, session });
-  const project = await caller.projects.get({ id: params.projectID });
-  const pageWithMeta = await caller.pages.get({
-    project: project.id,
-    page: params.page,
-  });
-
   return (
     <Previewer
       page={pageWithMeta.page}
       variables={pageWithMeta.variables}
-      project={project.id}
-    />
-  );
-};
-
-const PublicPage = async ({ params }: PageProperties) => {
-  const caller = appRouter.createCaller({ prisma, session: null });
-  const project = await caller.projects.get({ id: params.projectID });
-  const pageWithMeta = await caller.pages.get({
-    project: project.id,
-    page: params.page,
-  });
-
-  return (
-    <Previewer
-      page={pageWithMeta.page}
-      variables={pageWithMeta.variables}
-      project={project.id}
+      project={params.projectID}
     />
   );
 };
