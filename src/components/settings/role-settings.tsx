@@ -4,7 +4,7 @@ import { FC } from "react";
 import { api } from "@/utils/api";
 import { combine } from "@/utils/combine";
 
-import { UserAvatar } from "../user/avatar";
+import { UserAvatar } from "../avatars/user";
 
 type RoleSettingsProperties = {
   projectID: string;

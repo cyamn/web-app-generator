@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getServerSession } from "next-auth";
 
 import { Auth } from "@/components/auth";
+import GithubRibbon from "@/components/github-ribbon";
 import { Header } from "@/components/header";
 import { Navbar } from "@/components/navbar";
 import { Layout } from "@/layout";
@@ -17,6 +18,7 @@ const Home = async () => {
         <meta name="description" content="Generate  by create-t3-app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <GithubRibbon />
       <Layout
         header={<Header item={<Navbar />} user={session?.user} />}
         content={

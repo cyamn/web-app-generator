@@ -58,10 +58,11 @@ model User {
 }
 
 model Role {
-  id    String @id @default(cuid())
-  name  String
-  users User[]
-  rules Rule[]
+  id      String  @id @default(cuid())
+  name    String
+  users   User[]
+  rules   Rule[]
+  isAdmin Boolean @default(false)
 
   projectId String
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)

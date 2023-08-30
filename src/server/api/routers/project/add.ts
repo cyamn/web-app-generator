@@ -2,6 +2,8 @@ import { defaultPage } from "@/data/page";
 import { defaultWebApp } from "@/data/webapp";
 import { prisma } from "@/server/database";
 
+import { addRole } from "../roles/add";
+import { addUserToRole } from "../roles/assign";
 import { createTable } from "../table/add";
 
 export async function addProject(
@@ -26,11 +28,12 @@ export async function addProject(
       },
     },
   });
-  await seedProject(project.id);
+  await seedProject(project.id, ownerId);
   return project.id;
 }
 
-async function seedProject(projectId: string) {
+async function seedProject(projectId: string, ownerId: string) {
   await createTable(projectId);
-  // TODO: Default Role etc.
+  const adminRole = await addRole("admin", projectId, true);
+  await addUserToRole(ownerId, adminRole);
 }

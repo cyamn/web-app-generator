@@ -1,9 +1,20 @@
-import Avatar from "boring-avatars";
+"use client";
+
+import {
+  faBolt,
+  faClock,
+  faPeopleGroup,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 
+import { ProjectAvatar } from "@/components/avatars/project";
+import { UsersStack } from "@/components/avatars/user";
 import { Project } from "@/data/project";
+import { api } from "@/utils/api";
+import { stringToHex } from "@/utils/name-to-hex";
 
 import { AddProjectButton } from "./add-project-button";
 
@@ -17,7 +28,7 @@ export const ProjectOverview: React.FC<ProjectOverviewProperties> = ({
   projects,
 }) => {
   return (
-    <div className="grid grid-cols-3">
+    <div className="grid sm:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3">
       {projects.map((project) => (
         <ProjectCard key={project.name} project={project} />
       ))}
@@ -31,22 +42,49 @@ type ProjectCardProperties = {
 };
 
 export const ProjectCard: React.FC<ProjectCardProperties> = ({ project }) => {
+  const {
+    data: admins,
+    isLoading,
+    isError,
+  } = api.roles.getAdmins.useQuery({ project: project.id });
+
   return (
     <Link href={`/${project.id}/page`}>
-      <div className="m-4 flex h-48 flex-row items-center overflow-hidden rounded-xl bg-slate-50">
-        <div className="h-48 w-48">
-          <Avatar
-            size={200}
-            name={project.id}
-            square={true}
-            variant="bauhaus"
-            colors={["#3b82f6", "#473f47", "#FFFFFF", "#68a4fd", "#E4EFFF"]}
+      <div
+        className="m-4 flex h-48 flex-row items-center overflow-hidden rounded-xl bg-slate-50 hover:scale-105"
+        style={{
+          border: `1px solid ${stringToHex(project.id)}`,
+          color: `${stringToHex(project.id)}`,
+        }}
+      >
+        <div
+          className="h-48 w-48 overflow-hidden rounded-xl"
+          style={{
+            boxShadow: `20px 0 400px 1px ${stringToHex(project.id)}`,
+          }}
+        >
+          <ProjectAvatar
+            size={196}
+            projectName={project.name}
+            projectID={project.id}
           />
         </div>
-        <div className="m-3 grid min-h-min w-full select-none place-items-center text-center text-xl font-bold text-slate-900">
-          <div>{dayjs(project.updatedAt).fromNow()}</div>
+        <div className="flex h-full flex-col justify-between p-4 text-lg">
           <div className="text-3xl">{project.name}</div>
-          <div>{project.description}</div>
+          <div className="flex flex-row place-items-center gap-2">
+            <FontAwesomeIcon icon={faClock} />
+            <div>{dayjs(project.updatedAt).fromNow()}</div>
+          </div>
+          <div className="flex flex-row place-items-center gap-2">
+            <FontAwesomeIcon icon={faBolt} />
+            <div>{project.description}</div>
+          </div>
+          <div className="flex flex-row place-items-center gap-2">
+            <FontAwesomeIcon icon={faPeopleGroup} />
+            {isLoading && <div>Loading...</div>}
+            {isError && <div>Error</div>}
+            {!isLoading && !isError && <UsersStack users={admins} />}
+          </div>
         </div>
       </div>
     </Link>

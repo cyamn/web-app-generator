@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth/next";
 import React from "react";
 
+import { UserAvatar } from "@/components/avatars/user";
 import { Header } from "@/components/header";
 import { Navbar } from "@/components/navbar";
-import { ProjectOverview } from "@/components/navigation/projects-overview";
 import { Layout } from "@/layout";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
@@ -15,17 +15,20 @@ const Projects = async () => {
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const projects = await caller.projects.list({});
-
+  const user = session.user;
   return (
     <Layout
-      header={<Header item={<Navbar />} user={session.user} />}
+      header={<Header item={<Navbar />} user={user} />}
       content={
-        <div className="h-full overflow-auto bg-slate-100 px-12">
-          <h1 className="py-8 text-center text-5xl font-bold tracking-tight text-slate-700">
-            Your Projects
-          </h1>
-          <ProjectOverview projects={projects} />
+        // center the avatar horizontally and vertically
+        <div className="flex h-full flex-col items-center justify-center p-5">
+          <div className="w-70% flex flex-row gap-4 rounded-xl bg-white p-5 shadow-lg">
+            <UserAvatar user={user} size={128} />
+            <div className="flex flex-col justify-start text-2xl">
+              <span>{user.name}</span>
+              <span>{user.email}</span>
+            </div>
+          </div>
         </div>
       }
     />

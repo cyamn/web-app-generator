@@ -1,19 +1,21 @@
 "use client";
 
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { default as ProjectAvatar } from "boring-avatars";
+import Link from "next/link";
 import { type Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import React from "react";
 
-import { UserAvatar } from "./user/avatar";
+import { ProjectAvatar } from "./avatars/project";
+import { UserAvatar } from "./avatars/user";
 
 type HeaderProperties = {
   item: React.ReactNode;
   user?: Session["user"];
   tabs?: React.ReactNode;
   project?: string;
+  projectName?: string;
 };
 
 export const Header: React.FC<HeaderProperties> = ({
@@ -21,18 +23,17 @@ export const Header: React.FC<HeaderProperties> = ({
   user,
   tabs,
   project = null,
+  projectName = null,
 }) => {
   const [show, setShow] = React.useState(false);
   return (
     <div className="flex h-11 w-full justify-center border-b border-slate-300 bg-white">
-      {project !== null && (
+      {projectName !== null && project !== null && (
         <a href="/projects">
           <ProjectAvatar
             size={44}
-            name={project}
-            square={true}
-            variant="bauhaus"
-            colors={["#3b82f6", "#473f47", "#FFFFFF", "#68a4fd", "#E4EFFF"]}
+            projectName={projectName}
+            projectID={project}
           />
         </a>
       )}
@@ -52,10 +53,20 @@ export const Header: React.FC<HeaderProperties> = ({
               aria-labelledby="menu-button"
             >
               <div className="py-1" role="none">
+                <Link
+                  href="/profile"
+                  className="block px-4 py-2 text-left text-sm text-slate-700"
+                  id="menu-item-0"
+                >
+                  <FontAwesomeIcon className="pr-2" icon={faUser} />
+                  Profile
+                </Link>
+              </div>
+              <div className="py-1" role="none">
                 <button
                   onClick={() => void signOut()}
                   className="block px-4 py-2 text-sm text-slate-700"
-                  id="menu-item-0"
+                  id="menu-item-1"
                 >
                   <FontAwesomeIcon className="pr-2" icon={faRightFromBracket} />
                   Sign out

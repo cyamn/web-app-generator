@@ -6,7 +6,6 @@ import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
@@ -14,6 +13,8 @@ import { Page, PageSchema } from "@/data/page";
 import { api } from "@/utils/api";
 import { handleDownload } from "@/utils/download";
 import { handleImport } from "@/utils/import";
+
+import { UsersStack } from "../avatars/user";
 
 type SettingsProperties = {
   page: Page;
@@ -170,18 +171,7 @@ const CanView: React.FC<AccessSettingsProperties> = ({ project, page }) => {
                 }}
               />
               <div className="w-24 pr-2">{role.name}</div>
-              <div className="flex w-24 flex-row items-center">
-                {role.users.map((user, id) => (
-                  <Image
-                    key={id}
-                    src={user.image?.toString() ?? ""}
-                    width={24}
-                    height={24}
-                    alt=""
-                    className="border-1 -mr-2 rounded-full border border-slate-800"
-                  />
-                ))}
-              </div>
+              <UsersStack users={role.users}></UsersStack>
               <a href={`/${project}/settings#roles`}>
                 <FontAwesomeIcon
                   className="text-slate-300"

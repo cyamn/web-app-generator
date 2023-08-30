@@ -26,6 +26,7 @@ const Page = async ({ params }: PageProperties) => {
       header={
         <Header
           project={project.id}
+          projectName={project.name}
           item={
             <div className="flex flex-row items-center">{project.name}</div>
           }
