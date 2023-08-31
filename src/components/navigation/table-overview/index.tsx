@@ -30,7 +30,7 @@ export const TablesOverview: React.FC<TablesOverviewProperties> = async ({
   const tablesWithMeta = await caller.tables.getAll({ project: project.id });
 
   return (
-    <>
+    <div>
       <h1 className="p-3 text-center">All Tables in {project.name}</h1>
       <div className="grid grid-cols-3 px-20">
         {tablesWithMeta.map((tableWithMeta) => (
@@ -43,7 +43,7 @@ export const TablesOverview: React.FC<TablesOverviewProperties> = async ({
         ))}
         <AddTableCard project={project.id} />
       </div>
-    </>
+    </div>
   );
 };
 

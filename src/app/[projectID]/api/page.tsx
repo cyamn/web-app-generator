@@ -2,7 +2,6 @@ import "swagger-ui-react/swagger-ui.css";
 
 import OpenApiPanel from "@/components/api/openapi";
 import { ViewList } from "@/components/navigation";
-import { Layout } from "@/layout";
 import { getServerSideProject } from "@/utils/get-serverside";
 
 type PageProperties = {
@@ -15,10 +14,12 @@ const Page = async ({ params }: PageProperties) => {
   const project = await getServerSideProject(params.projectID);
 
   return (
-    <Layout
-      sidebarLeft={<ViewList activeView={"api"} project={project.id} />}
-      content={<OpenApiPanel />}
-    />
+    <div className="flex h-full flex-row overflow-hidden">
+      <ViewList activeView={"api"} project={project.id} />
+      <div className="h-full w-full flex-row overflow-y-auto">
+        <OpenApiPanel />
+      </div>
+    </div>
   );
 };
 

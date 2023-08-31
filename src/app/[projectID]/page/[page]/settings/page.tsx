@@ -1,10 +1,8 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { PageList, ViewList } from "@/components/navigation";
 import { Settings } from "@/components/settings";
 import { PageMode, Tabs } from "@/components/tabs";
-import { Layout } from "@/layout";
 import {
   getServerSidePage,
   getServerSideProject,
@@ -29,15 +27,7 @@ const Page = async ({ params }: PageProperties) => {
         mode={PageMode.Settings}
         base={`/${project.id}/page/${params.page}`}
       />
-      <Layout
-        sidebarLeft={
-          <div className="flex h-full flex-row">
-            <ViewList activeView={"page"} project={project.id} />
-            <PageList project={project.id} pagePath={pageWithMeta.page.path} />
-          </div>
-        }
-        content={<Settings project={project.id} page={pageWithMeta.page} />}
-      />
+      <Settings project={project.id} page={pageWithMeta.page} />
     </>
   );
 };

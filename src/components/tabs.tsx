@@ -62,7 +62,7 @@ type TabsProperties = {
 
 export const Tabs: React.FC<TabsProperties> = ({ mode, base }) => {
   return (
-    <div className="absolute top-1 flex w-full justify-center text-center">
+    <div className="absolute left-0 top-1 flex w-full justify-center text-center">
       <ul className="hidden w-1/2 rounded-lg text-center sm:flex">
         <Tab
           mode={PageMode.Settings}

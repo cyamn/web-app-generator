@@ -86,81 +86,79 @@ export const TableEdit: React.FC<TableEditProperties> = ({
   }
 
   return (
-    <div className="">
-      <div className="max-h-full overflow-x-auto shadow-md">
-        <div className="flex flex-row">
-          <table className="w-full overflow-auto text-left text-sm text-slate-500 ">
-            <thead className="sticky top-0 bg-slate-50 text-xs uppercase text-slate-700">
-              <tr>
-                {controls && <th></th>}
-                {table.columns.map((column) => (
-                  <th
-                    key={column.key}
-                    scope="col"
-                    className="border-r border-slate-300 py-3 font-medium tracking-wider"
+    <div className="overflow-x-auto border-l border-slate-300 shadow-md">
+      <div className="flex flex-row">
+        <table className="w-full overflow-auto text-left text-sm text-slate-500 ">
+          <thead className="sticky top-0 bg-slate-50 text-xs uppercase text-slate-700">
+            <tr>
+              {controls && <th></th>}
+              {table.columns.map((column) => (
+                <th
+                  key={column.key}
+                  scope="col"
+                  className="border-r border-slate-300 py-3 font-medium tracking-wider"
+                >
+                  <ColumnHeader
+                    value={internalToName(
+                      (columns ? columns[column.key] : column.key) ?? ""
+                    )}
+                    column={column}
+                    project={project}
+                    table={table_}
+                  />
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="overflow-y-auto">
+            {table.cells.map((row, index) => (
+              <tr
+                key={index}
+                className="border-b border-slate-300 bg-white hover:bg-slate-50 "
+              >
+                {controls && (
+                  // delete col
+                  <td className="max-w-fit border-r bg-slate-50 p-2 pl-4 text-right text-lg">
+                    {index + 1}
+                  </td>
+                )}
+                {row.map((cell, id) => (
+                  <td
+                    key={id}
+                    className={`${
+                      controls ? "border-r border-slate-300" : "px-6 py-4"
+                    }`}
                   >
-                    <ColumnHeader
-                      value={internalToName(
-                        (columns ? columns[column.key] : column.key) ?? ""
-                      )}
-                      column={column}
-                      project={project}
-                      table={table_}
+                    <CellEdit
+                      value={cell.value ?? "???"}
+                      type={table.columns[id]?.type ?? "string"}
+                      controls={controls}
+                      id={cell.id}
+                      cell={cell}
                     />
-                  </th>
+                  </td>
                 ))}
               </tr>
-            </thead>
-            <tbody className="overflow-y-auto">
-              {table.cells.map((row, index) => (
-                <tr
-                  key={index}
-                  className="border-b border-slate-300 bg-white hover:bg-slate-50 "
-                >
-                  {controls && (
-                    // delete col
-                    <td className="max-w-fit border-r bg-slate-50 p-2 pl-4 text-right text-lg">
-                      {index + 1}
-                    </td>
-                  )}
-                  {row.map((cell, id) => (
-                    <td
-                      key={id}
-                      className={`${
-                        controls ? "border-r border-slate-300" : "px-6 py-4"
-                      }`}
-                    >
-                      <CellEdit
-                        value={cell.value ?? "???"}
-                        type={table.columns[id]?.type ?? "string"}
-                        controls={controls}
-                        id={cell.id}
-                        cell={cell}
-                      />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <button
-            className="p-3"
-            onClick={() => {
-              createColumn();
-            }}
-          >
-            +
-          </button>
-        </div>
+            ))}
+          </tbody>
+        </table>
         <button
-          className="w-full p-2"
+          className="p-3"
           onClick={() => {
-            createRow();
+            createColumn();
           }}
         >
-          + Add row
+          +
         </button>
       </div>
+      <button
+        className="w-full p-2"
+        onClick={() => {
+          createRow();
+        }}
+      >
+        + Add row
+      </button>
     </div>
   );
 };

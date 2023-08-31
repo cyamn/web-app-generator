@@ -34,7 +34,7 @@ export const PagesOverview: React.FC<PagesOverviewProperties> = async ({
   const pagesWithMeta = await caller.pages.getAll({ project: project.id });
 
   return (
-    <>
+    <div>
       <h1 className="p-3 text-center">All Pages in {project.name}</h1>
       <div className="grid grid-cols-3 px-20">
         {pagesWithMeta.map((pageWithMeta) => (
@@ -47,7 +47,7 @@ export const PagesOverview: React.FC<PagesOverviewProperties> = async ({
         ))}
         <AddPageCard project={project.id} />
       </div>
-    </>
+    </div>
   );
 };
 

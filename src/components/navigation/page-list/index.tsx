@@ -26,7 +26,7 @@ export const PageList: React.FC<PageListProperties> = async ({
   const pagesWithMeta = await caller.pages.list({ project: project });
 
   return (
-    <div className="flex h-full w-full flex-col justify-between border-r border-slate-300 bg-white">
+    <div className="flex h-full w-36 flex-col justify-between border-r border-slate-300 bg-white">
       <nav className="flex h-full flex-col overflow-auto">
         {pagesWithMeta.map((page, id) => (
           <PageItem

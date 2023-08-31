@@ -5,7 +5,6 @@ import OpenApiPanel from "@/components/api/openapi";
 import GithubRibbon from "@/components/github-ribbon";
 import { Header } from "@/components/header";
 import { Navbar } from "@/components/navbar";
-import { Layout } from "@/layout";
 import { authOptions } from "@/server/auth";
 
 const Page = async () => {
@@ -13,10 +12,10 @@ const Page = async () => {
   return (
     <>
       <GithubRibbon />
-      <Layout
-        header={<Header item={<Navbar />} user={session?.user} />}
-        content={<OpenApiPanel />}
-      />
+      <div className="flex flex-col">
+        <Header item={<Navbar />} user={session?.user} />
+        <OpenApiPanel />
+      </div>
     </>
   );
 };

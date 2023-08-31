@@ -27,7 +27,7 @@ export const TableList: React.FC<TableListProperties> = async ({
   });
 
   return (
-    <div className="flex h-full w-full flex-col justify-between border-r border-slate-300 bg-white">
+    <div className="flex h-full w-36 flex-col justify-between border-r border-slate-300 bg-white">
       <nav className="flex h-full flex-col overflow-auto">
         {tablesWithMeta.map((table, id) => (
           <TableItem
