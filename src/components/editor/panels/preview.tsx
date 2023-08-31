@@ -65,7 +65,7 @@ export const Preview: React.FC<PreviewProperties> = ({
   page,
   showBorders = false,
   index = -1,
-  setIndex = (index: number) => {
+  setIndex = () => {
     return;
   },
   project,

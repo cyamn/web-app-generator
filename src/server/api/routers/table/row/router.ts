@@ -1,10 +1,10 @@
-import { NotFoundError } from "@prisma/client/runtime";
 import { z } from "zod";
 
 import { RowSchema } from "@/data/table/row";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 import { projectTableSchema } from "../../parameter-schemas";
+import { NotFoundError } from "../../shared/errors";
 import { get } from "../get";
 import { addRow } from "./add";
 

@@ -49,6 +49,7 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
 
   useEffect(() => {
     trySetLocalPageFromString(JSON.stringify(page));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   function trySetLocalPageFromString(pageString: string): void {
@@ -71,7 +72,7 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
     setError(IDEError.NONE);
   }
 
-  const { mutate, isLoading: isSaving } = api.pages.update.useMutation({
+  const { mutate } = api.pages.update.useMutation({
     onSuccess: () => {
       // location.reload();
       toast.success(`Saved page to database!`);

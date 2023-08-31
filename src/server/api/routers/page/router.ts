@@ -9,7 +9,7 @@ import { addPage } from "./add";
 import { deletePage } from "./delete";
 import { getAllPages, getPage, getPublicPage } from "./get";
 import { listPages } from "./list";
-import { getRoleAccess, setPageVisibilty, setRoleAccess } from "./settings";
+import { getRoleAccess, setPageVisibility, setRoleAccess } from "./settings";
 import { updatePage } from "./update";
 
 export const pageRouter = createTRPCRouter({
@@ -104,8 +104,8 @@ export const pageRouter = createTRPCRouter({
       })
     )
     .output(z.string())
-    .mutation(async ({ ctx, input }) => {
-      return await setPageVisibilty(
+    .mutation(async ({ input }) => {
+      return await setPageVisibility(
         input.project,
         input.pagePath,
         input.public
@@ -142,7 +142,7 @@ export const pageRouter = createTRPCRouter({
         })
       )
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       return await getRoleAccess(input.project, input.page);
     }),
 
@@ -163,7 +163,7 @@ export const pageRouter = createTRPCRouter({
       })
     )
     .output(z.string())
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       return await setRoleAccess(
         input.project,
         input.page,

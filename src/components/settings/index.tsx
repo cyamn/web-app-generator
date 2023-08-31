@@ -26,26 +26,24 @@ export const Settings: React.FC<SettingsProperties> = ({ page, project }) => {
     page.access?.public ?? false
   );
   const context = api.useContext();
-  const { mutate, isLoading, isError } =
-    api.pages.togglePublicVisibility.useMutation({
-      onSuccess: () => {
-        toast.success(
-          `Set page ${page.name} to ${isPublic ? "public" : "private"}!`
-        );
-        void context.pages.get.invalidate({ project, page: page.path });
-      },
-      onError: (error) => {
-        toast.error(`Error: ${error.message}`);
-      },
-    });
+  const { mutate } = api.pages.togglePublicVisibility.useMutation({
+    onSuccess: () => {
+      toast.success(
+        `Set page ${page.name} to ${isPublic ? "public" : "private"}!`
+      );
+      void context.pages.get.invalidate({ project, page: page.path });
+    },
+    onError: (error) => {
+      toast.error(`Error: ${error.message}`);
+    },
+  });
 
-  const { mutate: updatePage, isLoading: isUpdating } =
-    api.pages.update.useMutation({
-      onSuccess: () => {
-        toast.success(`Updated page ${page.name}!`);
-        void context.pages.get.invalidate({ project, page: page.path });
-      },
-    });
+  const { mutate: updatePage } = api.pages.update.useMutation({
+    onSuccess: () => {
+      toast.success(`Updated page ${page.name}!`);
+      void context.pages.get.invalidate({ project, page: page.path });
+    },
+  });
 
   function togglePublic() {
     setIsPublic(!isPublic);
@@ -133,18 +131,14 @@ const CanView: React.FC<AccessSettingsProperties> = ({ project, page }) => {
     error,
   } = api.pages.roleAccess.useQuery({ project, page });
 
-  const context = api.useContext();
-
-  const { mutate, isLoading: isUpdating } = api.pages.setRoleAccess.useMutation(
-    {
-      onSuccess: () => {
-        //void context.settings.getPageRoleAccess.invalidate({ project, page });
-      },
-      onError: (error) => {
-        toast.error(`Error: ${error.message}`);
-      },
-    }
-  );
+  const { mutate } = api.pages.setRoleAccess.useMutation({
+    onSuccess: () => {
+      //void context.settings.getPageRoleAccess.invalidate({ project, page });
+    },
+    onError: (error) => {
+      toast.error(`Error: ${error.message}`);
+    },
+  });
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;

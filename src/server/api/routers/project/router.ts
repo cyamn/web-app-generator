@@ -31,7 +31,7 @@ export const projectsRouter = createTRPCRouter({
         description: z.string(),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       return await getProject(input.id);
     }),
 

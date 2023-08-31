@@ -16,6 +16,7 @@ const Page = () => {
     <main className="flex min-h-screen flex-col items-center justify-center bg-white">
       <Image
         className="translate-x-6 animate-wiggle animate-infinite"
+        // eslint-disable-next-line spellcheck/spell-checker
         src="/Karotte.svg"
         alt=""
         width={200}

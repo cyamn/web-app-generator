@@ -38,21 +38,19 @@ export const TableEdit: React.FC<TableEditProperties> = ({
 
   const context = api.useContext();
 
-  const { mutate: insert, isLoading: isInserting } =
-    api.tables.row.add.useMutation({
-      onSuccess: () => {
-        void context.tables.get.invalidate({ project, tableName: table_ });
-        toast.success("Row added");
-      },
-    });
+  const { mutate: insert } = api.tables.row.add.useMutation({
+    onSuccess: () => {
+      void context.tables.get.invalidate({ project, tableName: table_ });
+      toast.success("Row added");
+    },
+  });
 
-  const { mutate: addColumn, isLoading: isAdding } =
-    api.tables.column.add.useMutation({
-      onSuccess: () => {
-        void context.tables.get.invalidate({ project, tableName: table_ });
-        toast.success("Column added");
-      },
-    });
+  const { mutate: addColumn } = api.tables.column.add.useMutation({
+    onSuccess: () => {
+      void context.tables.get.invalidate({ project, tableName: table_ });
+      toast.success("Column added");
+    },
+  });
 
   if (isError) return <div>{error.message}</div>;
   if (isLoading || table === undefined) return <div>Loading...</div>;

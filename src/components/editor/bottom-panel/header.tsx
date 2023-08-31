@@ -30,7 +30,7 @@ export const PanelHeader: React.FC<PanelHeaderProperties> = ({
                 activeTab={activeTab}
                 id={index}
                 tab={tab}
-                visibilty={visibility}
+                visibility={visibility}
                 setVisibility={setVisibility}
               />
             );

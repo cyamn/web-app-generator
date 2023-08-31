@@ -9,7 +9,7 @@ type ErrorProperties = {
   reset: () => void;
 };
 
-const error: FC<ErrorProperties> = ({ error, reset }) => {
+const error: FC<ErrorProperties> = ({ error }) => {
   return (
     <section className="bg-white">
       <div className="container mx-auto flex min-h-screen items-center px-6 py-12">

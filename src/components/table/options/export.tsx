@@ -16,12 +16,11 @@ export const ExportButton: FC<ExportButtonProperties> = ({
   project,
   table,
 }) => {
-  const { mutate: toCSV, isLoading: isExporting } =
-    api.tables.data.exportCSV.useMutation({
-      onSuccess: (data) => {
-        handleDownload(data.name, data.csv, "text/csv");
-      },
-    });
+  const { mutate: toCSV } = api.tables.data.exportCSV.useMutation({
+    onSuccess: (data) => {
+      handleDownload(data.name, data.csv, "text/csv");
+    },
+  });
 
   return (
     <div className="mt-2 w-full">

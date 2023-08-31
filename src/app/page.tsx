@@ -65,6 +65,7 @@ const Home = async () => {
                 =
                 <Image
                   className="animate-jump-in animate-delay-[800ms] animate-once animate-ease-in"
+                  // eslint-disable-next-line spellcheck/spell-checker
                   src="/smilyface.png"
                   alt="Json"
                   width={90}

@@ -42,7 +42,7 @@ export const Console: React.FC<ConsoleProperties> = ({ messages }) => {
 };
 
 // e.g. replace "/n" with <br />,...
-function stringToJSX(inputString: string): JSX.Element {
+function stringToJSX(inputString: string): React.JSX.Element {
   const sub = inputString.replaceAll(" ", "\u00A0");
   const lines = sub.split("\n");
 

@@ -26,6 +26,7 @@ export const Previewer: React.FC<PreviewerProperties> = ({
 
   useEffect(() => {
     loadPage(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   function loadPage(page: Page): void {

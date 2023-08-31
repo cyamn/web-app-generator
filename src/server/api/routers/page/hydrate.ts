@@ -12,9 +12,9 @@ type HydratedPage = {
   variables: Variables;
 };
 
-export function hydratePage(desrializedPage: DeserializedPage): HydratedPage {
+export function hydratePage(deserializedPage: DeserializedPage): HydratedPage {
   return {
-    ...desrializedPage,
-    variables: desrializedPage.page.variables ?? {},
+    ...deserializedPage,
+    variables: deserializedPage.page.variables ?? {},
   };
 }

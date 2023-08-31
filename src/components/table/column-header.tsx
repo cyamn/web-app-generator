@@ -24,13 +24,12 @@ export const ColumnHeader: React.FC<ColumnHeaderProperties> = ({
 
   const context = api.useContext();
 
-  const { mutate: update, isLoading: isUpdating } =
-    api.tables.column.update.useMutation({
-      onSuccess: () => {
-        void context.tables.get.invalidate({ project, tableName: table });
-        toast.success("Column updated");
-      },
-    });
+  const { mutate: update } = api.tables.column.update.useMutation({
+    onSuccess: () => {
+      void context.tables.get.invalidate({ project, tableName: table });
+      toast.success("Column updated");
+    },
+  });
 
   useEffect(() => {
     setValue(value_);

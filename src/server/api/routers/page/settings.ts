@@ -2,7 +2,7 @@ import { prisma } from "@/server/database";
 
 import { NotFoundError } from "../shared/errors";
 
-export async function setPageVisibilty(
+export async function setPageVisibility(
   project: string,
   pagePath: string,
   shallBePublic: boolean

@@ -1,19 +1,27 @@
 import { type Row } from "@/data/table/row";
 import { prisma } from "@/server/database";
 
+import { InternalError } from "../../shared/errors";
+
 export async function createCells(
   rowSchema: Row[],
   columnIDs: Record<string, string>,
   rowIDs: string[]
 ): Promise<void> {
   await prisma.cell.createMany({
-    data: rowSchema.flatMap((row: Row, rowIndex) =>
-      Object.keys(row).map((key, columnIndex) => ({
-        rowId: rowIDs[rowIndex]!,
-        columnId: columnIDs[key]!,
-        value: row[key]?.toString() ?? "",
-      }))
-    ),
+    data: rowSchema.flatMap((row: Row, rowIndex) => {
+      return Object.keys(row).map((key) => {
+        const rowId = rowIDs[rowIndex];
+        const columnId = columnIDs[key];
+        if (rowId === undefined || columnId === undefined)
+          throw new InternalError("Failed to import CSV");
+        return {
+          rowId,
+          columnId,
+          value: row[key]?.toString() ?? "",
+        };
+      });
+    }),
   });
 }
 

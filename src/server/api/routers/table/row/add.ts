@@ -15,7 +15,7 @@ export async function createRows(
   const rowIDs = rowSchema.map(() => cuid());
   await prisma.row.createMany({
     data: rowSchema.map((_, index) => ({
-      id: rowIDs[index],
+      id: rowIDs[index % rowIDs.length],
       tableId,
     })),
   });
@@ -23,6 +23,13 @@ export async function createRows(
 }
 
 export async function addRow(table: Table, row: Row): Promise<string> {
+  const rowID = await createEmptyRow(table);
+  const columnCuids = await getColumnIDs(table);
+  await createCells([row], columnCuids, [rowID]);
+  return rowID;
+}
+
+async function createEmptyRow(table: Table) {
   const rowID = cuid();
   await prisma.row.create({
     data: {
@@ -34,7 +41,10 @@ export async function addRow(table: Table, row: Row): Promise<string> {
       },
     },
   });
-  // get ids for each column
+  return rowID;
+}
+
+async function getColumnIDs(table: Table): Promise<Dict> {
   const columnCuids: Dict = {};
   for (const column of table.columns) {
     const col = await prisma.column.findFirst({
@@ -52,6 +62,5 @@ export async function addRow(table: Table, row: Row): Promise<string> {
 
     columnCuids[column.key] = col.id;
   }
-  await createCells([row], columnCuids, [rowID]);
-  return rowID;
+  return columnCuids;
 }

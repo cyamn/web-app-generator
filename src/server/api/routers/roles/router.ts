@@ -20,7 +20,7 @@ export const rolesRouter = createTRPCRouter({
       })
     )
     .output(z.string())
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       return await addRole(input.role, input.project);
     }),
 
@@ -55,7 +55,7 @@ export const rolesRouter = createTRPCRouter({
         })
       )
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       return await listRoles(input.project);
     }),
 
@@ -71,7 +71,7 @@ export const rolesRouter = createTRPCRouter({
       })
     )
     .output(z.string())
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       const user = await getUserByEmail(input.email);
       return await addUserToRole(user, input.role);
     }),
@@ -88,7 +88,7 @@ export const rolesRouter = createTRPCRouter({
       })
     )
     .output(z.string())
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       return await addUserToRole(input.user, input.role);
     }),
 
@@ -111,7 +111,7 @@ export const rolesRouter = createTRPCRouter({
         })
       )
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       return await getAdmins(input.project);
     }),
 });

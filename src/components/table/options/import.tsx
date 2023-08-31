@@ -18,17 +18,15 @@ export const ImportButton: FC<ImportButtonProperties> = ({
 }) => {
   const context = api.useContext();
 
-  const { mutate: importCSV, isLoading: isImporting } =
-    api.tables.data.importCSV.useMutation({
-      onSuccess: () => {
-        void context.tables.get.invalidate({ project, tableName: table });
-      },
-    });
+  const { mutate: importCSV } = api.tables.data.importCSV.useMutation({
+    onSuccess: () => {
+      void context.tables.get.invalidate({ project, tableName: table });
+    },
+  });
 
   async function importFile() {
     const csv = await handleImport([".csv"]);
-    if (csv === null) return;
-    if (csv[0] === undefined) return;
+    if (csv === null || csv[0] === undefined) return;
     importCSV({ project, table, csv: csv[0], name: table });
   }
 

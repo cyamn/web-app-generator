@@ -1,4 +1,3 @@
-import { NotFoundError } from "@prisma/client/runtime";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
@@ -7,6 +6,7 @@ import {
   CSVDataSchema,
   projectTableColumnSchema,
 } from "../../parameter-schemas";
+import { NotFoundError } from "../../shared/errors";
 import { get } from "../get";
 import { importCSV } from "./import";
 import { deserializeCSV } from "./serialization";

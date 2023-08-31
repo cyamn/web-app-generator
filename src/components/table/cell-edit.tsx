@@ -25,19 +25,17 @@ export const CellEdit: React.FC<CellProperties> = ({
   const [savedValue, setSavedValue] = React.useState(value_);
   const [value, setValue] = React.useState(value_);
 
-  const { mutate: update, isLoading: isUpdating } =
-    api.tables.cell.update.useMutation({
-      onSuccess: () => {
-        toast.success("Cell updated");
-      },
-    });
+  const { mutate: update } = api.tables.cell.update.useMutation({
+    onSuccess: () => {
+      toast.success("Cell updated");
+    },
+  });
 
-  const { mutate: createCell, isLoading: isCreating } =
-    api.tables.cell.add.useMutation({
-      onSuccess: () => {
-        toast.success("Cell created");
-      },
-    });
+  const { mutate: createCell } = api.tables.cell.add.useMutation({
+    onSuccess: () => {
+      toast.success("Cell created");
+    },
+  });
 
   useEffect(() => {
     setValue(value_);

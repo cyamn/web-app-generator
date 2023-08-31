@@ -15,13 +15,12 @@ export const DeleteTableButton: React.FC<DeleteTableButtonProperties> = ({
 }) => {
   const context = api.useContext();
 
-  const { mutate: deleteTable, isLoading: isDeleting } =
-    api.tables.delete.useMutation({
-      onSuccess: () => {
-        void context.tables.get.invalidate({ project, tableName: table });
-        toast.success("Table deleted");
-      },
-    });
+  const { mutate: deleteTable } = api.tables.delete.useMutation({
+    onSuccess: () => {
+      void context.tables.get.invalidate({ project, tableName: table });
+      toast.success("Table deleted");
+    },
+  });
 
   return (
     <button
@@ -34,9 +33,7 @@ export const DeleteTableButton: React.FC<DeleteTableButtonProperties> = ({
           deleteTable({ project, tableName: table });
         }
       }}
-      className="
-                my-2 w-full rounded-lg border border-red-500 bg-red-100 px-4 py-2 font-bold text-red-600 hover:bg-red-600 hover:text-white
-                "
+      className="my-2 w-full rounded-lg border border-red-500 bg-red-100 px-4 py-2 font-bold text-red-600 hover:bg-red-600 hover:text-white"
     >
       Delete
     </button>

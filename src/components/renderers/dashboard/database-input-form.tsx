@@ -124,11 +124,7 @@ const CreateButton: React.FC<ButtonProperties> = ({
 }) => {
   const context = api.useContext();
 
-  const {
-    mutate,
-    isLoading: isCreating,
-    isError,
-  } = api.tables.row.add.useMutation({
+  const { mutate, isLoading: isCreating } = api.tables.row.add.useMutation({
     onSuccess: () => {
       void context.tables.get.invalidate({ project, tableName: table });
       onReset();

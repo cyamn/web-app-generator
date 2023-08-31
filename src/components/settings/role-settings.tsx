@@ -71,9 +71,11 @@ export const RoleSettings: FC<RoleSettingsProperties> = ({ projectID }) => {
               <tr key={id}>
                 <td />
                 <td className="flex flex-row items-center py-3">
-                  <div className="mr-4 rounded-full">
-                    <UserAvatar user={tuple[0]!} />
-                  </div>
+                  {tuple[0] !== null && (
+                    <div className="mr-4 rounded-full">
+                      <UserAvatar user={tuple[0]} />
+                    </div>
+                  )}
                   {tuple[0]?.email ?? ""}
                 </td>
                 <td className="py-3">{tuple[1]?.regex ?? ""}</td>
