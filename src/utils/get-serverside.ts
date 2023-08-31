@@ -29,3 +29,16 @@ export async function getServerSideProject(project: string, needsAuth = true) {
     id: project,
   });
 }
+
+export async function getServerSidePageList(project: string, needsAuth = true) {
+  const c = await getCaller(needsAuth);
+  return c.pages.list({ project });
+}
+
+export async function getServerSideTableList(
+  project: string,
+  needsAuth = true
+) {
+  const c = await getCaller(needsAuth);
+  return c.tables.list({ project });
+}
