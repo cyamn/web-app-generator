@@ -37,6 +37,7 @@
     "boring-avatars": "^1.10.1",
     "cuid": "^3.0.0",
     "dayjs": "^1.11.8",
+    "fast-formula-parser": "^1.0.19",
     "next": "^13.4.2",
     "next-auth": "^4.22.1",
     "next-axiom": "^0.17.0",
