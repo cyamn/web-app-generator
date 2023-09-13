@@ -29,13 +29,13 @@ export const Header: React.FC<HeaderProperties> = ({
   return (
     <div className="flex h-11 w-full justify-center border-b border-slate-300 bg-white">
       {projectName !== null && project !== null && (
-        <a href="/projects">
+        <Link href="/projects">
           <ProjectAvatar
             size={44}
             projectName={projectName}
             projectID={project}
           />
-        </a>
+        </Link>
       )}
       <div className="grid w-full grid-cols-4 gap-4 py-1 text-slate-700">
         <div className="pl-3 pt-1">{item}</div>

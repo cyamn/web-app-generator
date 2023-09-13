@@ -62,8 +62,8 @@ type TabsProperties = {
 
 export const Tabs: React.FC<TabsProperties> = ({ mode, base }) => {
   return (
-    <div className="absolute left-0 top-1 flex w-full justify-center text-center">
-      <ul className="hidden w-1/2 rounded-lg text-center sm:flex">
+    <div className="pointer-events-none absolute left-0 top-1 flex w-full justify-center text-center">
+      <ul className="pointer-events-auto hidden w-1/2 rounded-lg text-center sm:flex">
         <Tab
           mode={PageMode.Settings}
           icon={faCog}

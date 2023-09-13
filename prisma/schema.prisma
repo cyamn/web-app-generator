@@ -95,7 +95,6 @@ model Project {
   description String   @default("")
   ownerId     String
   owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  //  app config
   home        String
   pages       Page[]
   tables      Table[]

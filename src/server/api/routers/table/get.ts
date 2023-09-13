@@ -42,7 +42,6 @@ export type Table = {
   updatedAt: Date;
 };
 
-// eslint-disable-next-line max-lines-per-function
 function tablesQuery(project: string, name?: string, columns?: string[]) {
   const nameFilter = name === undefined ? {} : { name: name };
   return {
@@ -68,6 +67,7 @@ function tablesQuery(project: string, name?: string, columns?: string[]) {
         select: {
           id: true,
           cells: {
+            ...cellsFilter(columns),
             select: {
               column: {
                 select: {
@@ -90,6 +90,17 @@ function columnsFilter(columns?: string[]) {
     where: {
       key: {
         in: columns,
+      },
+    },
+  };
+}
+function cellsFilter(columns?: string[]) {
+  return {
+    where: {
+      column: {
+        key: {
+          in: columns,
+        },
       },
     },
   };

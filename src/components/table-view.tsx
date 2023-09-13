@@ -9,7 +9,6 @@ type TableViewProperties = {
   columns?: Record<string, string>;
 };
 
-// eslint-disable-next-line max-lines-per-function
 export const TableView: React.FC<TableViewProperties> = ({
   table,
   columns,

@@ -72,21 +72,21 @@ export const Preview: React.FC<PreviewProperties> = ({
   addDashboard,
 }) => {
   const [localPage, setLocalPage] = useState<Page>(page);
+  const [hydrated, setHydrated] = useState(false);
 
-  const { data, isLoading, isError } = api.variables.calculate.useQuery(
-    page.variables ?? {}
-  );
+  const { data, isLoading, isError } = api.variables.calculate.useQuery({
+    variables: page.variables ?? {},
+    project,
+    page,
+  });
 
   useEffect(() => {
-    loadPage(page);
+    setHydrated(false);
   }, [page]);
 
-  function loadPage(page: Page): void {
-    let variables_ = page.variables ?? {};
-    if (!isLoading && !isError) {
-      variables_ = data;
-    }
-    setLocalPage(hydratePage(page, variables_));
+  if (!hydrated && !isLoading && !isError) {
+    setHydrated(true);
+    setLocalPage(hydratePage(page, data));
   }
 
   return (

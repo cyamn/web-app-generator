@@ -20,21 +20,21 @@ export const Previewer: React.FC<PreviewerProperties> = ({
   variables = {},
 }) => {
   const [localPage, setLocalPage] = useState<Page>(page);
+  const [hydrated, setHydrated] = useState(false);
 
-  const { data, isLoading, isError } =
-    api.variables.calculate.useQuery(variables);
+  const { data, isLoading, isError } = api.variables.calculate.useQuery({
+    variables: page.variables ?? {},
+    project,
+    page,
+  });
 
   useEffect(() => {
-    loadPage(page);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setHydrated(false);
   }, [page]);
 
-  function loadPage(page: Page): void {
-    let variables_ = variables;
-    if (!isLoading && !isError) {
-      variables_ = data;
-    }
-    setLocalPage(hydratePage(page, variables_));
+  if (!hydrated && !isLoading && !isError) {
+    setHydrated(true);
+    setLocalPage(hydratePage(page, data));
   }
 
   return (

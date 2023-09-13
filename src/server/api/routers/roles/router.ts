@@ -6,6 +6,7 @@ import { protectedProcedure } from "@/server/api/trpc";
 import { addRole } from "./add";
 import { getAdmins } from "./admins";
 import { addUserToRole, getUserByEmail } from "./assign";
+import { getRolesOfUserInProject } from "./get";
 import { listRoles } from "./list";
 
 export const rolesRouter = createTRPCRouter({
@@ -22,6 +23,21 @@ export const rolesRouter = createTRPCRouter({
     .output(z.string())
     .mutation(async ({ input }) => {
       return await addRole(input.role, input.project);
+    }),
+
+  get: protectedProcedure
+    .meta({
+      openapi: { tags: ["role"], method: "GET", path: "/role" },
+    })
+    .input(
+      z.object({
+        user: z.string(),
+        project: z.string(),
+      })
+    )
+    .output(z.array(z.string()))
+    .query(async ({ input }) => {
+      return await getRolesOfUserInProject(input.user, input.project);
     }),
 
   list: protectedProcedure

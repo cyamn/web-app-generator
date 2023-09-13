@@ -74,7 +74,6 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
 
   const { mutate } = api.pages.update.useMutation({
     onSuccess: () => {
-      // location.reload();
       toast.success(`Saved page to database!`);
     },
   });

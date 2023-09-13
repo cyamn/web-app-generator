@@ -3,13 +3,22 @@ import { Variables } from "@/data/page/variables";
 
 export function hydratePage(page: Page, variables: Variables): Page {
   const pageString = JSON.stringify(page);
-  // e.g. $variable -> 42
   const hydratedPageString = pageString.replace(
-    /\$(\w+)/g,
+    /\$([\w.]+)/g,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     (_, variableName: string) => {
-      const variable = variables[variableName];
-      if (variable === undefined) {
-        return `{Unknown variable: ${variableName}}`;
+      let variable = variables;
+      const variableNames = variableName.split(".");
+      console.log(variableNames);
+      console.log(variable);
+      for (const name of variableNames) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        variable = variable[name];
+        if (variable === undefined) {
+          return `{Unknown variable: ${variableName}}`;
+        }
       }
       return variable;
     }

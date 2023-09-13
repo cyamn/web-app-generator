@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-export const VariablesSchema = z.record(z.string());
+export const VariablesSchema = z.record(z.any());
 
-export type Variables = z.infer<typeof VariablesSchema>;
+export type Variables = Record<string, unknown>;
 
 export const defaultVariables: Variables = {
   foo: "bar",

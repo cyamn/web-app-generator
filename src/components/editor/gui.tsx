@@ -81,8 +81,10 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
             tabs={[
               <VariablesPanel
                 key={"Variables"}
-                variables={page.variables ?? {}}
+                variables={{ ...page.variables }}
                 updateVariables={updateVariables}
+                page={page}
+                project={project}
               />,
             ]}
           />

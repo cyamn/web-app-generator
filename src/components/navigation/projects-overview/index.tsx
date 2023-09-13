@@ -51,10 +51,9 @@ export const ProjectCard: React.FC<ProjectCardProperties> = ({ project }) => {
   return (
     <Link href={`/${project.id}/page`}>
       <div
-        className="m-4 flex h-48 flex-row items-center overflow-hidden rounded-xl bg-slate-50 hover:scale-105"
+        className="m-4 flex h-48 flex-row items-center overflow-hidden rounded-xl bg-slate-50 text-slate-700 hover:scale-105"
         style={{
           border: `1px solid ${stringToHex(project.id)}`,
-          color: `${stringToHex(project.id)}`,
         }}
       >
         <div

@@ -150,7 +150,7 @@ const ColumnSelection: React.FC<DataProperties> = ({
                   placeholder={column.key}
                   value={
                     data.columns?.[column.key] === column.key
-                      ? undefined
+                      ? ""
                       : data.columns?.[column.key]
                   }
                   onChange={changeColumnName(column)}

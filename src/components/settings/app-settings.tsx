@@ -34,19 +34,19 @@ export const AppSettings: FC<AppSettingsProperties> = ({ projectID }) => {
       </div>
       <table className="w-full text-left">
         <tr className="border-b">
-          <td className="py-3">App ID</td>
+          <td className="py-3">Project ID</td>
           <td className="py-3">{project.id}</td>
           <td></td>
         </tr>
         <tr className="border-b">
-          <td className="py-3">App Created</td>
+          <td className="py-3">Project Created</td>
           <td className="py-3">
             {project.createdAt.toLocaleDateString("en-US")}
           </td>
           <td></td>
         </tr>
         <tr className="border-b">
-          <td className="py-3">App Name</td>
+          <td className="py-3">Project Name</td>
           <td className="py-3">{project.name}</td>
           <td className="flex flex-row-reverse py-3">
             <button
@@ -66,7 +66,7 @@ export const AppSettings: FC<AppSettingsProperties> = ({ projectID }) => {
           </td>
         </tr>
         <tr>
-          <td className="py-3">App Description</td>
+          <td className="py-3">Project Description</td>
           <td className="py-3">{project.description}</td>
           <td className="flex flex-row-reverse py-3">
             <button

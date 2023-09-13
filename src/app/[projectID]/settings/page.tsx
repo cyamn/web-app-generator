@@ -15,10 +15,12 @@ const Page = async ({ params }: PageProperties) => {
   return (
     <div className="flex h-full flex-row">
       <ViewList activeView={"settings"} project={project.id} />
-      <div className="m-4 w-full">
-        <AppSettings projectID={params.projectID} />
-        <br />
-        <RoleSettings projectID={params.projectID} />
+      <div className="w-full overflow-auto">
+        <div className="m-4">
+          <AppSettings projectID={params.projectID} />
+          <br />
+          <RoleSettings projectID={params.projectID} />
+        </div>
       </div>
     </div>
   );
