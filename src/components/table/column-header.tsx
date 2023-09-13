@@ -62,10 +62,10 @@ export const ColumnHeader: React.FC<ColumnHeaderProperties> = ({
   }
 
   return (
-    <div className="flex flex-row">
+    <div className="flex w-full flex-row shadow-lg">
       <input
         type="text"
-        className="w-full border-none"
+        className="w-32 border border-slate-300"
         value={value}
         onChange={(event) => {
           setValue(event.target.value);
@@ -78,15 +78,15 @@ export const ColumnHeader: React.FC<ColumnHeaderProperties> = ({
       <select
         name="type"
         id="type"
-        className="border-none font-mono"
+        className="w-full border border-slate-300 font-mono"
         value={type}
         onChange={(event) => {
           updateType(event.target.value);
         }}
       >
-        <option value="string">String</option>
-        <option value="number">Number</option>
-        <option value="boolean">Boolean</option>
+        <option value="string">Text</option>
+        <option value="number">Num</option>
+        <option value="boolean">Bool</option>
         <option value="date">Date</option>
       </select>
     </div>

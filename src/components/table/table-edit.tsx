@@ -84,9 +84,9 @@ export const TableEdit: React.FC<TableEditProperties> = ({
   }
 
   return (
-    <div className="overflow-x-auto border-l border-slate-300 shadow-md">
-      <div className="flex flex-row">
-        <table className="w-full overflow-auto text-left text-sm text-slate-500 ">
+    <div className="flex flex-col border-l border-slate-300 shadow-md">
+      <div className="flex w-max flex-row overflow-auto">
+        <table className="table-auto text-left text-sm text-slate-500">
           <thead className="sticky top-0 bg-slate-50 text-xs uppercase text-slate-700">
             <tr>
               {controls && <th></th>}
@@ -94,7 +94,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
                 <th
                   key={column.key}
                   scope="col"
-                  className="border-r border-slate-300 py-3 font-medium tracking-wider"
+                  className="border-slate-300 bg-slate-50 py-2 font-medium tracking-wider"
                 >
                   <ColumnHeader
                     value={internalToName(
@@ -116,7 +116,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
               >
                 {controls && (
                   // delete col
-                  <td className="max-w-fit border-r bg-slate-50 p-2 pl-4 text-right text-lg">
+                  <td className="w-max border-r bg-slate-50 p-2 pl-4 text-right text-lg">
                     {index + 1}
                   </td>
                 )}
@@ -141,16 +141,16 @@ export const TableEdit: React.FC<TableEditProperties> = ({
           </tbody>
         </table>
         <button
-          className="p-3"
+          className="mt-14 bg-white p-2 shadow-md [writing-mode:vertical-lr]"
           onClick={() => {
             createColumn();
           }}
         >
-          +
+          + Add column
         </button>
       </div>
       <button
-        className="w-full p-2"
+        className="w-full bg-white p-2"
         onClick={() => {
           createRow();
         }}

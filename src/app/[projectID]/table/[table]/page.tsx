@@ -21,13 +21,15 @@ const Page = async ({ params }: PageProperties) => {
   const project = await getServerSideProject(params.projectID);
 
   return (
-    <div className="flex h-full flex-row">
+    <div className="flex h-full flex-row overflow-auto">
       <ViewList activeView={"table"} project={project.id} />
       <TableList project={project.id} tableName={params.table} />
-      <div className="w-full">
+      <div className="w-max overflow-auto pr-96">
         <TableEdit table={params.table} project={params.projectID} />
       </div>
-      <Menu project={project.id} table={params.table} />
+      <div className="w-48">
+        <Menu project={project.id} table={params.table} />
+      </div>
     </div>
   );
 };
@@ -37,7 +39,7 @@ const Menu: React.FC<{ project: string; table: string }> = ({
   table,
 }) => {
   return (
-    <div className="flex h-full w-48 flex-col overflow-auto rounded-lg p-2 text-center">
+    <div className="flex h-full flex-col overflow-auto border-l border-slate-300 p-2 text-center">
       <h2 className="m-1 text-slate-700">Options</h2>
       <div className="h-full">
         <ExportButton project={project} table={table} />

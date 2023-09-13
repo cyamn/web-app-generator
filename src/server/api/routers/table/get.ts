@@ -61,6 +61,9 @@ function tablesQuery(project: string, name?: string, columns?: string[]) {
           key: true,
           type: true,
         },
+        orderBy: {
+          id: "asc",
+        },
         ...columnsFilter(columns),
       },
       rows: {
@@ -78,6 +81,9 @@ function tablesQuery(project: string, name?: string, columns?: string[]) {
               id: true,
             },
           },
+        },
+        orderBy: {
+          id: "asc",
         },
       },
     },
