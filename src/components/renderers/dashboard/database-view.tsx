@@ -21,6 +21,7 @@ export const DatabaseViewRender: React.FC<{
     project,
     tableName,
     columns: Object.keys(dashboard.parameters.data.columns ?? {}),
+    filter: dashboard.parameters.data.filter ?? undefined,
   });
 
   if (isError) return <div>{error.message}</div>;

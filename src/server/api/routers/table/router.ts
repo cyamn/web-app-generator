@@ -14,7 +14,7 @@ import { addTable } from "./add";
 import { cellRouter } from "./cell/router";
 import { columnRouter } from "./column/router";
 import { dataRouter } from "./data/router";
-import { deserialize } from "./data/serialization";
+import { deserialize, filter } from "./data/serialization";
 import { deleteTable } from "./delete";
 import { get, getAll } from "./get";
 import { listTables } from "./list";
@@ -29,7 +29,9 @@ export const tablesRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const table = await get(input.tableName, input.project, input.columns);
       if (!table) throw new NotFoundError("table");
-      return deserialize(table);
+      const desirialized = deserialize(table);
+      if (input.filter !== undefined) return filter(desirialized, input.filter);
+      return desirialized;
     }),
   add: protectedProcedure
     .meta({ openapi: { tags: ["table"], method: "POST", path: "/table" } })
