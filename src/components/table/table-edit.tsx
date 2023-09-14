@@ -3,6 +3,12 @@
 import React from "react";
 import toast from "react-hot-toast";
 
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 import { api } from "@/utils/api";
 import { internalToName } from "@/utils/internal-to-name";
 import { nameToInternal } from "@/utils/name-to-internal";
@@ -52,6 +58,13 @@ export const TableEdit: React.FC<TableEditProperties> = ({
     },
   });
 
+  const { mutate: deleteRow } = api.tables.row.delete.useMutation({
+    onSuccess: () => {
+      void context.tables.get.invalidate({ project, tableName: table_ });
+      toast.success("Column deleted");
+    },
+  });
+
   if (isError) return <div>{error.message}</div>;
   if (isLoading || table === undefined) return <div>Loading...</div>;
 
@@ -84,7 +97,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
   }
 
   return (
-    <div className="flex flex-col border-l border-slate-300 shadow-md">
+    <div className="z-10 flex flex-col border-l border-slate-300 shadow-md">
       <div className="flex w-max flex-row overflow-auto">
         <table className="table-auto text-left text-sm text-slate-500">
           <thead className="sticky top-0 bg-slate-50 text-xs uppercase text-slate-700">
@@ -116,8 +129,26 @@ export const TableEdit: React.FC<TableEditProperties> = ({
               >
                 {controls && (
                   // delete col
-                  <td className="w-max border-r bg-slate-50 p-2 pl-4 text-right text-lg">
-                    {index + 1}
+                  <td className="w-max border-r bg-slate-100 text-right text-lg">
+                    <ContextMenu>
+                      <ContextMenuTrigger className="w-max p-2 px-5 pl-4">
+                        {index + 1}
+                      </ContextMenuTrigger>
+                      <ContextMenuContent className="w-64 bg-white">
+                        <ContextMenuItem
+                          className="cursor-pointer"
+                          onClick={() => {
+                            deleteRow({
+                              project,
+                              tableName: table_,
+                              rowId: row[0]?.row ?? "",
+                            });
+                          }}
+                        >
+                          Delete
+                        </ContextMenuItem>
+                      </ContextMenuContent>
+                    </ContextMenu>
                   </td>
                 )}
                 {row.map((cell, id) => (

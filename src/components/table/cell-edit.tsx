@@ -1,4 +1,5 @@
-import { faSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { faSquare } from "@fortawesome/free-regular-svg-icons";
+import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
 import React from "react";
@@ -92,7 +93,7 @@ export const CellEdit: React.FC<CellProperties> = ({
     case "boolean": {
       return (
         <FontAwesomeIcon
-          className={`w-full px-2 text-center text-2xl text-blue-500 
+          className={`w-full px-2 text-center text-2xl
              ${controls ? "cursor-pointer" : ""}
           `}
           icon={value === "true" ? faSquareCheck : faSquare}

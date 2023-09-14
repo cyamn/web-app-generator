@@ -1,6 +1,15 @@
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 import { Column } from "@/server/api/routers/table/schema";
 import { api } from "@/utils/api";
 import { nameToInternal } from "@/utils/name-to-internal";
@@ -31,16 +40,16 @@ export const ColumnHeader: React.FC<ColumnHeaderProperties> = ({
     },
   });
 
+  const { mutate: deleteColumn } = api.tables.column.delete.useMutation({
+    onSuccess: () => {
+      void context.tables.get.invalidate({ project, tableName: table });
+      toast.success("Column deleted");
+    },
+  });
+
   useEffect(() => {
     setValue(value_);
   }, [value_]);
-
-  // when enter pressed
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "Enter") {
-      updateColumn();
-    }
-  }
 
   function updateColumn(customValue?: string) {
     if (customValue === undefined && value === savedValue) return;
@@ -62,33 +71,55 @@ export const ColumnHeader: React.FC<ColumnHeaderProperties> = ({
   }
 
   return (
-    <div className="flex w-full flex-row shadow-lg">
-      <input
-        type="text"
-        className="w-32 border border-slate-300"
-        value={value}
-        onChange={(event) => {
-          setValue(event.target.value);
-        }}
-        onKeyDown={handleKeyDown}
-        onBlur={() => {
-          updateColumn();
-        }}
-      />
-      <select
-        name="type"
-        id="type"
-        className="w-full border border-slate-300 font-mono"
-        value={type}
-        onChange={(event) => {
-          updateType(event.target.value);
-        }}
-      >
-        <option value="string">Text</option>
-        <option value="number">Num</option>
-        <option value="boolean">Bool</option>
-        <option value="date">Date</option>
-      </select>
-    </div>
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <div className="flex w-full flex-row">
+          <div className="w-full whitespace-nowrap border-y border-r border-slate-300 bg-white p-4">
+            {" "}
+            {value}{" "}
+          </div>
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent className="w-64 bg-white">
+        <ContextMenuItem
+          className="cursor-pointer"
+          onClick={() => {
+            const name = prompt("Enter new name", value);
+            if (name === null) return;
+            updateColumn(name);
+          }}
+        >
+          Rename
+        </ContextMenuItem>
+        <ContextMenuSub>
+          <ContextMenuSubTrigger className="cursor-pointer">
+            Column type
+          </ContextMenuSubTrigger>
+          <ContextMenuSubContent className="w-48 bg-white">
+            {["string", "number", "boolean", "date"].map((type) => (
+              <ContextMenuItem
+                className="cursor-pointer"
+                key={type}
+                onClick={() => {
+                  updateType(type);
+                }}
+              >
+                {type}
+              </ContextMenuItem>
+            ))}
+          </ContextMenuSubContent>
+        </ContextMenuSub>
+        <ContextMenuItem
+          className="cursor-pointer"
+          onClick={() => {
+            deleteColumn({
+              columnID: column.id,
+            });
+          }}
+        >
+          Delete
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 };
