@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth/next";
 
+import { Quickmenu } from "@/components/command";
 import { Header } from "@/components/header";
 import { authOptions } from "@/server/auth";
 import { getServerSideProject } from "@/utils/get-serverside";
@@ -29,6 +30,7 @@ const Page = async ({ params, children }: PageProperties) => {
         />
       )}
       {children}
+      <Quickmenu project={params.projectID} />
     </div>
   );
 };
