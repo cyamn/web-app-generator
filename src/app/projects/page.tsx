@@ -1,8 +1,9 @@
 import { getServerSession } from "next-auth/next";
+import React from "react";
 
 import { Header } from "@/components/header";
+import { Navbar } from "@/components/navbar";
 import { ProjectOverview } from "@/components/navigation/projects-overview";
-import { Layout } from "@/layout";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
 import { authOptions } from "@/server/auth";
@@ -13,20 +14,18 @@ const Projects = async () => {
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const projects = await caller.projects.listAll();
+  const projects = await caller.projects.list({});
 
   return (
-    <Layout
-      header={<Header item="Apps" user={session.user} />}
-      content={
-        <div className="h-full bg-gradient-to-b from-slate-600 to-slate-800 px-64">
-          <h1 className="py-8 text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Your Apps
-          </h1>
-          <ProjectOverview projects={projects} />
-        </div>
-      }
-    />
+    <div className="flex h-screen flex-col">
+      <Header item={<Navbar />} user={session?.user} />
+      <div className="h-full overflow-auto bg-slate-100 px-12">
+        <h1 className="py-8 text-center text-5xl font-bold tracking-tight text-slate-700">
+          Your Projects
+        </h1>
+        <ProjectOverview projects={projects} />
+      </div>
+    </div>
   );
 };
 

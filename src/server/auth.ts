@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import bcrypt from "bcrypt";
 import { type GetServerSidePropsContext } from "next";
 import {
   type DefaultSession,
@@ -6,6 +7,7 @@ import {
   type NextAuthOptions,
   Session,
 } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import DiscordProvider from "next-auth/providers/discord";
 import GitHubProvider from "next-auth/providers/github";
 
@@ -42,17 +44,72 @@ const scopes = ["identify", "email"].join(" ");
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
+  },
+  secret: env.NEXTAUTH_SECRET,
+  debug: env.NODE_ENV === "development",
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session: ({ session, token }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+        },
+      };
+    },
+    jwt({ token, user }) {
+      if (user !== undefined) {
+        token.id = user.id;
+      }
+      return token;
+    },
   },
   adapter: PrismaAdapter(prisma),
   providers: [
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: {
+          label: "Email",
+          type: "text",
+          placeholder: "mail@example.com",
+        },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        // Add logic here to look up the user from the credentials supplied
+        const user = await prisma.user.findUnique({
+          where: { email: credentials?.email },
+        });
+
+        if (
+          credentials?.email === undefined ||
+          credentials?.password === undefined
+        )
+          return null;
+
+        const password: string = credentials.password;
+        if (user) {
+          if (user.password === null) return null;
+          const validPassword = await bcrypt.compare(password, user.password);
+          return validPassword ? user : null;
+        } else {
+          //  create user and return
+          const newUser = await prisma.user.create({
+            data: {
+              name: credentials?.email.split("@")[0],
+              email: credentials?.email,
+              password: await bcrypt.hash(password, 10),
+            },
+          });
+          return newUser;
+        }
+      },
+    }),
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,

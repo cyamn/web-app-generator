@@ -8,6 +8,7 @@ export const TableSchema = z
     name: z.string(),
     columns: z.array(ColumnSchema),
     rows: z.array(RowSchema), // typing??
+    ids: z.array(z.array(z.string())).optional(),
   })
   .strict();
 

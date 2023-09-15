@@ -1,11 +1,18 @@
-import { Table } from "@/data/table";
+import { faSquare } from "@fortawesome/free-regular-svg-icons";
+import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { Table } from "@/server/api/routers/table/schema";
 
 type TableViewProperties = {
   table: Table;
+  columns?: Record<string, string>;
 };
 
-// eslint-disable-next-line max-lines-per-function
-export const TableView: React.FC<TableViewProperties> = ({ table }) => {
+export const TableView: React.FC<TableViewProperties> = ({
+  table,
+  columns,
+}) => {
   return (
     <div className="">
       <div className="max-h-full overflow-x-auto shadow-md sm:rounded-lg">
@@ -18,17 +25,20 @@ export const TableView: React.FC<TableViewProperties> = ({ table }) => {
                   scope="col"
                   className="px-6 py-3 font-medium tracking-wider"
                 >
-                  {column.key}
+                  {columns ? columns[column.key] : column.key}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody className="overflow-y-auto">
-            {table.rows.map((row, index) => (
+            {table.cells.map((row, index) => (
               <tr key={index} className="border-b bg-white hover:bg-slate-50 ">
-                {table.columns.map((column) => (
-                  <td key={column.key} className="px-6 py-4">
-                    {row[column.key]?.toString()}
+                {row.map((cell, id) => (
+                  <td key={id} className="px-6 py-4">
+                    <Cell
+                      value={cell.value ?? "???"}
+                      type={table.columns[id]?.type ?? "string"}
+                    />
                   </td>
                 ))}
               </tr>
@@ -38,4 +48,29 @@ export const TableView: React.FC<TableViewProperties> = ({ table }) => {
       </div>
     </div>
   );
+};
+
+type CellProperties = {
+  value: string;
+  type: string;
+};
+
+const Cell: React.FC<CellProperties> = ({ value, type }) => {
+  switch (type) {
+    case "number": {
+      return <span className="text-right font-mono">{value}</span>;
+    }
+    case "boolean": {
+      return (
+        <FontAwesomeIcon
+          className={`w-full px-2 text-center text-2xl 
+          `}
+          icon={value === "true" ? faSquareCheck : faSquare}
+        />
+      );
+    }
+    default: {
+      return <span>{value}</span>;
+    }
+  }
 };

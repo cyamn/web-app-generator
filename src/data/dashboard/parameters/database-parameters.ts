@@ -1,16 +1,24 @@
 import { z } from "zod";
 
-export const SQLFilterSchema = z.union([
-  z.object({
-    column: z.string(),
-    operator: z.enum(["eq", "neq", "gt", "gte"]),
-    value: z.union([
-      z.union([z.string(), z.number(), z.boolean(), z.date()]),
-      z.array(z.union([z.string(), z.number(), z.boolean(), z.date()])),
-    ]),
-  }),
-  z.string(),
-]);
+export const SQLFilterSchema = z.object({
+  column: z.string(),
+  operator: z.enum([
+    "eq",
+    "neq",
+    "gt",
+    "gte",
+    "lt",
+    "lte",
+    "contains",
+    "not_contains",
+    "starts_with",
+    "ends_with",
+  ]),
+  value: z.union([
+    z.union([z.string(), z.number(), z.boolean(), z.date()]),
+    z.array(z.union([z.string(), z.number(), z.boolean(), z.date()])),
+  ]),
+});
 
 export type SQLFilter = z.infer<typeof SQLFilterSchema>;
 

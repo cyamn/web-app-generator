@@ -8,3 +8,8 @@ export const ColumnSchema = z
   .strict();
 
 export type Column = z.infer<typeof ColumnSchema>;
+
+export const defaultColumn: Column = {
+  key: "col",
+  type: "string",
+};

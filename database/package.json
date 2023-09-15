@@ -1,0 +1,10 @@
+{
+  "name": "database",
+  "version": "0.1.0",
+  "private": "true",
+  "scripts": {
+    "build": "docker-compose build --pull",
+    "start": "docker-compose up",
+    "reset": "docker-compose down && docker volume rm database_dekanat-data && docker rmi database_dekanat-database"
+  }
+}

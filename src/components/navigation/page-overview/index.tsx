@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 
+import { PageMode } from "@/components/tabs";
 import { Page } from "@/data/page";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
@@ -17,7 +18,10 @@ import { AddPageCard } from "./add-page-card";
 dayjs.extend(relativeTime);
 
 type PagesOverviewProperties = {
-  project: string;
+  project: {
+    id: string;
+    name: string;
+  };
 };
 
 export const PagesOverview: React.FC<PagesOverviewProperties> = async ({
@@ -27,23 +31,23 @@ export const PagesOverview: React.FC<PagesOverviewProperties> = async ({
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const pagesWithMeta = await caller.pages.getAll(project);
+  const pagesWithMeta = await caller.pages.getAll({ project: project.id });
 
   return (
-    <>
-      <h1 className="p-3 text-center">All Pages in {project}</h1>
+    <div>
+      <h1 className="p-3 text-center">All Pages in {project.name}</h1>
       <div className="grid grid-cols-3 px-20">
         {pagesWithMeta.map((pageWithMeta) => (
           <PageDetailedItem
             updatedAt={pageWithMeta.updatedAt}
             key={pageWithMeta.page.name}
             page={pageWithMeta.page}
-            project={project}
+            project={project.id}
           />
         ))}
-        <AddPageCard project={project} />
+        <AddPageCard project={project.id} />
       </div>
-    </>
+    </div>
   );
 };
 
@@ -59,7 +63,7 @@ export const PageDetailedItem: React.FC<PageDetailedItemProperties> = ({
   updatedAt,
 }) => {
   return (
-    <Link href={`/${project}/page/${page.path}`}>
+    <Link href={`/${project}/page/${page.path}/${PageMode.Preview}`}>
       <div className="m-2">
         <div className="grid w-full grid-cols-2">
           <div>
@@ -70,7 +74,7 @@ export const PageDetailedItem: React.FC<PageDetailedItemProperties> = ({
             {dayjs(updatedAt).fromNow()}
           </div>
         </div>
-        <div className="h-64 overflow-scroll overflow-x-hidden rounded-lg  border border-slate-300 bg-white hover:shadow-2xl">
+        <div className="h-64 overflow-auto overflow-x-hidden rounded-lg  border border-slate-300 bg-white hover:shadow-2xl">
           <div className="col-span-6">
             <div className="-translate-x-1/4 -translate-y-1/4  scale-50">
               <div className="h-[200%] w-[200%]">

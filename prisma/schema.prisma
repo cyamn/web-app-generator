@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider     = "mysql"
+  provider     = "postgresql"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
@@ -49,10 +49,34 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  password      String?
   image         String?
   accounts      Account[]
   sessions      Session[]
   projects      Project[]
+  roles         Role[]
+}
+
+model Role {
+  id      String  @id @default(cuid())
+  name    String
+  users   User[]
+  rules   Rule[]
+  isAdmin Boolean @default(false)
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  roleAccessPages RoleAccessPage[]
+
+  @@unique([name, projectId])
+}
+
+model Rule {
+  id     String @id @default(cuid())
+  regex  String
+  roleID String
+  role   Role   @relation(fields: [roleID], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -68,26 +92,40 @@ model Project {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   name        String
-  description String?
+  description String   @default("")
   ownerId     String
   owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  //  app config
   home        String
   pages       Page[]
   tables      Table[]
+
+  roles Role[]
 
   @@index([ownerId])
 }
 
 model Page {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id         String           @id @default(cuid())
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
   name       String
   path       String
+  variables  String           @default("{}")
   dashboards Json
   projectId  String
-  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  public     Boolean          @default(false)
+  canView    RoleAccessPage[]
+  project    Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model RoleAccessPage {
+  id     String @id @default(cuid())
+  pageId String
+  page   Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, roleId])
 }
 
 model Table {
@@ -99,6 +137,8 @@ model Table {
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   columns   Column[]
   rows      Row[]
+
+  @@unique([name, projectId])
 }
 
 model Column {

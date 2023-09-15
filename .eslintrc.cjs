@@ -245,6 +245,19 @@ const config = {
           "vercel",
           "xl",
           "zod",
+          "openapi",
+          "csv",
+          "cors",
+          "ctrls",
+          "nonstrict",
+          "keydown",
+          "checkbox",
+          "semibold",
+          "svg",
+          "cmdk",
+          "Quickmenu",
+          "tailwindcss",
+          "classname",
         ],
         minLength: 3,
       },
@@ -252,13 +265,15 @@ const config = {
 
     // incompatible with TypeScript
     "unicorn/no-useless-undefined": ["error", { checkArguments: false }],
+
     // Directus uses null
     "unicorn/no-null": "off",
-
     // React is already imported by TSC
     "react/react-in-jsx-scope": "off",
     // TypeScript checks types for at compile time
     "react/prop-types": "off",
+    // https://github.com/eslint-community/eslint-plugin-security/issues/21#issuecomment-1157887653
+    "security/detect-object-injection": "off",
   },
   settings: {
     react: {

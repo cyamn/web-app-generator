@@ -5,16 +5,19 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 
 import { TableView } from "@/components/table-view";
-import { Table } from "@/data/table";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
+import { Table } from "@/server/api/routers/table/schema";
 import { authOptions } from "@/server/auth";
 import { prisma } from "@/server/database";
 
 import { AddTableCard } from "./add-table-card";
 
 type TablesOverviewProperties = {
-  project: string;
+  project: {
+    id: string;
+    name: string;
+  };
 };
 
 export const TablesOverview: React.FC<TablesOverviewProperties> = async ({
@@ -24,39 +27,39 @@ export const TablesOverview: React.FC<TablesOverviewProperties> = async ({
   if (!session) throw new AuthRequiredError();
 
   const caller = appRouter.createCaller({ prisma, session });
-  const tablesWithMeta = await caller.tables.getAll(project);
+  const tablesWithMeta = await caller.tables.getAll({ project: project.id });
 
   return (
-    <>
-      <h1 className="p-3 text-center">All Tables in {project}</h1>
+    <div>
+      <h1 className="p-3 text-center">All Tables in {project.name}</h1>
       <div className="grid grid-cols-3 px-20">
         {tablesWithMeta.map((tableWithMeta) => (
           <TableDetailedItem
             updatedAt={tableWithMeta.updatedAt}
             key={tableWithMeta.table.name}
             table={tableWithMeta.table}
-            projectName={project}
+            project={project.id}
           />
         ))}
-        <AddTableCard project={project} />
+        <AddTableCard project={project.id} />
       </div>
-    </>
+    </div>
   );
 };
 
 interface TableDetailedItemProperties {
   table: Table;
-  projectName: string;
+  project: string;
   updatedAt: Date;
 }
 
 export const TableDetailedItem: React.FC<TableDetailedItemProperties> = ({
   table,
-  projectName,
+  project,
   updatedAt,
 }) => {
   return (
-    <Link href={`/${projectName}/table/${table.name}`}>
+    <Link href={`/${project}/table/${table.name}`}>
       <div className="m-2">
         <div className="grid w-full grid-cols-2">
           <div>

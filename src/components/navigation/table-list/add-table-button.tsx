@@ -1,9 +1,8 @@
 "use client";
 
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { api } from "@/utils/api";
+
+import { AddButton } from "../shared/add-button";
 
 type AddTableButtonProperties = {
   project: string;
@@ -12,7 +11,7 @@ type AddTableButtonProperties = {
 export const AddTableButton: React.FC<AddTableButtonProperties> = ({
   project,
 }) => {
-  const { mutate, isLoading: isCreating } = api.tables.add.useMutation({
+  const { mutate, isLoading } = api.tables.add.useMutation({
     onSuccess: () => {
       location.reload();
     },
@@ -27,15 +26,5 @@ export const AddTableButton: React.FC<AddTableButtonProperties> = ({
     mutate({ project, tableName });
   };
 
-  return (
-    <a
-      onClick={addTable}
-      className="m-1 flex cursor-pointer items-center rounded-lg px-4 py-3 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
-    >
-      <FontAwesomeIcon icon={faPlus} />
-      <button disabled={isCreating} className="ml-3 text-sm font-medium">
-        {isCreating ? "adding ..." : "add table"}
-      </button>
-    </a>
-  );
+  return <AddButton isAdding={isLoading} add={addTable} text="add table" />;
 };

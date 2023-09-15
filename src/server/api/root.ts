@@ -1,8 +1,11 @@
 import { createTRPCRouter } from "@/server/api/trpc";
 
-import { pagesRouter } from "./routers/page";
-import { projectsRouter } from "./routers/project";
-import { tablesRouter } from "./routers/table";
+import { adminRouter } from "./routers/admin";
+import { pageRouter } from "./routers/page/router";
+import { projectsRouter } from "./routers/project/router";
+import { rolesRouter } from "./routers/roles/router";
+import { tablesRouter } from "./routers/table/router";
+import { variablesRouter } from "./routers/variables/router";
 
 /**
  * This is the primary router for your server.
@@ -11,8 +14,11 @@ import { tablesRouter } from "./routers/table";
  */
 export const appRouter = createTRPCRouter({
   projects: projectsRouter,
-  pages: pagesRouter,
+  pages: pageRouter,
   tables: tablesRouter,
+  roles: rolesRouter,
+  admin: adminRouter,
+  variables: variablesRouter,
 });
 
 // export type definition of API

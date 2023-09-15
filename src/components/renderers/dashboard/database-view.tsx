@@ -9,8 +9,8 @@ import { api } from "@/utils/api";
 
 export const DatabaseViewRender: React.FC<{
   dashboard: DatabaseView;
-  projectName: string;
-}> = ({ dashboard, projectName }) => {
+  project: string;
+}> = ({ dashboard, project }) => {
   const tableName = dashboard.parameters.data.table;
   const {
     data: table,
@@ -18,16 +18,18 @@ export const DatabaseViewRender: React.FC<{
     isError,
     isLoading,
   } = api.tables.get.useQuery({
-    projectName,
+    project,
     tableName,
+    columns: Object.keys(dashboard.parameters.data.columns ?? {}),
+    filter: dashboard.parameters.data.filter ?? undefined,
   });
 
   if (isError) return <div>{error.message}</div>;
-  if (isLoading) return <SkeletonTableView />;
+  if (isLoading || table === undefined) return <SkeletonTableView />;
 
   return (
     <div>
-      <TableView table={table} />
+      <TableView table={table} columns={dashboard.parameters.data.columns} />
     </div>
   );
 };

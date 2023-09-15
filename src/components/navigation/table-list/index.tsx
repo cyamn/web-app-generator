@@ -1,12 +1,6 @@
-import { Table } from "@prisma/client";
-import Link from "next/link";
-import { getServerSession } from "next-auth/next";
+import { getServerSideTableList } from "@/utils/get-serverside";
 
-import { AuthRequiredError } from "@/lib/exceptions";
-import { appRouter } from "@/server/api/root";
-import { authOptions } from "@/server/auth";
-import { prisma } from "@/server/database";
-
+import { ListItem } from "../shared/list-item";
 import { AddTableButton } from "./add-table-button";
 
 type TableListProperties = {
@@ -18,55 +12,22 @@ export const TableList: React.FC<TableListProperties> = async ({
   project,
   tableName = "",
 }) => {
-  const session = await getServerSession(authOptions);
-  if (!session) throw new AuthRequiredError();
-
-  const caller = appRouter.createCaller({ prisma, session });
-  const tablesWithMeta = await caller.tables.listAll(project);
+  const tablesWithMeta = await getServerSideTableList(project);
 
   return (
-    <>
-      <nav className="flex h-full flex-col overflow-scroll p-1">
+    <div className="flex h-full w-36 flex-col justify-between border-r border-slate-300 bg-white">
+      <nav className="flex h-full flex-col overflow-auto">
         {tablesWithMeta.map((table, id) => (
-          <TableItem
+          <ListItem
             key={id}
-            table={table}
+            name={table.name}
+            path={`table/${table.name}`}
             active={tableName === table.name}
             project={project}
           />
         ))}
       </nav>
       <AddTableButton project={project} />
-    </>
-  );
-};
-
-type TableItemProperties = {
-  project: string;
-  active: boolean;
-  table: Pick<Table, "name" | "id">;
-};
-
-export const TableItem: React.FC<TableItemProperties> = ({
-  project,
-  table,
-  active,
-}) => {
-  const shadow = active
-    ? " text-slate-900 bg-gradient-to-r from-fuchsia-400 to-purple-400"
-    : " bg-slate-600 text-slate-200";
-
-  return (
-    <div className={"m-[1px] grid grid-cols-6 rounded-lg" + shadow}>
-      <Link
-        href={`/${project}/table/${table.name}`}
-        className="col-span-6 items-center  p-2"
-      >
-        <span className="mx-1 text-base font-medium">
-          {" "}
-          {table.name} {}
-        </span>
-      </Link>
     </div>
   );
 };
