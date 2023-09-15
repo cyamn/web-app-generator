@@ -100,11 +100,7 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
         />
       </div>
       <div className="flex w-1/2 flex-col">
-        <Previewer
-          page={localPage}
-          variables={localPage.variables}
-          project={project}
-        />
+        <Previewer page={localPage} project={project} />
         <BottomPanel
           tabNames={["Console"]}
           tabs={[<Console key={"Console"} messages={cliLog} />]}

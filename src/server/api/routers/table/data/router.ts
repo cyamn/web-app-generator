@@ -7,7 +7,7 @@ import {
   projectTableColumnSchema,
 } from "../../parameter-schemas";
 import { NotFoundError } from "../../shared/errors";
-import { get } from "../get";
+import { getTable } from "../get";
 import { importCSV } from "./import";
 import { deserializeCSV } from "./serialization";
 
@@ -19,7 +19,11 @@ export const dataRouter = createTRPCRouter({
     .input(projectTableColumnSchema)
     .output(CSVDataSchema)
     .mutation(async ({ input }) => {
-      const table = await get(input.tableName, input.project, input.columns);
+      const table = await getTable(
+        input.tableName,
+        input.project,
+        input.columns
+      );
       if (!table) throw new NotFoundError("table");
       return {
         csv: deserializeCSV(table),

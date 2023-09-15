@@ -14,13 +14,7 @@ const Page = async ({ params }: PageProperties) => {
     params.page,
     false
   );
-  return (
-    <Previewer
-      page={pageWithMeta.page}
-      variables={pageWithMeta.variables}
-      project={params.projectID}
-    />
-  );
+  return <Previewer page={pageWithMeta.page} project={params.projectID} />;
 };
 
 export default Page;

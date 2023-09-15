@@ -7,7 +7,7 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { projectTableSchema, TableFilterSchema } from "../../parameter-schemas";
 import { NotFoundError } from "../../shared/errors";
 import { checkFilters } from "../data/filter";
-import { get } from "../get";
+import { getTable } from "../get";
 import { addRow } from "./add";
 import { deleteRow } from "./delete";
 
@@ -26,7 +26,7 @@ export const rowRouter = createTRPCRouter({
     .output(z.string())
     .mutation(async ({ input }) => {
       if (checkFilters(input.row, input.filter ?? [])) {
-        const table = await get(input.tableName, input.project);
+        const table = await getTable(input.tableName, input.project);
         if (!table) throw new NotFoundError("table");
         return await addRow(table, input.row);
       } else {
@@ -49,7 +49,7 @@ export const rowRouter = createTRPCRouter({
     )
     .output(z.string())
     .mutation(async ({ input }) => {
-      const table = await get(input.tableName, input.project);
+      const table = await getTable(input.tableName, input.project);
       if (!table) throw new NotFoundError("table");
       return await deleteRow(table, input.rowId);
     }),

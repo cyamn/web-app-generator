@@ -3,7 +3,7 @@ import cuid from "cuid";
 import { prisma } from "@/server/database";
 
 import { InternalError, NotFoundError } from "../../shared/errors";
-import { get } from "../get";
+import { getTable } from "../get";
 
 export async function importCSV(
   project: string,
@@ -14,7 +14,7 @@ export async function importCSV(
   let id;
   try {
     if (tableName !== undefined) {
-      const table = await get(tableName, project);
+      const table = await getTable(tableName, project);
       if (table) {
         id = table.id;
       } else {

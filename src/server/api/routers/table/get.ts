@@ -1,11 +1,13 @@
 import { prisma } from "@/server/database";
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export async function get(
+export async function getTable(
   name: string,
   project: string,
   columns?: string[]
 ): Promise<Table | null> {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return await prisma.table.findFirst(tablesQuery(project, name, columns));
 }
 
@@ -13,6 +15,8 @@ export async function getAll(
   project: string,
   columns?: string[]
 ): Promise<Table[]> {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return await prisma.table.findMany({
     ...tablesQuery(project, undefined, columns),
     orderBy: {
@@ -43,7 +47,7 @@ export type Table = {
 };
 
 function tablesQuery(project: string, name?: string, columns?: string[]) {
-  const nameFilter = name === undefined ? {} : { name: name };
+  const nameFilter = name === undefined ? undefined : { name: name };
   return {
     where: {
       project: {

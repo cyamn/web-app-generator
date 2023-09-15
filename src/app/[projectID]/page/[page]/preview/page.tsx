@@ -27,11 +27,7 @@ const Page = async ({ params }: PageProperties) => {
         mode={PageMode.Preview}
         base={`/${project.id}/page/${params.page}`}
       />
-      <Previewer
-        page={pageWithMeta.page}
-        variables={pageWithMeta.variables}
-        project={project.id}
-      />
+      <Previewer page={pageWithMeta.page} project={project.id} />
     </>
   );
 };

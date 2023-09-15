@@ -4,21 +4,15 @@ import React, { useEffect, useState } from "react";
 
 import { DashboardRender } from "@/components/renderers/dashboard";
 import { type Page } from "@/data/page";
-import { Variables } from "@/data/page/variables";
 import { api } from "@/utils/api";
 import { hydratePage } from "@/utils/hydrate-page";
 
 type PreviewerProperties = {
   page: Page;
   project: string;
-  variables?: Variables;
 };
 
-export const Previewer: React.FC<PreviewerProperties> = ({
-  page,
-  project,
-  variables = {},
-}) => {
+export const Previewer: React.FC<PreviewerProperties> = ({ page, project }) => {
   const [localPage, setLocalPage] = useState<Page>(page);
   const [hydrated, setHydrated] = useState(false);
 

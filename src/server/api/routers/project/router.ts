@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { createTRPCRouter } from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { protectedProcedure } from "@/server/api/trpc";
 
 import { addProject } from "./add";
@@ -18,7 +18,7 @@ export const projectsRouter = createTRPCRouter({
       return await addProject(input.name, ctx.session.user.id);
     }),
 
-  get: protectedProcedure
+  get: publicProcedure
     .meta({
       openapi: { tags: ["project"], method: "GET", path: "/project" },
     })

@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/no-custom-classname */
 import Head from "next/head";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
@@ -25,7 +26,7 @@ const Home = async () => {
             <div className="flex flex-col gap-10">
               <div className="hover:scale-125">
                 <Image
-                  className="animate-jump-in rounded-xl border-2 border-fuchsia-500 bg-white p-4 drop-shadow-xl animate-delay-200 animate-once animate-ease-in"
+                  className="animate-jump-in animate-delay-200 animate-once animate-ease-in rounded-xl border-2 border-fuchsia-500 bg-white p-4 drop-shadow-xl"
                   src="/example/jsonExample.png"
                   alt=""
                   width={300}
@@ -34,7 +35,7 @@ const Home = async () => {
               </div>
               <div className="hover:scale-125">
                 <Image
-                  className="animate-jump-in rounded-xl border-2 border-green-500 bg-white p-4 drop-shadow-xl animate-delay-[400ms] animate-once animate-ease-in"
+                  className="animate-jump-in animate-delay-[400ms] animate-once animate-ease-in rounded-xl border-2 border-green-500 bg-white p-4 drop-shadow-xl"
                   src="/example/csvExample.png"
                   alt=""
                   width={300}
@@ -76,7 +77,7 @@ const Home = async () => {
             </div>
             <div className="hover:scale-125">
               <Image
-                className="animate-jump-in rounded-xl border-2 border-yellow-300 bg-white drop-shadow-xl animate-delay-[800ms] animate-once animate-ease-in"
+                className="animate-jump-in animate-delay-[800ms] animate-once animate-ease-in rounded-xl border-2 border-yellow-300 bg-white drop-shadow-xl"
                 src="/example/appExample.png"
                 alt=""
                 width={300}
@@ -91,3 +92,4 @@ const Home = async () => {
 };
 
 export default Home;
+/* eslint-enable tailwindcss/no-custom-classname */

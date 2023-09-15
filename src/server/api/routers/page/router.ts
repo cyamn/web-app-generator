@@ -7,7 +7,7 @@ import { protectedProcedure } from "@/server/api/trpc";
 
 import { addPage } from "./add";
 import { deletePage } from "./delete";
-import { getAllPages, getPage, getPublicPage } from "./get";
+import { getAllPages, getPage } from "./get";
 import { listPages } from "./list";
 import { getRoleAccess, setPageVisibility, setRoleAccess } from "./settings";
 import { updatePage } from "./update";
@@ -31,10 +31,11 @@ export const pageRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      if (ctx.session?.user) {
-        return await getPage(ctx.session.user.id, input.project, input.page);
-      }
-      return await getPublicPage(input.project, input.page);
+      return await getPage(
+        input.project,
+        input.page,
+        ctx.session?.user.id ?? ""
+      );
     }),
 
   add: protectedProcedure

@@ -21,7 +21,7 @@ export const variablesRouter = createTRPCRouter({
         input.variables,
         input.project,
         input.page,
-        ctx.session!.user ?? null
+        ctx.session === null ? undefined : ctx.session.user
       );
     }),
 });

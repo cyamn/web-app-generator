@@ -8,7 +8,7 @@ type PageProperties = {
 };
 
 const Page = async ({ params }: PageProperties) => {
-  const project = await getServerSideProject(params.projectID);
+  const project = await getServerSideProject(params.projectID, false);
 
   return (
     <div className="flex h-full flex-row">

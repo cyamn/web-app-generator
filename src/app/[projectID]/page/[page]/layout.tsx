@@ -1,4 +1,7 @@
+import { getServerSession } from "next-auth";
+
 import { PageList, ViewList } from "@/components/navigation";
+import { authOptions } from "@/server/auth";
 import { getServerSidePage } from "@/utils/get-serverside";
 
 type PageProperties = {
@@ -10,7 +13,15 @@ type PageProperties = {
 };
 
 const Page = async ({ params, children }: PageProperties) => {
-  const pageWithMeta = await getServerSidePage(params.projectID, params.page);
+  const session = await getServerSession(authOptions);
+  const pageWithMeta = await getServerSidePage(
+    params.projectID,
+    params.page,
+    session !== null
+  );
+
+  if (session === null) return <div className="w-full">{children}</div>;
+
   return (
     <div className="flex h-full w-full flex-row overflow-auto">
       <ViewList activeView={"page"} project={params.projectID} />

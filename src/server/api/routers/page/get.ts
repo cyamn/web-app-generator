@@ -53,9 +53,9 @@ export async function getAllPages(
 }
 
 export async function getPage(
-  userID: string,
   projectID: string,
-  pagePath: string
+  pagePath: string,
+  userID = ""
 ): Promise<{
   page: Page;
   updatedAt: Date;

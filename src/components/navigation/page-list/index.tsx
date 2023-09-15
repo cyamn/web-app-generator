@@ -13,7 +13,7 @@ export const PageList: React.FC<PageListProperties> = async ({
   project,
   pagePath = "",
 }) => {
-  const pagesWithMeta = await getServerSidePageList(project);
+  const pagesWithMeta = await getServerSidePageList(project, false);
 
   return (
     <div className="flex h-full w-36 flex-col justify-between border-r border-slate-300 bg-white">

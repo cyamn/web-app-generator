@@ -14,23 +14,27 @@ type PageProperties = {
 
 const Page = async ({ params, children }: PageProperties) => {
   const session = await getServerSession(authOptions);
-  const project =
-    session === null ? null : await getServerSideProject(params.projectID);
+  const project = await getServerSideProject(
+    params.projectID,
+    session !== null
+  );
 
   return (
     <div className="flex h-screen w-screen flex-col overflow-auto">
       {session !== null && project !== null && (
-        <Header
-          project={project.id}
-          projectName={project.name}
-          item={
-            <div className="flex flex-row items-center">{project.name}</div>
-          }
-          user={session.user}
-        />
+        <>
+          <Header
+            project={project.id}
+            projectName={project.name}
+            item={
+              <div className="flex flex-row items-center">{project.name}</div>
+            }
+            user={session.user}
+          />
+          <Quickmenu project={params.projectID} />
+        </>
       )}
       {children}
-      <Quickmenu project={params.projectID} />
     </div>
   );
 };
