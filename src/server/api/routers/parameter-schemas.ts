@@ -13,15 +13,14 @@ export const TableFilterSchema = z.array(
   z.object({
     column: z.string(),
     operator: z.string(),
-    value: z.any(),
+    value: z.union([
+      z.union([z.string(), z.number(), z.boolean(), z.date()]),
+      z.array(z.union([z.string(), z.number(), z.boolean(), z.date()])),
+    ]),
   })
 );
 
-export type TableFilter = {
-  column: string;
-  operator: string;
-  value: string | number | boolean | object;
-};
+export type TableFilter = z.infer<typeof TableFilterSchema>[0];
 
 export const projectTableColumnSchema = z.object({
   ...projectTableSchema.shape,

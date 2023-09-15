@@ -1,9 +1,14 @@
 "use client";
 
 import React from "react";
+import toast from "react-hot-toast";
 
 import { SkeletonTableView } from "@/components/skeletons/table-view";
 import { DatabaseInputForm } from "@/data/dashboard/library/database-input-form";
+import {
+  DatabaseParameters,
+  SQLFilter,
+} from "@/data/dashboard/parameters/database-parameters";
 import { Row } from "@/data/table/row";
 import { Dict } from "@/data/types";
 import { api } from "@/utils/api";
@@ -13,6 +18,7 @@ type InputFieldProperties = {
   data: Row[keyof Row];
   type: string;
   setData: (value: string) => void;
+  placeholder?: string;
 };
 
 // dict type to regex
@@ -30,7 +36,13 @@ const InputTypeDict: Dict = {
   date: "date",
 };
 
-function InputField({ label, data, type, setData }: InputFieldProperties) {
+function InputField({
+  label,
+  data,
+  type,
+  setData,
+  placeholder,
+}: InputFieldProperties) {
   return (
     <tr className="w-full border-b bg-white p-10 hover:bg-slate-50">
       <td className="px-6 py-2">
@@ -46,7 +58,9 @@ function InputField({ label, data, type, setData }: InputFieldProperties) {
           }}
           type={InputTypeDict[type] ?? "text"}
           pattern={regexDict[type] ?? ".*"}
-          placeholder={type}
+          placeholder={`${type}${
+            placeholder === undefined ? "" : " " + placeholder
+          }`}
           id="default-input"
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 invalid:border-red-500 invalid:ring-red-500 focus:border-blue-500 focus:ring-blue-500"
         />
@@ -76,19 +90,38 @@ export const DatabaseInputFormRender: React.FC<{
   if (isError) return <div>{error.message}</div>;
   if (isLoading || table === undefined) return <SkeletonTableView />;
 
+  const data = dashboard.parameters.data;
+
+  const inputPlaceholders = table.columns.map((column) => {
+    if (data.filter !== undefined) {
+      const rules = data.filter.filter(
+        (f: SQLFilter) => f.column === column.key
+      );
+      if (rules.length > 0) {
+        let placeholder = "";
+        for (const rule of rules) {
+          placeholder += `${rule.operator} ${rule.value.toString()} `;
+        }
+        return placeholder.slice(0, -1);
+      }
+      return null;
+    }
+    return null;
+  });
+
   return (
     <table className="w-full overflow-hidden rounded-lg bg-slate-50 shadow-md">
       <tbody className="w-full overflow-y-auto">
         {table.columns.map((column, id) => (
           <InputField
             key={id}
-            label={dashboard.parameters.data.columns![column.key] ?? column.key}
+            label={data.columns![column.key] ?? column.key}
             data={row[column.key] ?? ""}
             type={column.type}
             setData={(value) => {
               setRow({ ...row, [column.key]: value });
-              console.log(row);
             }}
+            placeholder={inputPlaceholders[id] ?? undefined}
           />
         ))}
         <tr className="w-full border-b bg-white p-10 hover:bg-slate-50">
@@ -101,6 +134,7 @@ export const DatabaseInputFormRender: React.FC<{
               onReset={() => {
                 setRow({});
               }}
+              filter={data.filter}
             />
           </td>
         </tr>
@@ -114,6 +148,7 @@ type ButtonProperties = {
   project: string;
   table: string;
   onReset: () => void;
+  filter: DatabaseParameters["filter"];
 };
 
 const CreateButton: React.FC<ButtonProperties> = ({
@@ -121,13 +156,18 @@ const CreateButton: React.FC<ButtonProperties> = ({
   project,
   table,
   onReset,
+  filter,
 }) => {
   const context = api.useContext();
 
   const { mutate, isLoading: isCreating } = api.tables.row.add.useMutation({
     onSuccess: () => {
       void context.tables.get.invalidate({ project, tableName: table });
+      toast.success("Data submitted successfully!");
       onReset();
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
   return (
@@ -137,6 +177,7 @@ const CreateButton: React.FC<ButtonProperties> = ({
           project,
           tableName: table,
           row,
+          filter,
         });
       }}
       className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"

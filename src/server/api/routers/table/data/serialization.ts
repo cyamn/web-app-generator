@@ -1,78 +1,7 @@
-import { TableFilter } from "../../parameter-schemas";
 import { InternalError } from "../../shared/errors";
 import { Table as SerializedTable } from "../get";
 import { ColumnSchema } from "../schema";
 import { Table as DeserializedTable } from "../schema";
-
-export function filter(
-  table: DeserializedTable,
-  filter: TableFilter[]
-): DeserializedTable {
-  let filteredTable = table;
-  filter.map((filter) => {
-    filteredTable = filterTable(filteredTable, filter);
-  });
-  return filteredTable;
-}
-
-function filterTable(table: DeserializedTable, filter: TableFilter) {
-  // iterate through each row
-  const filteredRows = table.cells.filter((row) => {
-    const columnIndex = table.columns.findIndex((col) => {
-      return col.key === filter.column;
-    });
-    if (columnIndex === -1) throw new InternalError("Invalid column");
-    const cell = row[columnIndex];
-    if (cell === undefined) throw new InternalError("Invalid column");
-    return evaluateFilter(cell.value, filter.value, filter.operator);
-  });
-  return {
-    ...table,
-    cells: filteredRows,
-  };
-}
-
-function evaluateFilter(
-  cellValue: string,
-  filterValue: string,
-  operator: string
-): boolean {
-  switch (operator) {
-    case "eq": {
-      return cellValue == filterValue;
-    }
-    case "neq": {
-      return cellValue != filterValue;
-    }
-    case "gt": {
-      return cellValue > filterValue;
-    }
-    case "gte": {
-      return cellValue >= filterValue;
-    }
-    case "lt": {
-      return cellValue < filterValue;
-    }
-    case "lte": {
-      return cellValue <= filterValue;
-    }
-    case "contains": {
-      return cellValue.includes(filterValue);
-    }
-    case "not_contains": {
-      return !cellValue.includes(filterValue);
-    }
-    case "starts_with": {
-      return cellValue.startsWith(filterValue);
-    }
-    case "ends_with": {
-      return cellValue.endsWith(filterValue);
-    }
-    default: {
-      throw new InternalError("Invalid filter operator");
-    }
-  }
-}
 
 export function deserialize(table: SerializedTable): DeserializedTable {
   const columns = deserializeColumns(table);
