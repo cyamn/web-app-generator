@@ -73,14 +73,14 @@ export const pageRouter = createTRPCRouter({
       return await deletePage(ctx.session.user.id, input.project, input.page);
     }),
 
-  list: protectedProcedure
+  list: publicProcedure
     .meta({
       openapi: { tags: ["page"], method: "GET", path: "/page/list" },
     })
     .input(z.object({ project: z.string() }))
     .output(z.array(PageSchema.pick({ name: true, path: true })))
     .query(async ({ ctx, input }) => {
-      return await listPages(ctx.session.user.id, input.project);
+      return await listPages(ctx?.session?.user?.id ?? "", input.project);
     }),
 
   getAll: protectedProcedure
