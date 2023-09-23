@@ -133,6 +133,7 @@ export const pageRouter = createTRPCRouter({
           name: z.string(),
           id: z.string(),
           access: z.boolean(),
+          isAdmin: z.boolean(),
           users: z.array(
             z.object({
               id: z.string(),

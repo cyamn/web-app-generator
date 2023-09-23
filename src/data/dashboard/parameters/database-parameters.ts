@@ -25,7 +25,7 @@ export type SQLFilter = z.infer<typeof SQLFilterSchema>;
 export const defaultSQLFilter: SQLFilter = {
   column: "active",
   operator: "eq",
-  value: true,
+  value: "true",
 };
 
 export const DatabaseParametersSchema = z

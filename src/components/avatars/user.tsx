@@ -30,7 +30,7 @@ export const UserAvatar: React.FC<UserAvatarProperties> = ({
         style={{
           width: size,
           height: size,
-          backgroundColor: stringToHex(user.email ?? user.name ?? "user"),
+          backgroundColor: stringToHex(user.id),
           fontSize: size / 2.5,
           color: "white",
         }}
@@ -68,12 +68,14 @@ export const UsersStack: React.FC<UsersStackProperties> = ({ users }) => {
   return (
     <div className="flex w-24 flex-row items-center">
       {users.map((user, id) => (
-        <UserAvatar
-          key={id}
-          className="-mr-2 rounded-full"
-          user={user}
-          size={32}
-        />
+        <>
+          <UserAvatar
+            key={id}
+            className="-mr-2 rounded-full"
+            user={user}
+            size={32}
+          />
+        </>
       ))}
     </div>
   );

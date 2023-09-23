@@ -33,11 +33,11 @@ export async function calculateVariables(
 
   if (user !== undefined)
     internal = {
+      ...internal,
       user: {
         ...user,
         roles: await getRolesOfUserInProject(user.id, projectId),
       },
-      ...internal,
     };
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

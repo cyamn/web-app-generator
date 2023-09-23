@@ -33,6 +33,7 @@ export async function getRoleAccess(
     id: string;
     name: string;
     access: boolean;
+    isAdmin: boolean;
     users: Array<{
       id: string;
       name: string | null;
@@ -49,6 +50,7 @@ export async function getRoleAccess(
     select: {
       id: true,
       name: true,
+      isAdmin: true,
       users: {
         select: {
           id: true,
@@ -72,11 +74,13 @@ export async function getRoleAccess(
       name: role.name,
       id: role.id,
       users: role.users,
+      isAdmin: role.isAdmin,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-      access: role.roleAccessPages.some(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        (roleAccessPage) => roleAccessPage.page.path === page
-      ),
+      access:
+        role.roleAccessPages.some(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          (roleAccessPage) => roleAccessPage.page.path === page
+        ) || role.isAdmin,
     };
   });
 }

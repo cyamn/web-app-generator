@@ -111,7 +111,7 @@ export const Preview: React.FC<PreviewProperties> = ({
               />
               <div
                 key={dashboard.type}
-                className={`w-full ${showBorders ? border : ""} ${
+                className={`w-full pl-2 ${showBorders ? border : ""} ${
                   active ? "shadow-xl" : ""
                 }`}
               >

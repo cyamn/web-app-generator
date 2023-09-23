@@ -10,7 +10,7 @@ export const Navbar: React.FC = () => {
         <Link className="font-bold" href="/api/spec">
           API
         </Link>
-        <Link className="font-bold" href="/docs">
+        <Link className="font-bold" href="https://karotte-docs.vercel.app/">
           Docs
         </Link>
         <div className="h-8 border-l border-slate-300"></div>

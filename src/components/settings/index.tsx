@@ -157,6 +157,7 @@ const CanView: React.FC<AccessSettingsProperties> = ({ project, page }) => {
               <input
                 type="checkbox"
                 className="mr-2 h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                disabled={role.isAdmin}
                 checked={role.access}
                 onChange={() => {
                   role.access = !role.access;
@@ -165,7 +166,7 @@ const CanView: React.FC<AccessSettingsProperties> = ({ project, page }) => {
                 }}
               />
               <div className="w-24 pr-2">{role.name}</div>
-              <UsersStack users={role.users}></UsersStack>
+              <UsersStack users={role.users} />
               <a href={`/${project}/settings#roles`}>
                 <FontAwesomeIcon
                   className="text-slate-300"

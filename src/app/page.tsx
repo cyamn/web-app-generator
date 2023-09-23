@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { Auth } from "@/components/auth";
 import GithubRibbon from "@/components/github-ribbon";
 import { Header } from "@/components/header";
+import { Logo } from "@/components/logo";
 import { Navbar } from "@/components/navbar";
 import { authOptions } from "@/server/auth";
 
@@ -44,9 +45,10 @@ const Home = async () => {
               </div>
             </div>
             <div className="flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-              <h1 className="text-center text-5xl font-bold tracking-tight text-slate-600 sm:text-[5rem]">
+              {/* <h1 className="text-center text-5xl font-bold tracking-tight text-slate-600 sm:text-[5rem]">
                 KAROTTE
-              </h1>
+              </h1> */}
+              <Logo />
               <div className="flex flex-row items-center gap-2 text-5xl">
                 <Image
                   className="animate-jump-in animate-delay-200 animate-once animate-ease-in"
