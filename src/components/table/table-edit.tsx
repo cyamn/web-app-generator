@@ -139,8 +139,6 @@ export const TableEdit: React.FC<TableEditProperties> = ({
                           className="cursor-pointer"
                           onClick={() => {
                             deleteRow({
-                              project,
-                              tableName: table_,
                               rowId: row[0]?.row ?? "",
                             });
                           }}

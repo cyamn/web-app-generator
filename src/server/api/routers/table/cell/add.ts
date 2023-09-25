@@ -14,7 +14,7 @@ export async function createCells(
         const rowId = rowIDs[rowIndex];
         const columnId = columnIDs[key];
         if (rowId === undefined || columnId === undefined)
-          throw new InternalError("Failed to import CSV");
+          throw new InternalError("Failed to create Cell");
         return {
           rowId,
           columnId,

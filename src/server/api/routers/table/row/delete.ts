@@ -1,9 +1,8 @@
 import { prisma } from "@/server/database";
 
 import { InternalError } from "../../shared/errors";
-import { Table } from "../get";
 
-export async function deleteRow(table: Table, rowId: string): Promise<string> {
+export async function deleteRow(rowId: string): Promise<string> {
   const row = await prisma.row.findUnique({
     where: { id: rowId },
     include: { cells: true },

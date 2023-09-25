@@ -75,7 +75,7 @@ function gatherRowCells(
       value: cell.value,
       key: cell.column.key, // for sorting
       row: row.id,
-      col: colID,
+      col: cell.column.id,
     };
   });
   for (const col of columns) {

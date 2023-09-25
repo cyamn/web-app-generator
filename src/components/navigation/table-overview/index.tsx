@@ -71,7 +71,7 @@ export const TableDetailedItem: React.FC<TableDetailedItemProperties> = ({
           </div>
         </div>
         <div className="max-h-64 overflow-hidden  rounded-lg border border-slate-300 hover:shadow-md">
-          <TableView table={table} />
+          <TableView project={project} table={table} />
         </div>
       </div>
     </Link>

@@ -38,7 +38,7 @@ export const DatabaseParametersSchema = z
 
 export type DatabaseParameters = z.infer<typeof DatabaseParametersSchema>;
 
-export const defaultDatabaseParameters = {
+export const defaultDatabaseParameters: DatabaseParameters = {
   table: "people",
   columns: {
     active: "Active",

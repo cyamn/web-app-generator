@@ -36,7 +36,7 @@ const InputTypeDict: Dict = {
   date: "date",
 };
 
-function InputField({
+export function InputField({
   label,
   data,
   type,

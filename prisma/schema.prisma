@@ -161,4 +161,6 @@ model Cell {
   column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
   rowId    String
   row      Row    @relation(fields: [rowId], references: [id], onDelete: Cascade)
+
+  @@unique([rowId, columnId])
 }
