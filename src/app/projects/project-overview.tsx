@@ -10,8 +10,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 
-import { ProjectAvatar } from "@/components/avatars/project";
-import { UsersStack } from "@/components/avatars/user";
+import { ProjectAvatar } from "@/components/shared/avatars/project";
+import { UsersStack } from "@/components/shared/avatars/user";
 import { Project } from "@/data/project";
 import { api } from "@/utils/api";
 import { stringToHex } from "@/utils/name-to-hex";

@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 
-import { TableView } from "@/components/table-view";
+import { TableView } from "@/components/table/table-view";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
 import { Table } from "@/server/api/routers/table/schema";

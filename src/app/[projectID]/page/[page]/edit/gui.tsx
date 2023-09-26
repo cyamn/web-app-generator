@@ -10,9 +10,10 @@ import { useKey } from "@/hooks/use-key";
 import { api } from "@/utils/api";
 import { deepEqual } from "@/utils/deep-equal";
 
-import { BottomPanel } from "./bottom-panel/panel";
-import { VariablesPanel } from "./bottom-panel/variables-panel";
-import { Forms, Preview } from "./panels";
+import { BottomPanel } from "../../../../../components/bottom-panel/panel";
+import { Preview } from "../../../../../components/renderers/page-editor";
+import { Forms } from "./forms";
+import { VariablesPanel } from "./variables-panel";
 
 type GUIEditorProperties = {
   page: Page;

@@ -1,12 +1,13 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { IDE } from "@/components/editor/ide";
-import { PageMode, Tabs } from "@/components/tabs";
+import { PageMode, Tabs } from "@/components/navigation/page-tabs";
 import {
   getServerSidePage,
   getServerSideProject,
 } from "@/utils/get-serverside";
+
+import { IDE } from "./ide";
 
 dayjs.extend(relativeTime);
 

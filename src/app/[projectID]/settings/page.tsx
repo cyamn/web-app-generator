@@ -1,8 +1,9 @@
 import { ViewList } from "@/components/navigation";
-import { AppSettings } from "@/components/settings/app-settings";
-import { ImExportSettings } from "@/components/settings/im-export-settings";
-import { RoleSettings } from "@/components/settings/role-settings";
 import { getServerSideProject } from "@/utils/get-serverside";
+
+import { AppSettings } from "./app-settings";
+import { ImExportSettings } from "./im-export-settings";
+import { RoleSettings } from "./role-settings";
 
 type PageProperties = {
   params: {

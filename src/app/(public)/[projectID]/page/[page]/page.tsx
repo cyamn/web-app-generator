@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth/next";
 
-import { Previewer } from "@/components/editor/previewer";
 import { Header } from "@/components/header";
 import { Navbar } from "@/components/navigation/navbar";
+import { Previewer } from "@/components/renderers/page-renderer";
 import { authOptions } from "@/server/auth";
 import {
   getServerSidePage,

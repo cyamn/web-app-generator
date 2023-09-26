@@ -5,14 +5,14 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 
-import { PageMode } from "@/components/tabs";
+import { PageMode } from "@/components/navigation/page-tabs";
 import { Page } from "@/data/page";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
 import { authOptions } from "@/server/auth";
 import { prisma } from "@/server/database";
 
-import { Previewer } from "../../editor/previewer";
+import { Previewer } from "../../renderers/page-renderer";
 import { AddPageCard } from "./add-page-card";
 
 dayjs.extend(relativeTime);

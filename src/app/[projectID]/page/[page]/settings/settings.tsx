@@ -9,12 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
+import { UsersStack } from "@/components/shared/avatars/user";
 import { Page, PageSchema } from "@/data/page";
 import { api } from "@/utils/api";
 import { handleDownload } from "@/utils/download";
 import { handleImport } from "@/utils/import";
-
-import { UsersStack } from "../avatars/user";
 
 type SettingsProperties = {
   page: Page;

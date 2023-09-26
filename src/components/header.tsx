@@ -7,8 +7,8 @@ import { type Session } from "next-auth";
 import { signIn, signOut } from "next-auth/react";
 import React from "react";
 
-import { ProjectAvatar } from "./avatars/project";
-import { UserAvatar } from "./avatars/user";
+import { ProjectAvatar } from "./shared/avatars/project";
+import { UserAvatar } from "./shared/avatars/user";
 
 type HeaderProperties = {
   item: React.ReactNode;

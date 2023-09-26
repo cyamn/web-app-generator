@@ -1,10 +1,10 @@
 import { getServerSession } from "next-auth/next";
 import React from "react";
 
-import OpenApiPanel from "@/components/api/openapi";
 import GithubRibbon from "@/components/github-ribbon";
 import { Header } from "@/components/header";
 import { Navbar } from "@/components/navbar";
+import OpenApiPanel from "@/components/shared/openapi";
 import { authOptions } from "@/server/auth";
 
 const Page = async () => {

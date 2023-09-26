@@ -3,7 +3,7 @@
 import React from "react";
 
 import { SkeletonTableView } from "@/components/skeletons/table-view";
-import { TableView } from "@/components/table-view";
+import { TableView } from "@/components/table/table-view";
 import { DatabaseView } from "@/data/dashboard/library/database-view";
 import { api } from "@/utils/api";
 

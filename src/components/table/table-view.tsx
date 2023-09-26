@@ -2,9 +2,9 @@ import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { Table } from "@/server/api/routers/table/schema";
+import { Column, Table } from "@/server/api/routers/table/schema";
 
-import { TableControls } from "./table/table-controls";
+import { TableControls } from "./table-controls";
 
 type TableViewProperties = {
   table: Table;
@@ -79,11 +79,6 @@ type Cell = {
   value: string;
   col: string;
   row: string;
-};
-type Column = {
-  id: string;
-  type: "string" | "number" | "boolean" | "date";
-  key: string;
 };
 
 function rowsToRecord(row: Cell[], columns: Column[]): Record<string, string> {

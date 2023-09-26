@@ -10,7 +10,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { Column } from "@/server/api/routers/table/schema";
+import { Column, columnTypes } from "@/server/api/routers/table/schema";
 import { api } from "@/utils/api";
 import { nameToInternal } from "@/utils/name-to-internal";
 
@@ -96,7 +96,7 @@ export const ColumnHeader: React.FC<ColumnHeaderProperties> = ({
             Column type
           </ContextMenuSubTrigger>
           <ContextMenuSubContent className="w-48 bg-white">
-            {["string", "number", "boolean", "date"].map((type) => (
+            {columnTypes.map((type) => (
               <ContextMenuItem
                 className="cursor-pointer"
                 key={type}

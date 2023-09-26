@@ -3,12 +3,13 @@ import Head from "next/head";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 
-import { Auth } from "@/components/auth";
 import GithubRibbon from "@/components/github-ribbon";
 import { Header } from "@/components/header";
 import { Logo } from "@/components/logo";
 import { Navbar } from "@/components/navbar";
 import { authOptions } from "@/server/auth";
+
+import { Auth } from "../components/shared/auth";
 
 const Home = async () => {
   const session = await getServerSession(authOptions);
