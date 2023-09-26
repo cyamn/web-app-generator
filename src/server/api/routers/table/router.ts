@@ -21,6 +21,7 @@ import { getAll, getTable } from "./get";
 import { listTables } from "./list";
 import { rowRouter } from "./row/router";
 import { TableSchema } from "./schema";
+import { updateTable } from "./update";
 
 export const tablesRouter = createTRPCRouter({
   get: publicProcedure
@@ -49,6 +50,29 @@ export const tablesRouter = createTRPCRouter({
         input.tableName
       );
     }),
+
+  update: protectedProcedure
+    .meta({ openapi: { tags: ["table"], method: "PUT", path: "/table" } })
+    .input(
+      z.object({
+        project: z.string(),
+        tableName: z.string(),
+        newName: z.string(),
+        columns: z.record(z.string()),
+        data: z.array(z.array(z.string())),
+      })
+    )
+    .output(z.string())
+    .mutation(async ({ ctx, input }) => {
+      return await updateTable(
+        input.project,
+        input.tableName,
+        input.columns,
+        input.data,
+        input.newName
+      );
+    }),
+
   delete: protectedProcedure
     .meta({ openapi: { tags: ["table"], method: "DELETE", path: "/table" } })
     .input(projectTableSchema)
@@ -56,6 +80,7 @@ export const tablesRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       return await deleteTable(input.tableName, input.project);
     }),
+
   list: protectedProcedure
     .meta({ openapi: { tags: ["table"], method: "GET", path: "/table/list" } })
     .input(projectIDSchema)

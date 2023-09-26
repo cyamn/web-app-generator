@@ -8,6 +8,7 @@ export async function listRoles(project: string): Promise<
     name: string;
     users: User[];
     rules: Rule[];
+    isAdmin: boolean;
   }>
 > {
   const roles = await prisma.role.findMany({
@@ -21,6 +22,7 @@ export async function listRoles(project: string): Promise<
       name: true,
       users: true,
       rules: true,
+      isAdmin: true,
     },
   });
   return roles;

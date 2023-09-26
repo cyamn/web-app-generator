@@ -58,7 +58,6 @@ export const AppSettings: FC<AppSettingsProperties> = ({ projectID }) => {
                   id: project.id,
                   data: { name },
                 });
-                location.reload();
               }}
             >
               Update

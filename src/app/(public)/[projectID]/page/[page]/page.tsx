@@ -26,14 +26,18 @@ const Page = async ({ params }: PageProperties) => {
     false
   );
   return (
-    <div className="flex flex-col">
-      <Header
-        project={project.id}
-        projectName={project.name}
-        item={<Navbar project={project.id} />}
-        user={session?.user}
-      />
-      <Previewer page={pageWithMeta.page} project={params.projectID} />;
+    <div className="flex h-full flex-col">
+      <div className="sticky top-0 z-10">
+        <Header
+          project={project.id}
+          projectName={project.name}
+          item={<Navbar project={project.id} />}
+          user={session?.user}
+        />
+      </div>
+      <div className="h-full overflow-y-auto">
+        <Previewer page={pageWithMeta.page} project={params.projectID} />
+      </div>
     </div>
   );
 };
