@@ -3,7 +3,7 @@ import Link from "next/link";
 export const Navbar: React.FC = () => {
   return (
     <>
-      <div className="flex flex-row gap-4 text-xl">
+      <div className="flex flex-row justify-items-center gap-4 pt-[6px] text-xl">
         <Link className="font-bold" href="/">
           Home
         </Link>

@@ -23,9 +23,9 @@ function filterTable(table: DeserializedTable, filter: TableFilter) {
     const columnIndex = table.columns.findIndex((col) => {
       return col.key === filter.column;
     });
-    if (columnIndex === -1) throw new InternalError("Invalid column");
+    if (columnIndex === -1) throw new InternalError("Invalid column on Filter");
     const cell = row[columnIndex];
-    if (cell === undefined) throw new InternalError("Invalid column");
+    if (cell === undefined) throw new InternalError("Invalid cell on Filter");
     return evaluateFilter(cell.value, filter.value, filter.operator);
   });
   return {

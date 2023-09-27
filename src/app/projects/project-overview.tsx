@@ -46,7 +46,7 @@ export const ProjectCard: React.FC<ProjectCardProperties> = ({ project }) => {
     data: admins,
     isLoading,
     isError,
-  } = api.roles.getAdmins.useQuery({ project: project.id });
+  } = api.roles.getUsers.useQuery({ project: project.id, isAdmin: true });
 
   return (
     <Link href={`/${project.id}/page`}>

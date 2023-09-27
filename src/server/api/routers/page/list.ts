@@ -16,6 +16,19 @@ export async function listPages(
             OR: isProjectAdminFilter(userID),
           },
         },
+        {
+          canView: {
+            some: {
+              role: {
+                users: {
+                  some: {
+                    id: userID,
+                  },
+                },
+              },
+            },
+          },
+        },
       ],
     },
     select: {

@@ -1,6 +1,12 @@
 import { z } from "zod";
 
-export const columnTypes = ["string", "number", "boolean", "date"] as const;
+export const columnTypes = [
+  "string",
+  "number",
+  "boolean",
+  "date",
+  "user",
+] as const;
 
 export const ColumnSchema = z
   .object({

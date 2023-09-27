@@ -19,6 +19,12 @@ export function makeParser(projectId: string) {
         if (row === undefined) return "#ROW NOT FOUND!";
         return row.cells[0]?.value;
       },
+      COUNT_ROWS: async (name: string) => {
+        name = FormulaHelpers.accept(name, Types.STRING);
+        const table = await getTable(name, projectId);
+        if (table === undefined) return "#TABLE NOT FOUND!";
+        return table?.rows.length;
+      },
     },
   });
 }

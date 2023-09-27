@@ -48,5 +48,5 @@ export async function getServerSideProjectAdmins(
   needsAuth = true
 ) {
   const c = await getCaller(needsAuth);
-  return c.roles.getAdmins({ project });
+  return c.roles.getUsers({ project, isAdmin: true });
 }

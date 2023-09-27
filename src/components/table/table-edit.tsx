@@ -22,7 +22,6 @@ type TableEditProperties = {
   table: string;
   project: string;
   columns?: Record<string, string>;
-  controls?: boolean;
 };
 
 // eslint-disable-next-line max-lines-per-function
@@ -30,7 +29,6 @@ export const TableEdit: React.FC<TableEditProperties> = ({
   table: table_,
   project,
   columns,
-  controls = true,
 }) => {
   const {
     data: table,
@@ -102,7 +100,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
         <table className="table-auto text-left text-sm text-slate-500">
           <thead className="sticky top-0 bg-slate-50 text-xs uppercase text-slate-700">
             <tr>
-              {controls && <th></th>}
+              <th></th>
               {table.columns.map((column) => (
                 <th
                   key={column.key}
@@ -127,41 +125,34 @@ export const TableEdit: React.FC<TableEditProperties> = ({
                 key={index}
                 className="border-b border-slate-300 bg-white hover:bg-slate-50 "
               >
-                {controls && (
-                  // delete col
-                  <td className="w-max border-r bg-slate-100 text-right text-lg">
-                    <ContextMenu>
-                      <ContextMenuTrigger className="w-max p-2 px-5 pl-4">
-                        {index + 1}
-                      </ContextMenuTrigger>
-                      <ContextMenuContent className="w-64 bg-white">
-                        <ContextMenuItem
-                          className="cursor-pointer"
-                          onClick={() => {
-                            deleteRow({
-                              rowId: row[0]?.row ?? "",
-                            });
-                          }}
-                        >
-                          Delete
-                        </ContextMenuItem>
-                      </ContextMenuContent>
-                    </ContextMenu>
-                  </td>
-                )}
+                <td className="w-max border-r bg-slate-100 text-right text-lg">
+                  <ContextMenu>
+                    <ContextMenuTrigger className="w-max p-2 px-5 pl-4">
+                      {index + 1}
+                    </ContextMenuTrigger>
+                    <ContextMenuContent className="w-64 bg-white">
+                      <ContextMenuItem
+                        className="cursor-pointer"
+                        onClick={() => {
+                          deleteRow({
+                            rowId: row[0]?.row ?? "",
+                          });
+                        }}
+                      >
+                        Delete
+                      </ContextMenuItem>
+                    </ContextMenuContent>
+                  </ContextMenu>
+                </td>
+
                 {row.map((cell, id) => (
-                  <td
-                    key={id}
-                    className={`${
-                      controls ? "border-r border-slate-300" : "px-6 py-4"
-                    }`}
-                  >
+                  <td key={id} className="border-r border-slate-300">
                     <CellEdit
                       value={cell.value ?? "???"}
                       type={table.columns[id]?.type ?? "string"}
-                      controls={controls}
                       id={cell.id}
                       cell={cell}
+                      project={project}
                     />
                   </td>
                 ))}

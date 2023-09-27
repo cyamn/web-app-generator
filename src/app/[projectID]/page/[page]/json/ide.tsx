@@ -33,6 +33,8 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
     },
   ]);
 
+  const [oldPath, setOldPath] = useState<string>(page.path);
+
   function addCliLog(log: string, type: string): void {
     const last = cliLog[cliLog.length - 1];
     if (last?.message === log) {
@@ -75,6 +77,10 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
   const { mutate } = api.pages.update.useMutation({
     onSuccess: () => {
       toast.success(`Saved page to database!`);
+      if (oldPath !== localPage.path) {
+        setOldPath(localPage.path);
+        window.location.href = `/${project}/page/${localPage.path}/json`;
+      }
     },
   });
 
@@ -83,7 +89,8 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
       toast.error("could not save page check console");
       return;
     }
-    mutate({ project, page: localPage });
+    mutate({ project, page: localPage, path: oldPath });
+    // set page to formated page
     addCliLog("page saved successfully", "success");
   }
 

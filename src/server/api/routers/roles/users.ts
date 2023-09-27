@@ -1,6 +1,9 @@
 import { prisma } from "@/server/database";
 
-export async function getAdmins(projectId: string): Promise<
+export async function getUsers(
+  projectId: string,
+  admin = false
+): Promise<
   Array<{
     id: string;
     name: string | null;
@@ -8,7 +11,9 @@ export async function getAdmins(projectId: string): Promise<
     image: string | null;
   }>
 > {
-  const admins = await prisma.user.findMany({
+  const isAdminFilter = admin ? { isAdmin: true } : undefined;
+
+  const users = await prisma.user.findMany({
     select: {
       id: true,
       name: true,
@@ -19,13 +24,13 @@ export async function getAdmins(projectId: string): Promise<
       roles: {
         some: {
           projectId,
-          isAdmin: true,
+          ...isAdminFilter,
         },
       },
     },
   });
-  if (admins === undefined) {
+  if (users === undefined) {
     return [];
   }
-  return admins;
+  return users;
 }

@@ -6,11 +6,12 @@ import { isProjectAdminFilter } from "./shared";
 export async function updatePage(
   userID: string,
   projectID: string,
-  page: Page
+  page: Page,
+  path: string = page.path
 ): Promise<string> {
   const delta = await prisma.page.updateMany({
     where: {
-      path: page.path,
+      path,
       project: {
         id: projectID,
         OR: isProjectAdminFilter(userID),

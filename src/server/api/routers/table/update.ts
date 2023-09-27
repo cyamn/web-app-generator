@@ -24,7 +24,10 @@ export async function updateTable(
 }
 async function insertData(
   data: string[][],
-  columns: { type: "string" | "number" | "boolean" | "date"; key: string }[],
+  columns: {
+    type: "string" | "number" | "boolean" | "date" | "user";
+    key: string;
+  }[],
   table: Table,
   columnIDs: Record<string, string>
 ) {
@@ -62,13 +65,13 @@ async function recreatedColumns(
 
   const columns: Column[] = Object.entries(columnsRecord).map(
     ([key, value]) => {
-      if (!["string", "number", "boolean", "date"].includes(value)) {
+      if (!["string", "number", "boolean", "date", "user"].includes(value)) {
         return {
           key,
           type: "string",
         };
       }
-      type Type = "string" | "number" | "boolean" | "date";
+      type Type = "string" | "number" | "boolean" | "date" | "user";
       const type: Type = value as Type;
       return {
         key,

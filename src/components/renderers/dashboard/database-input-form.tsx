@@ -27,6 +27,7 @@ const regexDict: Dict = {
   number: "^d+$",
   string: ".*",
   date: "^d{4}-d{2}-d{2}$",
+  user: ".*",
 };
 
 const InputTypeDict: Dict = {
@@ -34,6 +35,7 @@ const InputTypeDict: Dict = {
   number: "number",
   string: "text",
   date: "date",
+  user: "string",
 };
 
 export function InputField({

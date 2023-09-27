@@ -56,11 +56,17 @@ export const pageRouter = createTRPCRouter({
       z.object({
         project: z.string(),
         page: PageSchema,
+        path: z.string().optional(),
       })
     )
     .output(z.string())
     .mutation(async ({ ctx, input }) => {
-      return await updatePage(ctx.session.user.id, input.project, input.page);
+      return await updatePage(
+        ctx.session.user.id,
+        input.project,
+        input.page,
+        input.path
+      );
     }),
 
   delete: protectedProcedure

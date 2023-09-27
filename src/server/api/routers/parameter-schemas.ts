@@ -9,13 +9,20 @@ export const projectTableSchema = z.object({
   tableName: z.string(),
 });
 
+const tableFilterOperatorSchema = z.union([
+  z.string(),
+  z.number(),
+  z.boolean(),
+  z.date(),
+]);
+
 export const TableFilterSchema = z.array(
   z.object({
     column: z.string(),
     operator: z.string(),
     value: z.union([
-      z.union([z.string(), z.number(), z.boolean(), z.date()]),
-      z.array(z.union([z.string(), z.number(), z.boolean(), z.date()])),
+      tableFilterOperatorSchema,
+      z.array(tableFilterOperatorSchema),
     ]),
   })
 );
@@ -28,7 +35,10 @@ export const projectTableColumnSchema = z.object({
     if (typeof value === "string") return [value];
     return value;
   }, z.array(z.string()).optional()),
-  filter: TableFilterSchema.optional(),
+  filter: z.preprocess((value) => {
+    if (typeof value === "string") return [value];
+    return value;
+  }, TableFilterSchema.optional()),
 });
 
 export const idListSchema = z.array(
