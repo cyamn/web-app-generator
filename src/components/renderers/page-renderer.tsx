@@ -1,8 +1,8 @@
 "use client";
 
+import { DashboardFactory } from "dashboards/factory";
 import React, { useEffect, useState } from "react";
 
-import { DashboardRender } from "@/components/renderers/dashboard";
 import { type Page } from "@/data/page";
 import { api } from "@/utils/api";
 import { hydratePage } from "@/utils/hydrate-page";
@@ -33,11 +33,17 @@ export const Previewer: React.FC<PreviewerProperties> = ({ page, project }) => {
 
   return (
     <div className="flex h-full flex-col overflow-auto p-8 font-sans leading-normal tracking-normal">
-      {localPage.dashboards.map((dashboard, id) => (
-        <div key={id} className="py-2">
-          <DashboardRender dashboard={dashboard} index={id} project={project} />
-        </div>
-      ))}
+      {localPage.dashboards.map((dashboard, id) => {
+        const dash = DashboardFactory(dashboard, {
+          projectId: project,
+        });
+        return (
+          <div key={id} className="py-2">
+            {/* <DashboardRender dashboard={dashboard} index={id} project={project} /> */}
+            {dash.render()}
+          </div>
+        );
+      })}
     </div>
   );
 };

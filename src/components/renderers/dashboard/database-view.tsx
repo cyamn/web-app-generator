@@ -8,10 +8,10 @@ import { DatabaseView } from "@/data/dashboard/library/database-view";
 import { api } from "@/utils/api";
 
 export const DatabaseViewRender: React.FC<{
-  dashboard: DatabaseView;
+  parameters: DatabaseView["parameters"];
   project: string;
-}> = ({ dashboard, project }) => {
-  const tableName = dashboard.parameters.data.table;
+}> = ({ parameters, project }) => {
+  const tableName = parameters.data.table;
   const {
     data: table,
     error,
@@ -20,8 +20,8 @@ export const DatabaseViewRender: React.FC<{
   } = api.tables.get.useQuery({
     project,
     tableName,
-    columns: Object.keys(dashboard.parameters.data.columns ?? {}),
-    filter: dashboard.parameters.data.filter ?? undefined,
+    columns: Object.keys(parameters.data.columns ?? {}),
+    filter: parameters.data.filter ?? undefined,
   });
 
   if (isError) return <div>{error.message}</div>;
@@ -32,8 +32,8 @@ export const DatabaseViewRender: React.FC<{
       <TableView
         table={table}
         project={project}
-        columns={dashboard.parameters.data.columns}
-        controls={dashboard.parameters.format.controls}
+        columns={parameters.data.columns}
+        controls={parameters.format.controls}
       />
     </div>
   );

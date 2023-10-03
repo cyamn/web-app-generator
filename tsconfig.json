@@ -37,7 +37,8 @@
     "src/pages/index.tsx.off",
     "src/server/api/express.js",
     "src/server/api/express.js",
-    "next.config.js"
+    "next.config.js",
+    "src/pages/api/jscpd.js"
   ],
   "exclude": ["node_modules"]
 }

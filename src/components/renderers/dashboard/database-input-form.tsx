@@ -72,10 +72,10 @@ export function InputField({
 }
 
 export const DatabaseInputFormRender: React.FC<{
-  dashboard: DatabaseInputForm;
+  parameters: DatabaseInputForm["parameters"];
   project: string;
-}> = ({ dashboard, project }) => {
-  const tableName = dashboard.parameters.data.table;
+}> = ({ parameters, project }) => {
+  const tableName = parameters.data.table;
   const {
     data: table,
     error,
@@ -84,7 +84,7 @@ export const DatabaseInputFormRender: React.FC<{
   } = api.tables.get.useQuery({
     project: project,
     tableName,
-    columns: Object.keys(dashboard.parameters.data.columns ?? {}),
+    columns: Object.keys(parameters.data.columns ?? {}),
   });
 
   const [row, setRow] = React.useState<Row>({});
@@ -92,7 +92,7 @@ export const DatabaseInputFormRender: React.FC<{
   if (isError) return <div>{error.message}</div>;
   if (isLoading || table === undefined) return <SkeletonTableView />;
 
-  const data = dashboard.parameters.data;
+  const data = parameters.data;
 
   const inputPlaceholders = table.columns.map((column) => {
     if (data.filter !== undefined) {

@@ -3,9 +3,9 @@
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import { faKeyboard, faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { DashboardFactory } from "dashboards/factory";
 import React, { useEffect, useState } from "react";
 
-import { DashboardRender } from "@/components/renderers/dashboard";
 import {
   Dashboard,
   DashboardTypeToIcon,
@@ -96,6 +96,10 @@ export const Preview: React.FC<PreviewProperties> = ({
         const border = active
           ? "rounded-r-lg border border-blue-500"
           : "rounded-r-lg border border-slate-300";
+        const dash = DashboardFactory(dashboard, {
+          projectId: project,
+        });
+
         return (
           <div key={id} className="cursor-pointer">
             <div
@@ -115,11 +119,7 @@ export const Preview: React.FC<PreviewProperties> = ({
                   active ? "shadow-xl" : ""
                 }`}
               >
-                <DashboardRender
-                  dashboard={dashboard}
-                  index={index}
-                  project={project}
-                />
+                {dash.render()}
               </div>
             </div>
             <div className="group h-2 w-full hover:h-min">

@@ -1,7 +1,7 @@
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { DashboardFactory } from "dashboards/factory";
 
-import { DashboardRender } from "@/components/renderers/dashboard";
 import { type Dashboard } from "@/data/dashboard/library/dashboard";
 
 type DashboardEditProperties = {
@@ -22,6 +22,10 @@ export const DashboardEdit: React.FC<DashboardEditProperties> = ({
   const border = active
     ? "rounded-r-lg border-2 border-slate-800"
     : "rounded-r-lg border-2 border-slate-300";
+
+  const dash = DashboardFactory(dashboard, {
+    projectId: project,
+  });
   return (
     <div className="my-1 cursor-pointer">
       <div className="flex flex-row">
@@ -32,11 +36,7 @@ export const DashboardEdit: React.FC<DashboardEditProperties> = ({
             active ? "shadow-xl" : ""
           }`}
         >
-          <DashboardRender
-            dashboard={dashboard}
-            index={index}
-            project={project}
-          />
+          {dash.render()}
         </div>
       </div>
     </div>
