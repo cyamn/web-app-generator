@@ -2,7 +2,7 @@
 
 import { IconDefinition } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dashboard, Dashboards } from "dashboards";
+import { DashboardDefinition, Dashboards } from "dashboards";
 import { DashboardFactory } from "dashboards/factory";
 import React, { useEffect, useState } from "react";
 
@@ -52,7 +52,7 @@ type PreviewProperties = {
   index?: number;
   setIndex?: (index: number) => void;
   project: string;
-  addDashboard: (index: number, dashboard: Dashboard) => void;
+  addDashboard: (index: number, dashboard: DashboardDefinition) => void;
 };
 
 export const Preview: React.FC<PreviewProperties> = ({

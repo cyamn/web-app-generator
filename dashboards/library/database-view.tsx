@@ -1,4 +1,5 @@
 import { faTable } from "@fortawesome/free-solid-svg-icons";
+import { UpdateFunction } from "dashboards/definitions/types";
 import { ParameterDataForm } from "dashboards/shared/forms/parameter-data";
 import { DatabaseViewRender } from "dashboards/shared/renderers/database-view";
 import {
@@ -9,13 +10,12 @@ import {
   defaultFormatDataParameters,
   FormatDataParametersSchema,
 } from "dashboards/shared/shemes/data-format";
-import { UpdateFunction } from "dashboards/types";
 import React from "react";
 import { z } from "zod";
 
-import { UnknownDashboard } from "./unknown";
+import { DashboardBase } from "../definitions/dashboard-base";
 
-export default class DatabaseViewDashboard extends UnknownDashboard<DatabaseViewParameters> {
+export default class DatabaseViewDashboard extends DashboardBase<DatabaseViewParameters> {
   public render() {
     return (
       <DatabaseViewRender

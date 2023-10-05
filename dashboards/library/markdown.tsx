@@ -1,12 +1,20 @@
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
-import { UpdateFunction } from "dashboards/types";
+import { UpdateFunction } from "dashboards/definitions/types";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { z } from "zod";
 
-import { UnknownDashboard } from "./unknown";
+import { DashboardBase } from "../definitions/dashboard-base";
 
-export default class MarkdownDashboard extends UnknownDashboard<MarkdownParameters> {
+const ParameterSchema = z
+  .object({
+    markdown: z.string(),
+  })
+  .strict();
+
+type Parameters = z.infer<typeof ParameterSchema>;
+
+export default class MarkdownDashboard extends DashboardBase<Parameters> {
   public render() {
     return (
       <ReactMarkdown className="markdown">
@@ -22,7 +30,7 @@ export default class MarkdownDashboard extends UnknownDashboard<MarkdownParamete
     };
   }
 
-  public getControls(updateFunction: UpdateFunction<MarkdownParameters>) {
+  public getControls(updateFunction: UpdateFunction<Parameters>) {
     return (
       <div className="flex h-full flex-col">
         <h4 className="mb-2 block text-slate-900">Markdown</h4>
@@ -41,22 +49,12 @@ export default class MarkdownDashboard extends UnknownDashboard<MarkdownParamete
   }
 
   public getDefaultParameters() {
-    return defaultMarkdownParameters;
+    return {
+      markdown: "# Header\n\nParagraph",
+    };
   }
 
   public static getSchema() {
-    return MarkdownParametersSchema;
+    return ParameterSchema;
   }
 }
-
-export const MarkdownParametersSchema = z
-  .object({
-    markdown: z.string(),
-  })
-  .strict();
-
-export type MarkdownParameters = z.infer<typeof MarkdownParametersSchema>;
-
-export const defaultMarkdownParameters = {
-  markdown: "# Header\n\nParagraph",
-};

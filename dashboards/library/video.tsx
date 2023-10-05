@@ -2,9 +2,9 @@ import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { z } from "zod";
 
-import { UnknownDashboard } from "./unknown";
+import { DashboardBase } from "../definitions/dashboard-base";
 
-export default class VideoDashboard extends UnknownDashboard<VideoDashboardParameters> {
+export default class VideoDashboard extends DashboardBase<VideoDashboardParameters> {
   public render() {
     return (
       <div>

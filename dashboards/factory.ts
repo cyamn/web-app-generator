@@ -1,7 +1,7 @@
 import { Dashboards } from "dashboards";
 
-import { UnknownDashboard } from "./library/unknown";
-import { Dashboard, DashboardContext } from "./types";
+import { DashboardBase } from "./definitions/dashboard-base";
+import { Dashboard, DashboardContext } from "./definitions/types";
 
 type DashboardsParameters = {
   type: string;
@@ -14,7 +14,7 @@ export function DashboardFactory(
 ): Dashboard<unknown> {
   const dashboard = Dashboards[parameters.type];
   if (dashboard === undefined) {
-    return new UnknownDashboard<unknown>(context, parameters.parameters);
+    return new DashboardBase<unknown>(context, parameters.parameters);
   }
   const instance = new dashboard(context, parameters.parameters);
   return instance;

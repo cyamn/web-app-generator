@@ -1,4 +1,5 @@
 import { faKeyboard } from "@fortawesome/free-solid-svg-icons";
+import { UpdateFunction } from "dashboards/definitions/types";
 import { ParameterDataForm } from "dashboards/shared/forms/parameter-data";
 import { DatabaseInputFormRender } from "dashboards/shared/renderers/database-input-form";
 import {
@@ -6,13 +7,11 @@ import {
   defaultDatabaseParameters,
 } from "dashboards/shared/shemes/data";
 import { DatabaseInputParametersSchema } from "dashboards/shared/shemes/data-input";
-import { UpdateFunction } from "dashboards/types";
-import React from "react";
 import { z } from "zod";
 
-import { UnknownDashboard } from "./unknown";
+import { DashboardBase } from "../definitions/dashboard-base";
 
-export default class DatabaseInputFormDashboard extends UnknownDashboard<DatabaseInputFormParameters> {
+export default class DatabaseInputFormDashboard extends DashboardBase<DatabaseInputFormParameters> {
   public render() {
     return (
       <DatabaseInputFormRender

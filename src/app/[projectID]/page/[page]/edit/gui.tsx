@@ -1,6 +1,6 @@
 "use client";
 
-import { Dashboard } from "dashboards";
+import { DashboardDefinition } from "dashboards";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -38,7 +38,7 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
     }
   }
 
-  function addDashboard(index: number, dashboard: Dashboard): void {
+  function addDashboard(index: number, dashboard: DashboardDefinition): void {
     const dashboards = [...localPage.dashboards];
     dashboards.splice(index, 0, dashboard);
     setLocalPage({ ...localPage, dashboards });

@@ -1,9 +1,11 @@
 import { faGhost } from "@fortawesome/free-solid-svg-icons";
+import { DashboardContext, UpdateFunction } from "dashboards/definitions/types";
 import { autoGenerateController } from "dashboards/shared/forms/auto";
-import { Dashboard, DashboardContext, UpdateFunction } from "dashboards/types";
 import { z } from "zod";
 
-export class UnknownDashboard<T> implements Dashboard<T> {
+import { IDashboard } from "./dashboard-interface";
+
+export class DashboardBase<T> implements IDashboard<T> {
   public context: DashboardContext;
 
   public render() {

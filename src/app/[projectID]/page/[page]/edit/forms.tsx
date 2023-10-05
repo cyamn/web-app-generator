@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dashboard } from "dashboards";
+import { DashboardDefinition } from "dashboards";
 import { DashboardFactory } from "dashboards/factory";
 import React from "react";
 
@@ -26,7 +26,9 @@ export const Forms: React.FC<FormProperties> = ({
     page.dashboards[index] === null
   )
     return null;
-  const dashboard: Dashboard = page.dashboards[index] as Dashboard;
+  const dashboard: DashboardDefinition = page.dashboards[
+    index
+  ] as DashboardDefinition;
 
   function updateDashboardParameters(parameters: unknown): void {
     const updatedPage = structuredClone(page);
