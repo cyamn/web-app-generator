@@ -1,41 +1,60 @@
-import { faTable } from "@fortawesome/free-solid-svg-icons";
-import { DashboardContext } from "dashboards/types";
+import { faKeyboard } from "@fortawesome/free-solid-svg-icons";
+import { ParameterDataForm } from "dashboards/shared/forms/parameter-data";
+import { DatabaseInputFormRender } from "dashboards/shared/renderers/database-input-form";
+import {
+  DatabaseParametersSchema,
+  defaultDatabaseParameters,
+} from "dashboards/shared/shemes/data";
+import { DatabaseInputParametersSchema } from "dashboards/shared/shemes/data-input";
+import { UpdateFunction } from "dashboards/types";
 import React from "react";
 import { z } from "zod";
 
-import { DatabaseInputFormRender } from "@/components/renderers/dashboard/database-input-form";
-
-import {
-  DatabaseInputParametersSchema,
-  DatabaseParametersSchema,
-  defaultDatabaseParameters,
-} from "./shared";
 import { UnknownDashboard } from "./unknown";
 
-export default class DatabaseInputFormDashboard extends UnknownDashboard {
+export default class DatabaseInputFormDashboard extends UnknownDashboard<DatabaseInputFormParameters> {
   public render() {
     return (
       <DatabaseInputFormRender
-        parameters={this.parameters}
+        parameters={this.getParameters()}
         project={this.context.projectId}
       />
     );
   }
-  public update(parameters: DatabaseInputFormParameters) {
-    this.parameters = parameters;
-  }
-  public constructor(
-    parameters: DatabaseInputFormParameters,
-    context: DashboardContext
+
+  public getControls(
+    updateFunction: UpdateFunction<DatabaseInputFormParameters>
   ) {
-    super(parameters, context);
-    this.update(parameters);
-    return;
+    const updateData = (data: DatabaseInputFormParameters["data"]) => {
+      updateFunction({
+        ...this.getParameters(),
+        data,
+      });
+    };
+
+    return (
+      <ParameterDataForm
+        data={this.getParameters().data}
+        onSetData={updateData}
+        project={this.context.projectId}
+      />
+    );
   }
-  public static readonly title = "DatabaseInputForm";
-  public static readonly icon = faTable;
-  private parameters: DatabaseInputFormParameters =
-    defaultDatabaseInputFormParameters;
+
+  public getMetaData() {
+    return {
+      title: "DatabaseInputForm",
+      icon: faKeyboard,
+    };
+  }
+
+  public getDefaultParameters() {
+    return defaultDatabaseInputFormParameters;
+  }
+
+  public static getSchema() {
+    return DatabaseInputFormParametersSchema;
+  }
 }
 
 export const DatabaseInputFormParametersSchema = z.object({

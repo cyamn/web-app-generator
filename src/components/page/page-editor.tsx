@@ -1,18 +1,11 @@
 "use client";
 
-import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
-import { faKeyboard, faTable } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Dashboard, Dashboards } from "dashboards";
 import { DashboardFactory } from "dashboards/factory";
 import React, { useEffect, useState } from "react";
 
-import {
-  Dashboard,
-  DashboardTypeToIcon,
-} from "@/data/dashboard/library/dashboard";
-import { defaultDatabaseInputForm } from "@/data/dashboard/library/database-input-form";
-import { defaultDatabaseView } from "@/data/dashboard/library/database-view";
-import { defaultMarkdown } from "@/data/dashboard/library/markdown";
 import { type Page } from "@/data/page";
 import { api } from "@/utils/api";
 import { hydratePage } from "@/utils/hydrate-page";
@@ -21,9 +14,15 @@ type NameTagProperties = {
   visible: boolean;
   name: string;
   active: boolean;
+  icon?: IconDefinition;
 };
 
-const NameTag: React.FC<NameTagProperties> = ({ visible, name, active }) => {
+const NameTag: React.FC<NameTagProperties> = ({
+  visible,
+  name,
+  active,
+  icon,
+}) => {
   if (!visible) return null;
   const colors = active
     ? "bg-blue-100 text-blue-500 shadow-lg border border-blue-500"
@@ -31,12 +30,7 @@ const NameTag: React.FC<NameTagProperties> = ({ visible, name, active }) => {
   return (
     <div className={"w-10 rounded-l-lg  py-[2px] " + colors}>
       <div className="flex flex-col">
-        <FontAwesomeIcon
-          className="pt-1 text-2xl"
-          icon={
-            DashboardTypeToIcon[name as keyof typeof DashboardTypeToIcon] ?? ""
-          }
-        />
+        {icon && <FontAwesomeIcon className="pt-1 text-2xl" icon={icon} />}
         <div
           className="py-1 pr-2 font-mono uppercase"
           style={{
@@ -111,6 +105,7 @@ export const Preview: React.FC<PreviewProperties> = ({
               <NameTag
                 visible={showBorders}
                 name={dashboard.type}
+                icon={dash.getMetaData().icon}
                 active={active}
               />
               <div
@@ -124,30 +119,26 @@ export const Preview: React.FC<PreviewProperties> = ({
             </div>
             <div className="group h-2 w-full hover:h-min">
               <div className="-mx-1 hidden flex-row py-1 text-3xl text-slate-800 group-hover:flex">
-                <button
-                  className="mx-1 w-full rounded-md border border-slate-300 bg-white p-1 hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
-                  onClick={() => {
-                    addDashboard(id + 1, defaultMarkdown);
-                  }}
-                >
-                  +<FontAwesomeIcon icon={faMarkdown} />
-                </button>
-                <button
-                  className="mx-1 w-full rounded-md border border-slate-300 bg-white p-1 hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
-                  onClick={() => {
-                    addDashboard(id + 1, defaultDatabaseView);
-                  }}
-                >
-                  +<FontAwesomeIcon icon={faTable} />
-                </button>
-                <button
-                  className="mx-1 w-full rounded-md border border-slate-300 bg-white p-1 hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
-                  onClick={() => {
-                    addDashboard(id + 1, defaultDatabaseInputForm);
-                  }}
-                >
-                  +<FontAwesomeIcon icon={faKeyboard} />
-                </button>
+                {Object.entries(Dashboards).map(([type, dashboard]) => {
+                  const dash = DashboardFactory(
+                    { type },
+                    { projectId: project }
+                  );
+                  return (
+                    <button
+                      key={type}
+                      className="mx-1 w-full rounded-md border border-slate-300 bg-white p-1 hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
+                      onClick={() => {
+                        addDashboard(id + 1, {
+                          type,
+                          parameters: dash.getParameters(),
+                        });
+                      }}
+                    >
+                      +<FontAwesomeIcon icon={dash.getMetaData().icon} />
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

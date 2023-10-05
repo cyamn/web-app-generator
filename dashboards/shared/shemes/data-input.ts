@@ -1,15 +1,15 @@
 import { z } from "zod";
 
-export const DatabaseInputFormParametersSchema = z
+export const DatabaseInputParametersSchema = z
   .object({
     mode: z.enum(["create", "update", "delete", "search"]),
   })
   .strict();
 
 export type DatabaseInputFormParameters = z.infer<
-  typeof DatabaseInputFormParametersSchema
+  typeof DatabaseInputParametersSchema
 >;
 
-export const defaultDatabaseInputFormParameters = {
+export const defaultDatabaseInputParameters = {
   mode: "create",
 };

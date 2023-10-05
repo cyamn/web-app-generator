@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { UnknownDashboard } from "./unknown";
 
-export default class VideoDashboard extends UnknownDashboard {
+export default class VideoDashboard extends UnknownDashboard<VideoDashboardParameters> {
   public render() {
     return (
       <div>
@@ -12,10 +12,21 @@ export default class VideoDashboard extends UnknownDashboard {
       </div>
     );
   }
-  public static readonly title = "Video";
-  public static readonly icon = faVideo;
-  private parameters: VideoDashboardParameters =
-    VideoDashboardDefaultParameters;
+
+  public getMetaData() {
+    return {
+      title: "Video",
+      icon: faVideo,
+    };
+  }
+
+  public getDefaultParameters() {
+    return VideoDashboardDefaultParameters;
+  }
+
+  public static getSchema() {
+    return VideoDashboardParameterSchema;
+  }
 }
 
 export const VideoDashboardParameterSchema = z

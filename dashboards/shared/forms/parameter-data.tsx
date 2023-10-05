@@ -2,9 +2,10 @@
 
 import React from "react";
 
-import { DatabaseParameters } from "@/data/dashboard/parameters/database-parameters";
 import { Column } from "@/data/table/column";
 import { api } from "@/utils/api";
+
+import { DatabaseParameters } from "../shemes/data";
 
 type DataProperties = {
   project: string;

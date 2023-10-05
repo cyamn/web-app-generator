@@ -1,11 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Dashboard } from "dashboards";
+import { DashboardFactory } from "dashboards/factory";
 import React from "react";
 
-import { DashboardForm } from "@/components/renderers/forms";
-import {
-  type Dashboard,
-  DashboardTypeToIcon,
-} from "@/data/dashboard/library/dashboard";
 import { type Page } from "@/data/page";
 
 type FormProperties = {
@@ -31,12 +28,18 @@ export const Forms: React.FC<FormProperties> = ({
     return null;
   const dashboard: Dashboard = page.dashboards[index] as Dashboard;
 
-  function setLocalDashboard(dashboard: Dashboard): void {
-    // create deep copy of page
+  function updateDashboardParameters(parameters: unknown): void {
     const updatedPage = structuredClone(page);
     updatedPage.dashboards[index] = structuredClone(dashboard);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    updatedPage.dashboards[index].parameters = parameters;
     setLocalPage(updatedPage);
   }
+
+  const dash = DashboardFactory(dashboard, {
+    projectId: project,
+  });
 
   return (
     <div className="flex h-full flex-col overflow-auto bg-white p-4 font-sans leading-normal tracking-normal">
@@ -44,19 +47,13 @@ export const Forms: React.FC<FormProperties> = ({
         <h2 className="flex flex-row overflow-hidden">
           <FontAwesomeIcon
             className="pr-2 pt-1 text-2xl"
-            icon={
-              DashboardTypeToIcon[
-                dashboard.type as keyof typeof DashboardTypeToIcon
-              ] ?? ""
-            }
+            icon={dash.getMetaData().icon}
           />
-          <span className="font-mono text-xl uppercase">{dashboard.type}</span>
+          <span className="font-mono text-xl uppercase">
+            {dash.getMetaData().title}
+          </span>
         </h2>
-        <DashboardForm
-          dashboard={dashboard}
-          setLocalDashboard={setLocalDashboard}
-          project={project}
-        />
+        {dash.getControls(updateDashboardParameters)}
       </div>
       <button
         onClick={() => {

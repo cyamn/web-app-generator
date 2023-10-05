@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import { BottomPanel } from "@/components/bottom-panel/panel";
-import { Previewer } from "@/components/renderers/page-renderer";
+import { Previewer } from "@/components/page/page-renderer";
 import { type Page, PageSchema } from "@/data/page";
 import { useKey } from "@/hooks/use-key";
 import { api } from "@/utils/api";

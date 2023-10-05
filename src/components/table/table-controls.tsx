@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { Table } from "@/server/api/routers/table/schema";
 import { api } from "@/utils/api";
 
-import { InputField } from "../renderers/dashboard/database-input-form";
+import { InputField } from "../../../dashboards/shared/renderers/database-input-form";
 
 type TableControlsProperties = {
   control: [string, string | null];

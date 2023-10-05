@@ -1,17 +1,17 @@
 "use client";
 
+import { Dashboard } from "dashboards";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-import { Dashboard } from "@/data/dashboard/library/dashboard";
+import { BottomPanel } from "@/components/bottom-panel/panel";
+import { Preview } from "@/components/page/page-editor";
 import { type Page } from "@/data/page";
 import { Variables } from "@/data/page/variables";
 import { useKey } from "@/hooks/use-key";
 import { api } from "@/utils/api";
 import { deepEqual } from "@/utils/deep-equal";
 
-import { BottomPanel } from "../../../../../components/bottom-panel/panel";
-import { Preview } from "../../../../../components/renderers/page-editor";
 import { Forms } from "./forms";
 import { VariablesPanel } from "./variables-panel";
 

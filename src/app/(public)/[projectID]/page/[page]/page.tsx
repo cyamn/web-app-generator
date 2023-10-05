@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 
 import { Header } from "@/components/header";
 import { Navbar } from "@/components/navigation/navbar";
-import { Previewer } from "@/components/renderers/page-renderer";
+import { Previewer } from "@/components/page/page-renderer";
 import { authOptions } from "@/server/auth";
 import {
   getServerSidePage,

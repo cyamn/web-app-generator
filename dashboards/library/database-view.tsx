@@ -1,19 +1,21 @@
 import { faTable } from "@fortawesome/free-solid-svg-icons";
-import { DashboardContext } from "dashboards/types";
-import React from "react";
-import { z } from "zod";
-
-import { DatabaseViewRender } from "@/components/renderers/dashboard/database-view";
-
+import { ParameterDataForm } from "dashboards/shared/forms/parameter-data";
+import { DatabaseViewRender } from "dashboards/shared/renderers/database-view";
 import {
   DatabaseParametersSchema,
   defaultDatabaseParameters,
+} from "dashboards/shared/shemes/data";
+import {
   defaultFormatDataParameters,
   FormatDataParametersSchema,
-} from "./shared";
+} from "dashboards/shared/shemes/data-format";
+import { UpdateFunction } from "dashboards/types";
+import React from "react";
+import { z } from "zod";
+
 import { UnknownDashboard } from "./unknown";
 
-export default class DatabaseViewDashboard extends UnknownDashboard {
+export default class DatabaseViewDashboard extends UnknownDashboard<DatabaseViewParameters> {
   public render() {
     return (
       <DatabaseViewRender
@@ -22,20 +24,38 @@ export default class DatabaseViewDashboard extends UnknownDashboard {
       />
     );
   }
-  public update(parameters: DatabaseViewParameters) {
-    this.parameters = parameters;
+
+  public getControls(updateFunction: UpdateFunction<DatabaseViewParameters>) {
+    const updateData = (data: DatabaseViewParameters["data"]) => {
+      updateFunction({
+        ...this.getParameters(),
+        data,
+      });
+    };
+
+    return (
+      <ParameterDataForm
+        data={this.getParameters().data}
+        onSetData={updateData}
+        project={this.context.projectId}
+      />
+    );
   }
-  public constructor(
-    parameters: DatabaseViewParameters,
-    context: DashboardContext
-  ) {
-    super(parameters, context);
-    this.update(parameters);
-    return;
+
+  public getMetaData() {
+    return {
+      title: "DatabaseView",
+      icon: faTable,
+    };
   }
-  public static readonly title = "DatabaseView";
-  public static readonly icon = faTable;
-  private parameters: DatabaseViewParameters = defaultDatabaseViewParameters;
+
+  public getDefaultParameters() {
+    return defaultDatabaseViewParameters;
+  }
+
+  public static getSchema() {
+    return DatabaseViewParametersSchema;
+  }
 }
 
 export const DatabaseViewParametersSchema = z.object({

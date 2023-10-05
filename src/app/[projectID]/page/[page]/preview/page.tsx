@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import { PageMode, Tabs } from "@/components/navigation/page-tabs";
-import { Previewer } from "@/components/renderers/page-renderer";
+import { Previewer } from "@/components/page/page-renderer";
 import {
   getServerSidePage,
   getServerSideProject,

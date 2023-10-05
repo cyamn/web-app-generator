@@ -12,7 +12,7 @@ import { appRouter } from "@/server/api/root";
 import { authOptions } from "@/server/auth";
 import { prisma } from "@/server/database";
 
-import { Previewer } from "../../renderers/page-renderer";
+import { Previewer } from "../../page/page-renderer";
 import { AddPageCard } from "./add-page-card";
 
 dayjs.extend(relativeTime);

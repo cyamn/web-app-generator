@@ -1,24 +1,46 @@
 import { faGhost } from "@fortawesome/free-solid-svg-icons";
-import { Dashboard, DashboardContext } from "dashboards/types";
+import { autoGenerateController } from "dashboards/shared/forms/auto";
+import { Dashboard, DashboardContext, UpdateFunction } from "dashboards/types";
+import { z } from "zod";
 
-export class UnknownDashboard implements Dashboard {
+export class UnknownDashboard<T> implements Dashboard<T> {
   public context: DashboardContext;
 
   public render() {
     return <div>Not implemented</div>;
   }
-  public update(_: unknown) {
-    return;
+
+  public getControls(updateFunction: UpdateFunction<T>) {
+    return autoGenerateController(this.getParameters(), updateFunction);
   }
+
   public getParameters() {
-    return {};
+    return this.parameters;
   }
-  public constructor(parameters: unknown, context: DashboardContext) {
+
+  public getMetaData() {
+    return {
+      title: "Unknown",
+      icon: faGhost,
+    };
+  }
+
+  public getDefaultParameters(): T {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    return {} as T;
+  }
+
+  public constructor(context: DashboardContext, parameters?: T) {
     this.context = context;
-    this.update(parameters);
+    this.parameters =
+      parameters === undefined ? this.getDefaultParameters() : parameters;
     return;
   }
 
-  public static readonly title: string = "Unknown";
-  public static readonly icon = faGhost;
+  public static getSchema(): z.ZodSchema<unknown> {
+    return z.any();
+  }
+
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  protected parameters: T = {} as T;
 }
