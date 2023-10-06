@@ -15,7 +15,14 @@ import { z } from "zod";
 
 import { DashboardBase } from "../definitions/dashboard-base";
 
-export default class DatabaseViewDashboard extends DashboardBase<DatabaseViewParameters> {
+const ParametersSchema = z.object({
+  data: DatabaseParametersSchema,
+  format: FormatDataParametersSchema,
+});
+
+export type Parameters = z.infer<typeof ParametersSchema>;
+
+export default class DatabaseViewDashboard extends DashboardBase<Parameters> {
   public render() {
     return (
       <DatabaseViewRender
@@ -25,8 +32,8 @@ export default class DatabaseViewDashboard extends DashboardBase<DatabaseViewPar
     );
   }
 
-  public getControls(updateFunction: UpdateFunction<DatabaseViewParameters>) {
-    const updateData = (data: DatabaseViewParameters["data"]) => {
+  public getControls(updateFunction: UpdateFunction<Parameters>) {
+    const updateData = (data: Parameters["data"]) => {
       updateFunction({
         ...this.getParameters(),
         data,
@@ -50,24 +57,13 @@ export default class DatabaseViewDashboard extends DashboardBase<DatabaseViewPar
   }
 
   public getDefaultParameters() {
-    return defaultDatabaseViewParameters;
+    return {
+      data: defaultDatabaseParameters,
+      format: defaultFormatDataParameters,
+    };
   }
 
   public static getSchema() {
-    return DatabaseViewParametersSchema;
+    return ParametersSchema;
   }
 }
-
-export const DatabaseViewParametersSchema = z.object({
-  data: DatabaseParametersSchema,
-  format: FormatDataParametersSchema,
-});
-
-export type DatabaseViewParameters = z.infer<
-  typeof DatabaseViewParametersSchema
->;
-
-export const defaultDatabaseViewParameters = {
-  data: defaultDatabaseParameters,
-  format: defaultFormatDataParameters,
-};

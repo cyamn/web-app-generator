@@ -6,12 +6,22 @@ import {
   DatabaseParametersSchema,
   defaultDatabaseParameters,
 } from "dashboards/shared/shemes/data";
-import { DatabaseInputParametersSchema } from "dashboards/shared/shemes/data-input";
+import {
+  DatabaseInputParametersSchema,
+  defaultDatabaseInputParameters,
+} from "dashboards/shared/shemes/data-input";
 import { z } from "zod";
 
 import { DashboardBase } from "../definitions/dashboard-base";
 
-export default class DatabaseInputFormDashboard extends DashboardBase<DatabaseInputFormParameters> {
+const ParametersSchema = z.object({
+  data: DatabaseParametersSchema,
+  input: DatabaseInputParametersSchema,
+});
+
+type Parameters = z.infer<typeof ParametersSchema>;
+
+export default class DatabaseInputFormDashboard extends DashboardBase<Parameters> {
   public render() {
     return (
       <DatabaseInputFormRender
@@ -21,10 +31,8 @@ export default class DatabaseInputFormDashboard extends DashboardBase<DatabaseIn
     );
   }
 
-  public getControls(
-    updateFunction: UpdateFunction<DatabaseInputFormParameters>
-  ) {
-    const updateData = (data: DatabaseInputFormParameters["data"]) => {
+  public getControls(updateFunction: UpdateFunction<Parameters>) {
+    const updateData = (data: Parameters["data"]) => {
       updateFunction({
         ...this.getParameters(),
         data,
@@ -48,26 +56,13 @@ export default class DatabaseInputFormDashboard extends DashboardBase<DatabaseIn
   }
 
   public getDefaultParameters() {
-    return defaultDatabaseInputFormParameters;
+    return {
+      data: defaultDatabaseParameters,
+      input: defaultDatabaseInputParameters,
+    };
   }
 
   public static getSchema() {
-    return DatabaseInputFormParametersSchema;
+    return ParametersSchema;
   }
 }
-
-export const DatabaseInputFormParametersSchema = z.object({
-  data: DatabaseParametersSchema,
-  input: DatabaseInputParametersSchema,
-});
-
-export type DatabaseInputFormParameters = z.infer<
-  typeof DatabaseInputFormParametersSchema
->;
-
-export const defaultDatabaseInputFormParameters: DatabaseInputFormParameters = {
-  data: defaultDatabaseParameters,
-  input: {
-    mode: "create",
-  },
-};

@@ -1,6 +1,6 @@
 "use client";
 
-import { DatabaseViewParameters } from "dashboards/library/database-view";
+import { Parameters } from "dashboards/library/database-view";
 import React from "react";
 
 import { SkeletonTableView } from "@/components/skeletons/table-view";
@@ -8,7 +8,7 @@ import { TableView } from "@/components/table/table-view";
 import { api } from "@/utils/api";
 
 export const DatabaseViewRender: React.FC<{
-  parameters: DatabaseViewParameters;
+  parameters: Parameters;
   project: string;
 }> = ({ parameters, project }) => {
   const tableName = parameters.data.table;

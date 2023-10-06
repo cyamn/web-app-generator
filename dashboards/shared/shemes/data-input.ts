@@ -10,6 +10,6 @@ export type DatabaseInputFormParameters = z.infer<
   typeof DatabaseInputParametersSchema
 >;
 
-export const defaultDatabaseInputParameters = {
+export const defaultDatabaseInputParameters: DatabaseInputFormParameters = {
   mode: "create",
 };
