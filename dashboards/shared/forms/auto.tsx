@@ -1,4 +1,4 @@
-import { UpdateFunction } from "dashboards/types";
+import { UpdateFunction } from "../../definitions/types";
 
 export function autoGenerateController<T>(
   parameters: T,

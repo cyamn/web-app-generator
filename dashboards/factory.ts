@@ -1,7 +1,8 @@
 import { Dashboards } from "dashboards";
 
 import { DashboardBase } from "./definitions/dashboard-base";
-import { Dashboard, DashboardContext } from "./definitions/types";
+import { IDashboard } from "./definitions/dashboard-interface";
+import { DashboardContext } from "./definitions/types";
 
 type DashboardsParameters = {
   type: string;
@@ -11,7 +12,7 @@ type DashboardsParameters = {
 export function DashboardFactory(
   parameters: DashboardsParameters,
   context: DashboardContext
-): Dashboard<unknown> {
+): IDashboard<unknown> {
   const dashboard = Dashboards[parameters.type];
   if (dashboard === undefined) {
     return new DashboardBase<unknown>(context, parameters.parameters);

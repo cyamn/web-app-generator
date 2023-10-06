@@ -1,6 +1,5 @@
 "use client";
 
-import { DatabaseInputFormParameters } from "dashboards/library/database-input-form";
 import React from "react";
 import toast from "react-hot-toast";
 
@@ -9,6 +8,7 @@ import { Row } from "@/data/table/row";
 import { Dict } from "@/data/types";
 import { api } from "@/utils/api";
 
+import { Parameters } from "../../library/database-input-form";
 import { DatabaseParameters, SQLFilter } from "../shemes/data";
 
 type InputFieldProperties = {
@@ -70,7 +70,7 @@ export function InputField({
 }
 
 export const DatabaseInputFormRender: React.FC<{
-  parameters: DatabaseInputFormParameters;
+  parameters: Parameters;
   project: string;
 }> = ({ parameters, project }) => {
   const tableName = parameters.data.table;

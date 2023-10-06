@@ -12,7 +12,7 @@ const ParameterSchema = z
   })
   .strict();
 
-type Parameters = z.infer<typeof ParameterSchema>;
+export type Parameters = z.infer<typeof ParameterSchema>;
 
 export default class MarkdownDashboard extends DashboardBase<Parameters> {
   public render() {

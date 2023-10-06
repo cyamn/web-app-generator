@@ -19,7 +19,7 @@ const ParametersSchema = z.object({
   input: DatabaseInputParametersSchema,
 });
 
-type Parameters = z.infer<typeof ParametersSchema>;
+export type Parameters = z.infer<typeof ParametersSchema>;
 
 export default class DatabaseInputFormDashboard extends DashboardBase<Parameters> {
   public render() {
