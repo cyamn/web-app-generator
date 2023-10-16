@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 
-import { PageList, ViewList } from "@/components/navigation";
+import { PageList, ViewList } from "@/components/editor/navigation";
 import { authOptions } from "@/server/auth";
 import { getServerSidePage } from "@/utils/get-serverside";
 

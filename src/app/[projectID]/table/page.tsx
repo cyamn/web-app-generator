@@ -2,7 +2,11 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { getServerSession } from "next-auth/next";
 
-import { TableList, TablesOverview, ViewList } from "@/components/navigation";
+import {
+  TableList,
+  TablesOverview,
+  ViewList,
+} from "@/components/editor/navigation";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
 import { authOptions } from "@/server/auth";

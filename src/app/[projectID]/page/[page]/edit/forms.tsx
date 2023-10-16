@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { DashboardDefinition } from "dashboards";
-import { DashboardFactory } from "dashboards/factory";
 import React from "react";
 
+import { DashboardDefinition } from "@/components/dashboards";
+import { DashboardFactory } from "@/components/dashboards/factory";
 import { type Page } from "@/data/page";
 
 type FormProperties = {

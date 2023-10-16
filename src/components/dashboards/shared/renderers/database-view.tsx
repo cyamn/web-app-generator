@@ -1,8 +1,8 @@
 "use client";
 
-import { Parameters } from "dashboards/library/database-view";
 import React from "react";
 
+import { Parameters } from "@/components/dashboards/library/database-view";
 import { SkeletonTableView } from "@/components/skeletons/table-view";
 import { TableView } from "@/components/table/table-view";
 import { api } from "@/utils/api";

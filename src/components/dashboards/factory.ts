@@ -1,4 +1,4 @@
-import { Dashboards } from "dashboards";
+import { Dashboards } from "@/components/dashboards";
 
 import { DashboardBase } from "./definitions/dashboard-base";
 import { IDashboard } from "./definitions/dashboard-interface";

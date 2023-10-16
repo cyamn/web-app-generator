@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { TableList, ViewList } from "@/components/navigation";
+import { TableList, ViewList } from "@/components/editor/navigation";
 import { DeleteTableButton } from "@/components/table/options/delete";
 import { ExportButton } from "@/components/table/options/export";
 import { ImportButton } from "@/components/table/options/import";

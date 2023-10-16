@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { PageMode, Tabs } from "@/components/navigation/page-tabs";
-import { Previewer } from "@/components/page/page-renderer";
+import { PageMode, Tabs } from "@/components/editor/navigation/page-tabs";
+import { PageRenderer } from "@/components/page/page-renderer";
 import {
   getServerSidePage,
   getServerSideProject,
@@ -27,7 +27,7 @@ const Page = async ({ params }: PageProperties) => {
         mode={PageMode.Preview}
         base={`/${project.id}/page/${params.page}`}
       />
-      <Previewer page={pageWithMeta.page} project={project.id} />
+      <PageRenderer page={pageWithMeta.page} project={project.id} />
     </>
   );
 };

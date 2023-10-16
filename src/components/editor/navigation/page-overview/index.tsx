@@ -5,14 +5,14 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 
-import { PageMode } from "@/components/navigation/page-tabs";
+import { PageRenderer } from "@/components/page/page-renderer";
 import { Page } from "@/data/page";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
 import { authOptions } from "@/server/auth";
 import { prisma } from "@/server/database";
 
-import { Previewer } from "../../page/page-renderer";
+import { PageMode } from "../page-tabs";
 import { AddPageCard } from "./add-page-card";
 
 dayjs.extend(relativeTime);
@@ -78,7 +78,7 @@ export const PageDetailedItem: React.FC<PageDetailedItemProperties> = ({
           <div className="col-span-6">
             <div className="-translate-x-1/4 -translate-y-1/4  scale-50">
               <div className="h-[200%] w-[200%]">
-                <Previewer page={page} project={project} />
+                <PageRenderer page={page} project={project} />
               </div>
             </div>
           </div>

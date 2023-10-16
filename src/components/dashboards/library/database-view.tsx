@@ -1,17 +1,18 @@
 import { faTable } from "@fortawesome/free-solid-svg-icons";
-import { UpdateFunction } from "dashboards/definitions/types";
-import { ParameterDataForm } from "dashboards/shared/forms/parameter-data";
-import { DatabaseViewRender } from "dashboards/shared/renderers/database-view";
+import React from "react";
+import { z } from "zod";
+
+import { UpdateFunction } from "@/components/dashboards/definitions/types";
+import { ParameterDataForm } from "@/components/dashboards/shared/forms/parameter-data";
+import { DatabaseViewRender } from "@/components/dashboards/shared/renderers/database-view";
 import {
   DatabaseParametersSchema,
   defaultDatabaseParameters,
-} from "dashboards/shared/shemes/data";
+} from "@/components/dashboards/shared/shemes/data";
 import {
   defaultFormatDataParameters,
   FormatDataParametersSchema,
-} from "dashboards/shared/shemes/data-format";
-import React from "react";
-import { z } from "zod";
+} from "@/components/dashboards/shared/shemes/data-format";
 
 import { DashboardBase } from "../definitions/dashboard-base";
 

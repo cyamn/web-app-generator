@@ -1,6 +1,6 @@
-import { PageMode } from "@/components/navigation/page-tabs";
 import { getServerSidePageList } from "@/utils/get-serverside";
 
+import { PageMode } from "../page-tabs";
 import { ListItem } from "../shared/list-item";
 import { AddPageButton } from "./add-page-button";
 

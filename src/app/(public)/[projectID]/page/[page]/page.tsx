@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth/next";
 
+import { Navbar } from "@/components/editor/navigation/navbar";
 import { Header } from "@/components/header";
-import { Navbar } from "@/components/navigation/navbar";
-import { Previewer } from "@/components/page/page-renderer";
+import { PageRenderer } from "@/components/page/page-renderer";
 import { authOptions } from "@/server/auth";
 import {
   getServerSidePage,
@@ -36,7 +36,7 @@ const Page = async ({ params }: PageProperties) => {
         />
       </div>
       <div className="h-full overflow-y-auto">
-        <Previewer page={pageWithMeta.page} project={params.projectID} />
+        <PageRenderer page={pageWithMeta.page} project={params.projectID} />
       </div>
     </div>
   );

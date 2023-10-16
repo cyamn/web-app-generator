@@ -1,4 +1,4 @@
-import { ViewList } from "@/components/navigation";
+import { ViewList } from "@/components/editor/navigation";
 import { getServerSideProject } from "@/utils/get-serverside";
 
 import { AppSettings } from "./app-settings";

@@ -1,7 +1,11 @@
 import { faGhost } from "@fortawesome/free-solid-svg-icons";
-import { DashboardContext, UpdateFunction } from "dashboards/definitions/types";
-import { autoGenerateController } from "dashboards/shared/forms/auto";
 import { z } from "zod";
+
+import {
+  DashboardContext,
+  UpdateFunction,
+} from "@/components/dashboards/definitions/types";
+import { autoGenerateController } from "@/components/dashboards/shared/forms/auto";
 
 import { IDashboard } from "./dashboard-interface";
 

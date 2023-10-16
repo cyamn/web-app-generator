@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import { BottomPanel } from "@/components/bottom-panel/panel";
-import { Previewer } from "@/components/page/page-renderer";
+import { BottomPanel } from "@/components/editor/bottom-panel/panel";
+import { PageRenderer } from "@/components/page/page-renderer";
 import { type Page, PageSchema } from "@/data/page";
 import { useKey } from "@/hooks/use-key";
 import { api } from "@/utils/api";
@@ -107,7 +107,7 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
         />
       </div>
       <div className="flex w-1/2 flex-col">
-        <Previewer page={localPage} project={project} />
+        <PageRenderer page={localPage} project={project} />
         <BottomPanel
           tabNames={["Console"]}
           tabs={[<Console key={"Console"} messages={cliLog} />]}

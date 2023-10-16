@@ -1,7 +1,7 @@
 "use client";
 import { FC } from "react";
 
-import { UserAvatar } from "@/components/shared/avatars/user";
+import { UserAvatar } from "@/components/editor/avatars/user";
 import { api } from "@/utils/api";
 import { combine } from "@/utils/combine";
 

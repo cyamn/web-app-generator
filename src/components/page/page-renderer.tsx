@@ -1,18 +1,21 @@
 "use client";
 
-import { DashboardFactory } from "dashboards/factory";
 import React, { useEffect, useState } from "react";
 
+import { DashboardFactory } from "@/components/dashboards/factory";
 import { type Page } from "@/data/page";
 import { api } from "@/utils/api";
 import { hydratePage } from "@/utils/hydrate-page";
 
-type PreviewerProperties = {
+type PageRendererProperties = {
   page: Page;
   project: string;
 };
 
-export const Previewer: React.FC<PreviewerProperties> = ({ page, project }) => {
+export const PageRenderer: React.FC<PageRendererProperties> = ({
+  page,
+  project,
+}) => {
   const [localPage, setLocalPage] = useState<Page>(page);
   const [hydrated, setHydrated] = useState(false);
 
@@ -39,7 +42,6 @@ export const Previewer: React.FC<PreviewerProperties> = ({ page, project }) => {
         });
         return (
           <div key={id} className="py-2">
-            {/* <DashboardRender dashboard={dashboard} index={id} project={project} /> */}
             {dash.render()}
           </div>
         );

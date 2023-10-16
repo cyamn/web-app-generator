@@ -1,8 +1,9 @@
 import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
-import { UpdateFunction } from "dashboards/definitions/types";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { z } from "zod";
+
+import { UpdateFunction } from "@/components/dashboards/definitions/types";
 
 import { DashboardBase } from "../definitions/dashboard-base";
 

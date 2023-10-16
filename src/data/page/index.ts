@@ -1,5 +1,6 @@
-import { DashboardSchema } from "dashboards";
 import { z } from "zod";
+
+import { DashboardSchema } from "@/components/dashboards";
 
 import { AccessSchema, defaultAccess } from "./access";
 import { VariablesSchema } from "./variables";

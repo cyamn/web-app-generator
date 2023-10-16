@@ -9,7 +9,7 @@ import { Logo } from "@/components/logo";
 import { Navbar } from "@/components/navbar";
 import { authOptions } from "@/server/auth";
 
-import { Auth } from "../components/shared/auth";
+import { Auth } from "../components/editor/shared/auth";
 
 const Home = async () => {
   const session = await getServerSession(authOptions);

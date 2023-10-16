@@ -1,11 +1,11 @@
 "use client";
 
-import { DashboardDefinition } from "dashboards";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-import { BottomPanel } from "@/components/bottom-panel/panel";
-import { Preview } from "@/components/page/page-editor";
+import { DashboardDefinition } from "@/components/dashboards";
+import { BottomPanel } from "@/components/editor/bottom-panel/panel";
+import { PageEditor } from "@/components/page/page-editor";
 import { type Page } from "@/data/page";
 import { Variables } from "@/data/page/variables";
 import { useKey } from "@/hooks/use-key";
@@ -69,9 +69,8 @@ export const GUIEditor: React.FC<GUIEditorProperties> = ({ page, project }) => {
     <div className="flex h-full flex-row overflow-auto">
       <div className="w-full">
         <div className="flex h-full flex-col">
-          <Preview
+          <PageEditor
             page={localPage}
-            showBorders={true}
             index={index}
             setIndex={switchIndex}
             project={project}

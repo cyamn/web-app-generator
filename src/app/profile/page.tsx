@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth/next";
 import React from "react";
 
+import { UserAvatar } from "@/components/editor/avatars/user";
 import { Header } from "@/components/header";
 import { Navbar } from "@/components/navbar";
-import { UserAvatar } from "@/components/shared/avatars/user";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { authOptions } from "@/server/auth";
 

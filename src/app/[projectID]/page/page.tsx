@@ -1,4 +1,8 @@
-import { PageList, PagesOverview, ViewList } from "@/components/navigation";
+import {
+  PageList,
+  PagesOverview,
+  ViewList,
+} from "@/components/editor/navigation";
 import { getServerSideProject } from "@/utils/get-serverside";
 
 type PageProperties = {
