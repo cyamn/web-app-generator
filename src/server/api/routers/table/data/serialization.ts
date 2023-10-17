@@ -25,7 +25,7 @@ export function deserializeCSV(table: SerializedTable): string {
   return [header, ...rows].join("\n");
 }
 
-function deserializeColumns(
+export function deserializeColumns(
   table: SerializedTable
 ): DeserializedTable["columns"] {
   return table.columns.map((column) => {
