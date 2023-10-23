@@ -8,6 +8,14 @@ import { calculateVariables } from "./calculate";
 
 export const variablesRouter = createTRPCRouter({
   calculate: publicProcedure
+    .meta({
+      openapi: {
+        description: "Calculate the values of variables and add internal ones",
+        tags: ["variables"],
+        method: "POST",
+        path: "/variables/calculate",
+      },
+    })
     .input(
       z.object({
         variables: VariablesSchema,

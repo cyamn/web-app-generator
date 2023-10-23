@@ -15,7 +15,12 @@ import { updateRow } from "./update";
 export const rowRouter = createTRPCRouter({
   add: publicProcedure
     .meta({
-      openapi: { tags: ["table"], method: "POST", path: "/table/row" },
+      openapi: {
+        description: "Add a row to a table",
+        tags: ["table"],
+        method: "POST",
+        path: "/table/row",
+      },
     })
     .input(
       z.object({
@@ -40,7 +45,12 @@ export const rowRouter = createTRPCRouter({
 
   update: publicProcedure
     .meta({
-      openapi: { tags: ["table"], method: "PUT", path: "/table/row" },
+      openapi: {
+        description: "Update a row in a table",
+        tags: ["table"],
+        method: "PATCH",
+        path: "/table/row",
+      },
     })
     .input(
       z.object({
@@ -55,7 +65,12 @@ export const rowRouter = createTRPCRouter({
 
   delete: publicProcedure
     .meta({
-      openapi: { tags: ["table"], method: "DELETE", path: "/table/row" },
+      openapi: {
+        description: "Delete a row from a table",
+        tags: ["table"],
+        method: "DELETE",
+        path: "/table/row",
+      },
     })
     .input(
       z.object({

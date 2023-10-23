@@ -21,6 +21,25 @@ export async function addUserToRole(
   return updatedRole.id;
 }
 
+export async function removeUserFromRole(
+  userId: string,
+  roleId: string
+): Promise<string> {
+  const updatedRole = await prisma.role.update({
+    where: {
+      id: roleId,
+    },
+    data: {
+      users: {
+        disconnect: {
+          id: userId,
+        },
+      },
+    },
+  });
+  return updatedRole.id;
+}
+
 export async function getUserByEmail(email: string): Promise<string> {
   const user = await prisma.user.findUnique({
     where: {

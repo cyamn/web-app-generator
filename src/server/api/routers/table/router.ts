@@ -25,7 +25,14 @@ import { updateTable } from "./update";
 
 export const tablesRouter = createTRPCRouter({
   get: publicProcedure
-    .meta({ openapi: { tags: ["table"], method: "GET", path: "/table" } })
+    .meta({
+      openapi: {
+        description: "Get a table from a project",
+        tags: ["table"],
+        method: "GET",
+        path: "/table",
+      },
+    })
     .input(projectTableColumnSchema)
     .output(TableSchema)
     .query(async ({ input }) => {
@@ -40,7 +47,14 @@ export const tablesRouter = createTRPCRouter({
       return deserialized;
     }),
   add: protectedProcedure
-    .meta({ openapi: { tags: ["table"], method: "POST", path: "/table" } })
+    .meta({
+      openapi: {
+        description: "Add a table to a project",
+        tags: ["table"],
+        method: "POST",
+        path: "/table",
+      },
+    })
     .input(projectTableSchema)
     .output(z.string())
     .mutation(async ({ ctx, input }) => {
@@ -52,7 +66,14 @@ export const tablesRouter = createTRPCRouter({
     }),
 
   update: protectedProcedure
-    .meta({ openapi: { tags: ["table"], method: "PUT", path: "/table" } })
+    .meta({
+      openapi: {
+        description: "Update a table in a project",
+        tags: ["table"],
+        method: "PATCH",
+        path: "/table",
+      },
+    })
     .input(
       z.object({
         project: z.string(),
@@ -74,7 +95,14 @@ export const tablesRouter = createTRPCRouter({
     }),
 
   delete: protectedProcedure
-    .meta({ openapi: { tags: ["table"], method: "DELETE", path: "/table" } })
+    .meta({
+      openapi: {
+        description: "Delete a table in a project",
+        tags: ["table"],
+        method: "DELETE",
+        path: "/table",
+      },
+    })
     .input(projectTableSchema)
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -82,14 +110,28 @@ export const tablesRouter = createTRPCRouter({
     }),
 
   list: protectedProcedure
-    .meta({ openapi: { tags: ["table"], method: "GET", path: "/table/list" } })
+    .meta({
+      openapi: {
+        description: "List all tables in a project",
+        tags: ["table"],
+        method: "GET",
+        path: "/table/list",
+      },
+    })
     .input(projectIDSchema)
     .output(idListSchema)
     .query(async ({ ctx, input }) => {
       return await listTables(ctx.session.user.id, input.project);
     }),
   getAll: publicProcedure
-    .meta({ openapi: { tags: ["table"], method: "GET", path: "/table/all" } })
+    .meta({
+      openapi: {
+        description: "Get all tables in a project",
+        tags: ["table"],
+        method: "GET",
+        path: "/table/all",
+      },
+    })
     .input(projectIDSchema)
     .output(z.array(z.object({ table: TableSchema, updatedAt: z.date() })))
     .query(async ({ input }) => {

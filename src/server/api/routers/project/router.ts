@@ -4,24 +4,25 @@ import { PageSchema } from "@/data/page";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { protectedProcedure } from "@/server/api/trpc";
 
-import { addPage } from "../page/add";
 import { getAllPages } from "../page/get";
-import { updatePage } from "../page/update";
-import { addRole } from "../roles/add";
 import { listRoles } from "../roles/list";
-import { InternalError } from "../shared/errors";
-import { addTable } from "../table/add";
 import { deserialize } from "../table/data/serialization";
 import { getAll } from "../table/get";
-import { updateTable } from "../table/update";
 import { addProject } from "./add";
+import { deleteProject } from "./delete";
 import { getProject } from "./get";
+import { importJSONInputScheme, importProjectFromJSON } from "./import";
 import { listProjects } from "./list";
 
 export const projectsRouter = createTRPCRouter({
   add: protectedProcedure
     .meta({
-      openapi: { tags: ["project"], method: "POST", path: "/project" },
+      openapi: {
+        description: "Add a project with the issuer as the owner",
+        tags: ["project"],
+        method: "POST",
+        path: "/project",
+      },
     })
     .input(z.object({ name: z.string() }))
     .output(z.string())
@@ -31,7 +32,12 @@ export const projectsRouter = createTRPCRouter({
 
   get: publicProcedure
     .meta({
-      openapi: { tags: ["project"], method: "GET", path: "/project" },
+      openapi: {
+        description: "Get a project by id",
+        tags: ["project"],
+        method: "GET",
+        path: "/project",
+      },
     })
     .input(z.object({ id: z.string() }))
     .output(
@@ -48,7 +54,12 @@ export const projectsRouter = createTRPCRouter({
 
   update: protectedProcedure
     .meta({
-      openapi: { tags: ["project"], method: "PATCH", path: "/project" },
+      openapi: {
+        description: "Update project information",
+        tags: ["project"],
+        method: "PATCH",
+        path: "/project",
+      },
     })
     .input(
       z.object({
@@ -72,9 +83,29 @@ export const projectsRouter = createTRPCRouter({
       return input.id;
     }),
 
+  delete: protectedProcedure
+    .meta({
+      openapi: {
+        description: "Delete a project by id",
+        tags: ["project"],
+        method: "DELETE",
+        path: "/project",
+      },
+    })
+    .input(z.object({ id: z.string() }))
+    .output(z.string())
+    .mutation(async ({ ctx, input }) => {
+      return await deleteProject(input.id, ctx.session.user.id);
+    }),
+
   list: protectedProcedure
     .meta({
-      openapi: { tags: ["project"], method: "GET", path: "/project/list" },
+      openapi: {
+        description: "List all projects that a user is an admin in",
+        tags: ["project"],
+        method: "GET",
+        path: "/project/list",
+      },
     })
     .input(z.object({}))
     .output(
@@ -93,7 +124,12 @@ export const projectsRouter = createTRPCRouter({
 
   export: protectedProcedure
     .meta({
-      openapi: { tags: ["project"], method: "GET", path: "/project/export" },
+      openapi: {
+        description: "Export a project as a JSON file",
+        tags: ["project"],
+        method: "GET",
+        path: "/project/export",
+      },
     })
     .input(z.object({ id: z.string() }))
     .output(
@@ -153,122 +189,20 @@ export const projectsRouter = createTRPCRouter({
     }),
   import: protectedProcedure
     .meta({
-      openapi: { tags: ["project"], method: "POST", path: "/project/import" },
+      openapi: {
+        description: "Import a project from a JSON file",
+        tags: ["project"],
+        method: "POST",
+        path: "/project/import",
+      },
     })
-    .input(
-      z.object({
-        projectID: z.string().optional(),
-
-        project: z.object({
-          name: z.string(),
-          description: z.string(),
-          pages: z.array(PageSchema),
-          roles: z.array(
-            z.object({
-              name: z.string(),
-              users: z.array(z.string()),
-              isAdmin: z.boolean(),
-            })
-          ),
-          tables: z.array(
-            z.object({
-              name: z.string(),
-              columns: z.record(z.string(), z.string()),
-              data: z.array(z.array(z.string())),
-            })
-          ),
-        }),
-      })
-    )
+    .input(importJSONInputScheme)
     .output(z.string())
     .mutation(async ({ ctx, input }) => {
-      let projectID = input.projectID ?? "";
-      if (input.projectID === null) {
-        projectID = await addProject(input.project.name, ctx.session.user.id);
-        if (projectID === undefined) {
-          throw new InternalError("Failed to create project");
-        }
-      } else {
-        await ctx.prisma.project.update({
-          where: {
-            id: input.projectID,
-          },
-          data: {
-            name: input.project.name,
-            description: input.project.description,
-          },
-        });
-      }
-
-      // delete all old roles
-      await ctx.prisma.role.deleteMany({
-        where: {
-          projectId: projectID,
-          isAdmin: false,
-        },
-      });
-
-      // add new roles
-      for (const role of input.project.roles) {
-        if (role.isAdmin) {
-          continue;
-        }
-        const id = await addRole(role.name, projectID, role.isAdmin);
-        if (id === undefined) {
-          throw new InternalError("Failed to create role");
-        }
-        for (const email of role.users) {
-          const user = await ctx.prisma.user.findUnique({
-            where: {
-              email,
-            },
-          });
-          if (user !== null) {
-            await ctx.prisma.role.update({
-              where: {
-                id,
-              },
-              data: {
-                users: {
-                  connect: {
-                    id: user.id,
-                  },
-                },
-              },
-            });
-          }
-        }
-      }
-
-      // delete pages
-      await ctx.prisma.page.deleteMany({
-        where: {
-          projectId: projectID,
-        },
-      });
-
-      // add pages
-      for (const page of input.project.pages) {
-        await addPage(ctx.session.user.id, projectID, page.name);
-        await updatePage(ctx.session.user.id, projectID, page);
-      }
-
-      // delete tables
-      await ctx.prisma.table.deleteMany({
-        where: {
-          projectId: projectID,
-        },
-      });
-
-      // add tables
-      for (const table of input.project.tables) {
-        const id = await addTable(ctx.session.user.id, projectID, table.name);
-        if (id === undefined) {
-          throw new InternalError("Failed to create table");
-        }
-        await updateTable(projectID, table.name, table.columns, table.data);
-      }
-
-      return projectID;
+      return await importProjectFromJSON(
+        ctx.session.user.id,
+        input.project,
+        input.projectID
+      );
     }),
 });

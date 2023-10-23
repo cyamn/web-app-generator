@@ -9,7 +9,12 @@ import { updateColumn } from "./update";
 export const columnRouter = createTRPCRouter({
   add: publicProcedure
     .meta({
-      openapi: { tags: ["table"], method: "POST", path: "/table/column" },
+      openapi: {
+        description: "Add a column with a key and type to a table",
+        tags: ["table"],
+        method: "POST",
+        path: "/table/column",
+      },
     })
     .input(
       z.object({
@@ -24,7 +29,12 @@ export const columnRouter = createTRPCRouter({
     }),
   update: publicProcedure
     .meta({
-      openapi: { tags: ["table"], method: "PATCH", path: "/table/column" },
+      openapi: {
+        description: "Update key and type of a column with in a table",
+        tags: ["table"],
+        method: "PATCH",
+        path: "/table/column",
+      },
     })
     .input(
       z.object({
@@ -40,7 +50,12 @@ export const columnRouter = createTRPCRouter({
 
   delete: publicProcedure
     .meta({
-      openapi: { tags: ["table"], method: "DELETE", path: "/table/column" },
+      openapi: {
+        description: "Delete a column in a table",
+        tags: ["table"],
+        method: "DELETE",
+        path: "/table/column",
+      },
     })
     .input(
       z.object({
