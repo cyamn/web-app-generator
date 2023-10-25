@@ -22,7 +22,7 @@ export const PageRenderer: React.FC<PageRendererProperties> = ({
   const searchParameters = useSearchParams();
 
   let overwrittenVariables: Record<string, unknown> = {};
-  if (page.variables && searchParameters) {
+  if (page.variables !== undefined && searchParameters !== null) {
     overwrittenVariables = page.variables;
     Object.keys(page.variables).map((key) => {
       const parameter = searchParameters.get(key);

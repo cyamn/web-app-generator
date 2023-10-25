@@ -1,6 +1,6 @@
 name: Build
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   test:
@@ -18,6 +18,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+      - name: Copy environment file
+        run: npm run copy-env
       - name: Prepare environment
         run: npm ci
 

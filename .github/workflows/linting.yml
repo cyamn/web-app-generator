@@ -1,6 +1,6 @@
-name: Test
+name: Linting
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   test:
@@ -18,5 +18,17 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci
-      - run: npm run lint
+      - name: Prepare environment
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run lint:types
+
+      - name: Lint
+        run: npm run lint:conventions
+
+      - name: Find duplicates
+        run: npm run lint:duplicates
+
+      - name: Print Environment Variables
+        run: echo $MY_ENV_VAR
