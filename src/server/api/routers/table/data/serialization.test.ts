@@ -1,7 +1,7 @@
 import { InternalError } from "../../shared/errors";
 import { deserialize, deserializeColumns } from "./serialization"; // Import the functions you want to test
 
-const serializedTable = {
+export const serializedTable = {
   name: "TestTable",
   id: "123",
   columns: [

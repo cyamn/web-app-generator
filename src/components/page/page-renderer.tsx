@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 import { DashboardFactory } from "@/components/dashboards/factory";
@@ -18,9 +19,21 @@ export const PageRenderer: React.FC<PageRendererProperties> = ({
 }) => {
   const [localPage, setLocalPage] = useState<Page>(page);
   const [hydrated, setHydrated] = useState(false);
+  const searchParameters = useSearchParams();
+
+  let overwrittenVariables: Record<string, unknown> = {};
+  if (page.variables && searchParameters) {
+    overwrittenVariables = page.variables;
+    Object.keys(page.variables).map((key) => {
+      const parameter = searchParameters.get(key);
+      if (parameter !== null) {
+        overwrittenVariables[key] = parameter;
+      }
+    });
+  }
 
   const { data, isLoading, isError } = api.variables.calculate.useQuery({
-    variables: page.variables ?? {},
+    variables: overwrittenVariables,
     project,
     page,
   });

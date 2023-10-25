@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 import { BottomPanel } from "@/components/editor/bottom-panel/panel";
@@ -49,10 +49,10 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
       ]);
   }
 
-  useEffect(() => {
-    trySetLocalPageFromString(JSON.stringify(page));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  // useEffect(() => {
+  //   trySetLocalPageFromString(JSON.stringify(page));
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [page]);
 
   function trySetLocalPageFromString(pageString: string): void {
     let parsed: unknown;

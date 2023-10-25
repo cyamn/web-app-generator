@@ -10,11 +10,11 @@ import { makeParser } from "./library";
 type Project = {
   name: string;
   id: string;
-  createdAt: Date;
-  description: string;
+  createdAt?: Date;
+  description: string | null;
 };
 
-async function getInternalVariables(
+export async function getInternalVariables(
   project: Project,
   page: Page,
   user?: User

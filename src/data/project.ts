@@ -30,3 +30,10 @@ export type Project = {
   description: string | null;
   id: string;
 };
+
+export const defaultProject: Project = {
+  name: "example",
+  updatedAt: new Date(),
+  description: "example",
+  id: "example",
+};

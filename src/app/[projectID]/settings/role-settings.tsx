@@ -46,7 +46,7 @@ export const RoleSettings: FC<RoleSettingsProperties> = ({ projectID }) => {
       "some@mail"
     );
     if (email === null) return;
-    addUser({ project: projectID, email, role: roleID });
+    addUser({ email, role: roleID });
   }
 
   return (
