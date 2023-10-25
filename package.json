@@ -16,7 +16,8 @@
     "db:start": "cd database && npm run start && cd ..",
     "db": "npm run db:build && npm run db:start",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "copy-env": "cp .env.example .env"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
