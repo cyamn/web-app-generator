@@ -1,19 +1,21 @@
 import { z } from "zod";
 
+export const Operators: [string, ...string[]] = [
+  "eq",
+  "neq",
+  "gt",
+  "gte",
+  "lt",
+  "lte",
+  "contains",
+  "not_contains",
+  "starts_with",
+  "ends_with",
+];
+
 export const SQLFilterSchema = z.object({
   column: z.string(),
-  operator: z.enum([
-    "eq",
-    "neq",
-    "gt",
-    "gte",
-    "lt",
-    "lte",
-    "contains",
-    "not_contains",
-    "starts_with",
-    "ends_with",
-  ]),
+  operator: z.enum(Operators),
   value: z.union([
     z.union([z.string(), z.number(), z.boolean(), z.date()]),
     z.array(z.union([z.string(), z.number(), z.boolean(), z.date()])),

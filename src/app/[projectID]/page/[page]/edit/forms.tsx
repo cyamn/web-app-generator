@@ -44,29 +44,31 @@ export const Forms: React.FC<FormProperties> = ({
   });
 
   return (
-    <div className="flex h-full flex-col overflow-auto bg-white p-4 font-sans leading-normal tracking-normal">
-      <div className="h-full">
-        <h2 className="flex flex-row overflow-hidden">
-          <FontAwesomeIcon
-            className="pr-2 pt-1 text-2xl"
-            icon={dash.getMetaData().icon}
-          />
-          <span className="font-mono text-xl uppercase">
-            {dash.getMetaData().title}
-          </span>
-        </h2>
+    <div className="flex h-full flex-col overflow-auto bg-white font-sans leading-normal tracking-normal">
+      <h2 className="flex flex-row overflow-hidden p-4 pb-1">
+        <FontAwesomeIcon
+          className="pr-2 pt-1 text-2xl"
+          icon={dash.getMetaData().icon}
+        />
+        <span className="font-mono text-xl uppercase">
+          {dash.getMetaData().title}
+        </span>
+      </h2>
+      <div className="h-full overflow-y-scroll p-4 pb-10">
         {dash.getControls(updateDashboardParameters)}
       </div>
-      <button
-        onClick={() => {
-          removeDashboard(index);
-        }}
-        className="
+      <div className="p-4">
+        <button
+          onClick={() => {
+            removeDashboard(index);
+          }}
+          className="
         w-full rounded-lg border border-red-500 bg-red-100 px-4 py-2 font-bold text-red-600 hover:bg-red-600 hover:text-white
         "
-      >
-        Delete
-      </button>
+        >
+          Delete
+        </button>
+      </div>
     </div>
   );
 };

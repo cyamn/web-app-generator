@@ -3,7 +3,6 @@ import React from "react";
 import { z } from "zod";
 
 import { UpdateFunction } from "@/components/dashboards/definitions/types";
-import { ParameterDataForm } from "@/components/dashboards/shared/forms/parameter-data";
 import { DatabaseViewRender } from "@/components/dashboards/shared/renderers/database-view";
 import {
   DatabaseParametersSchema,
@@ -15,6 +14,8 @@ import {
 } from "@/components/dashboards/shared/shemes/data-format";
 
 import { DashboardBase } from "../definitions/dashboard-base";
+import { ParameterDataForm } from "../shared/forms/parameter-data";
+import { ParameterFormatForm } from "../shared/forms/parameter-format";
 
 const ParametersSchema = z.object({
   data: DatabaseParametersSchema,
@@ -40,13 +41,31 @@ export default class DatabaseViewDashboard extends DashboardBase<Parameters> {
         data,
       });
     };
+    const updateFormatData = (
+      data: Parameters["data"],
+      format: Parameters["format"]
+    ) => {
+      updateFunction({
+        ...this.getParameters(),
+        data,
+        format,
+      });
+    };
 
     return (
-      <ParameterDataForm
-        data={this.getParameters().data}
-        onSetData={updateData}
-        project={this.context.projectId}
-      />
+      <div className="flex flex-col">
+        <ParameterDataForm
+          data={this.getParameters().data}
+          onSetData={updateData}
+          project={this.context.projectId}
+        />
+        <ParameterFormatForm
+          data={this.getParameters().data}
+          format={this.getParameters().format}
+          onSetData={updateFormatData}
+          project={this.context.projectId}
+        />
+      </div>
     );
   }
 
