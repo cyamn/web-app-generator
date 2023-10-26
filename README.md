@@ -28,6 +28,8 @@ To bootstrap the project run it on localhost:3000
   npm run bootstrap
 ```
 
+This will:
+
 - copy an example .env file
 - install dependencies
 - build the next.js app
