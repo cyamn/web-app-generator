@@ -15,7 +15,12 @@ import { updatePage } from "./update";
 export const pageRouter = createTRPCRouter({
   get: publicProcedure
     .meta({
-      openapi: { tags: ["page"], method: "GET", path: "/page" },
+      openapi: {
+        description: "Get a page for a project",
+        tags: ["page"],
+        method: "GET",
+        path: "/page",
+      },
     })
     .input(
       z.object({
@@ -40,7 +45,12 @@ export const pageRouter = createTRPCRouter({
 
   add: protectedProcedure
     .meta({
-      openapi: { tags: ["page"], method: "POST", path: "/page" },
+      openapi: {
+        description: "Add a page to a project",
+        tags: ["page"],
+        method: "POST",
+        path: "/page",
+      },
     })
     .input(z.object({ project: z.string(), pageName: z.string() }))
     .output(z.string())
@@ -50,22 +60,38 @@ export const pageRouter = createTRPCRouter({
 
   update: protectedProcedure
     .meta({
-      openapi: { tags: ["page"], method: "PATCH", path: "/page" },
+      openapi: {
+        description: "Update a page in a project",
+        tags: ["page"],
+        method: "PATCH",
+        path: "/page",
+      },
     })
     .input(
       z.object({
         project: z.string(),
         page: PageSchema,
+        path: z.string().optional(),
       })
     )
     .output(z.string())
     .mutation(async ({ ctx, input }) => {
-      return await updatePage(ctx.session.user.id, input.project, input.page);
+      return await updatePage(
+        ctx.session.user.id,
+        input.project,
+        input.page,
+        input.path
+      );
     }),
 
   delete: protectedProcedure
     .meta({
-      openapi: { tags: ["page"], method: "DELETE", path: "/page" },
+      openapi: {
+        description: "Delete a page from a project",
+        tags: ["page"],
+        method: "DELETE",
+        path: "/page",
+      },
     })
     .input(z.object({ project: z.string(), page: z.string() }))
     .output(z.string())
@@ -73,19 +99,29 @@ export const pageRouter = createTRPCRouter({
       return await deletePage(ctx.session.user.id, input.project, input.page);
     }),
 
-  list: protectedProcedure
+  list: publicProcedure
     .meta({
-      openapi: { tags: ["page"], method: "GET", path: "/page/list" },
+      openapi: {
+        description: "List all pages in a project",
+        tags: ["page"],
+        method: "GET",
+        path: "/page/list",
+      },
     })
     .input(z.object({ project: z.string() }))
     .output(z.array(PageSchema.pick({ name: true, path: true })))
     .query(async ({ ctx, input }) => {
-      return await listPages(ctx.session.user.id, input.project);
+      return await listPages(ctx?.session?.user?.id ?? "", input.project);
     }),
 
   getAll: protectedProcedure
     .meta({
-      openapi: { tags: ["page"], method: "GET", path: "/page/all" },
+      openapi: {
+        description: "Get all pages that exist in a project",
+        tags: ["page"],
+        method: "GET",
+        path: "/page/all",
+      },
     })
     .input(z.object({ project: z.string() }))
     .output(z.array(z.object({ page: PageSchema, updatedAt: z.date() })))
@@ -95,7 +131,12 @@ export const pageRouter = createTRPCRouter({
 
   togglePublicVisibility: protectedProcedure
     .meta({
-      openapi: { tags: ["page"], method: "POST", path: "/page/visibility" },
+      openapi: {
+        description: "Set the public visibility of a page",
+        tags: ["page"],
+        method: "POST",
+        path: "/page/visibility",
+      },
     })
     .input(
       z.object({
@@ -116,6 +157,7 @@ export const pageRouter = createTRPCRouter({
   roleAccess: protectedProcedure
     .meta({
       openapi: {
+        description: "Get all roles and their access to a page",
         tags: ["page", "role"],
         method: "GET",
         path: "/page/role-access",
@@ -133,6 +175,7 @@ export const pageRouter = createTRPCRouter({
           name: z.string(),
           id: z.string(),
           access: z.boolean(),
+          isAdmin: z.boolean(),
           users: z.array(
             z.object({
               id: z.string(),
@@ -150,6 +193,7 @@ export const pageRouter = createTRPCRouter({
   setRoleAccess: protectedProcedure
     .meta({
       openapi: {
+        description: "Set a role's access to a page",
         tags: ["page", "role"],
         method: "POST",
         path: "/page/role-access",

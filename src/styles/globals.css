@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Prompt";
+  src: url("../../public/fonts/Prompt-ExtraLight.ttf");
+}
+@font-face {
+  font-family: "PromptBI";
+  src: url("../../public/fonts/Prompt-SemiBold.ttf");
+}
+
 h1 {
   @apply text-5xl;
 }

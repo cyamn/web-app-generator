@@ -1,7 +1,7 @@
 import "swagger-ui-react/swagger-ui.css";
 
-import OpenApiPanel from "@/components/api/openapi";
-import { ViewList } from "@/components/navigation";
+import { ViewList } from "@/components/editor/navigation";
+import OpenApiPanel from "@/components/editor/shared/openapi";
 import { getServerSideProject } from "@/utils/get-serverside";
 
 type PageProperties = {

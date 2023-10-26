@@ -1,7 +1,7 @@
 import { Page } from "@prisma/client";
 import { z } from "zod";
 
-import { DashboardSchema } from "@/data/dashboard/library/dashboard";
+import { DashboardSchema } from "@/components/dashboards";
 import { Page as DeserializedPage } from "@/data/page";
 import { VariablesSchema } from "@/data/page/variables";
 

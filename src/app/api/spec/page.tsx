@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import React from "react";
 
-import OpenApiPanel from "@/components/api/openapi";
+import OpenApiPanel from "@/components/editor/shared/openapi";
 import GithubRibbon from "@/components/github-ribbon";
 import { Header } from "@/components/header";
 import { Navbar } from "@/components/navbar";
@@ -13,8 +13,12 @@ const Page = async () => {
     <>
       <GithubRibbon />
       <div className="flex flex-col">
-        <Header item={<Navbar />} user={session?.user} />
-        <OpenApiPanel />
+        <div className="fixed w-full">
+          <Header item={<Navbar />} user={session?.user} />
+        </div>
+        <div className="mt-8">
+          <OpenApiPanel />
+        </div>
       </div>
     </>
   );

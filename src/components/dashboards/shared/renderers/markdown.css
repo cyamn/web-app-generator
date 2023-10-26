@@ -1,0 +1,7 @@
+.markdown a {
+  color: blue; /* Default color for unvisited links */
+}
+
+.markdown a:visited {
+  color: purple; /* Color for visited links */
+}

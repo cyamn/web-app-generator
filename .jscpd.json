@@ -1,5 +1,6 @@
 {
-  "reporters": ["console"],
+  "reporters": ["console", "html"],
+  "output": "public/report",
   "pattern": "src/**/*.*",
   "minTokens": 20,
   "min-lines": 7

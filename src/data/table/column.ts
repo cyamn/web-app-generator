@@ -3,7 +3,7 @@ import { z } from "zod";
 export const ColumnSchema = z
   .object({
     key: z.string(),
-    type: z.enum(["string", "number", "boolean", "date"]),
+    type: z.enum(["string", "number", "boolean", "date", "user"]),
   })
   .strict();
 

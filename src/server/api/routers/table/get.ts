@@ -37,6 +37,7 @@ export type Table = {
       value: string;
       column: {
         key: string;
+        id: string;
       };
       id: string;
     }[];
@@ -79,6 +80,7 @@ function tablesQuery(project: string, name?: string, columns?: string[]) {
               column: {
                 select: {
                   key: true,
+                  id: true,
                 },
               },
               value: true,

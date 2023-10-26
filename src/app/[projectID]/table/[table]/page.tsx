@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { TableList, ViewList } from "@/components/navigation";
+import { TableList, ViewList } from "@/components/editor/navigation";
 import { DeleteTableButton } from "@/components/table/options/delete";
 import { ExportButton } from "@/components/table/options/export";
 import { ImportButton } from "@/components/table/options/import";
@@ -24,7 +24,7 @@ const Page = async ({ params }: PageProperties) => {
     <div className="flex h-full flex-row overflow-auto">
       <ViewList activeView={"table"} project={project.id} />
       <TableList project={project.id} tableName={params.table} />
-      <div className="w-max overflow-auto pr-96">
+      <div className="w-full overflow-auto pr-96">
         <TableEdit table={params.table} project={params.projectID} />
       </div>
       <div className="w-48">

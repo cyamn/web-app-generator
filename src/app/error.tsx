@@ -22,8 +22,8 @@ const error: FC<ErrorProperties> = ({ error }) => {
             {error.message}
           </h1>
           <p className="mt-4 text-gray-500">
-            The page you are looking for does not exist. Here are some helpful
-            links:
+            Either the page you tried to access does not exist or you do not
+            have sufficient permissions.
           </p>
 
           <div className="mt-6 flex w-full shrink-0 items-center gap-x-3 sm:w-auto">

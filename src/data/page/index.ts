@@ -1,10 +1,7 @@
 import { z } from "zod";
 
-import {
-  DashboardSchema,
-  defaultDashboard,
-} from "../dashboard/library/dashboard";
-import { defaultDatabaseView } from "../dashboard/library/database-view";
+import { DashboardSchema } from "@/components/dashboards";
+
 import { AccessSchema, defaultAccess } from "./access";
 import { VariablesSchema } from "./variables";
 
@@ -24,5 +21,5 @@ export const defaultPage: Page = {
   name: "example",
   path: "example",
   access: defaultAccess,
-  dashboards: [defaultDashboard, defaultDatabaseView],
+  dashboards: [],
 };

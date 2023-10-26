@@ -14,7 +14,12 @@ import { deserializeCSV } from "./serialization";
 export const dataRouter = createTRPCRouter({
   exportCSV: publicProcedure
     .meta({
-      openapi: { tags: ["table"], method: "GET", path: "/table/export/csv" },
+      openapi: {
+        description: "Export a table as CSV",
+        tags: ["table"],
+        method: "GET",
+        path: "/table/export/csv",
+      },
     })
     .input(projectTableColumnSchema)
     .output(CSVDataSchema)
@@ -32,7 +37,12 @@ export const dataRouter = createTRPCRouter({
     }),
   importCSV: publicProcedure
     .meta({
-      openapi: { tags: ["table"], method: "POST", path: "/table/import/csv" },
+      openapi: {
+        description: "Import a table from CSV",
+        tags: ["table"],
+        method: "POST",
+        path: "/table/import/csv",
+      },
     })
     .input(
       z.object({

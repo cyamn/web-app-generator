@@ -3,11 +3,12 @@ import React from "react";
 
 import { Header } from "@/components/header";
 import { Navbar } from "@/components/navbar";
-import { ProjectOverview } from "@/components/navigation/projects-overview";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { appRouter } from "@/server/api/root";
 import { authOptions } from "@/server/auth";
 import { prisma } from "@/server/database";
+
+import { ProjectOverview } from "./project-overview";
 
 const Projects = async () => {
   const session = await getServerSession(authOptions);

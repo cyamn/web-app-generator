@@ -8,7 +8,12 @@ import { updateCell } from "./update";
 export const cellRouter = createTRPCRouter({
   add: publicProcedure
     .meta({
-      openapi: { tags: ["table"], method: "POST", path: "/table/cell" },
+      openapi: {
+        description: "Add a cell linked to a row and column to a table",
+        tags: ["table"],
+        method: "POST",
+        path: "/table/cell",
+      },
     })
     .input(
       z.object({
@@ -24,7 +29,12 @@ export const cellRouter = createTRPCRouter({
 
   update: publicProcedure
     .meta({
-      openapi: { tags: ["table"], method: "PATCH", path: "/table/cell" },
+      openapi: {
+        description: "Update the value of a cell in a table",
+        tags: ["table"],
+        method: "PATCH",
+        path: "/table/cell",
+      },
     })
     .input(
       z.object({

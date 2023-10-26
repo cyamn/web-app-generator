@@ -12,16 +12,16 @@ type CellProperties = {
   value: string;
   type: string;
   cell: Cell;
-  controls: boolean;
   id: string;
+  project: string;
 };
 
 export const CellEdit: React.FC<CellProperties> = ({
   value: value_,
-  controls,
   id,
   type,
   cell,
+  project,
 }) => {
   const [savedValue, setSavedValue] = React.useState(value_);
   const [value, setValue] = React.useState(value_);
@@ -72,57 +72,96 @@ export const CellEdit: React.FC<CellProperties> = ({
 
   switch (type) {
     case "number": {
-      if (controls) {
-        return (
-          <input
-            className="w-full border-none text-right font-mono"
-            type="number"
-            value={value}
-            onChange={(event) => {
-              setValue(event.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-            onBlur={() => {
-              updateCell();
-            }}
-          />
-        );
-      }
-      return <span className="text-right font-mono">{value}</span>;
+      return (
+        <input
+          className="w-full border-none text-right font-mono"
+          type="number"
+          value={value}
+          onChange={(event) => {
+            setValue(event.target.value);
+          }}
+          onKeyDown={handleKeyDown}
+          onBlur={() => {
+            updateCell();
+          }}
+        />
+      );
     }
     case "boolean": {
       return (
         <FontAwesomeIcon
-          className={`w-full px-2 text-center text-2xl
-             ${controls ? "cursor-pointer" : ""}
+          className={`cursor-pointer"} w-full px-2 text-center text-2xl
           `}
           icon={value === "true" ? faSquareCheck : faSquare}
           onClick={() => {
-            if (!controls) return;
             updateCell(value === "true" ? "false" : "true");
             setValue(value === "true" ? "false" : "true");
           }}
         />
       );
     }
+    case "date": {
+      return (
+        <input
+          className="w-full border-none"
+          type="date"
+          value={value}
+          onChange={(event) => {
+            setValue(event.target.value);
+          }}
+          onKeyDown={handleKeyDown}
+          onBlur={() => {
+            updateCell();
+          }}
+        />
+      );
+    }
+
+    case "user": {
+      const {
+        data: users,
+        isLoading,
+        isError,
+        error,
+      } = api.roles.getUsers.useQuery({ project });
+
+      if (isLoading) return <div>...</div>;
+      if (isError) return <div>error.message</div>;
+
+      return (
+        <select
+          className="w-full border-none"
+          value={value}
+          onChange={(event) => {
+            setValue(event.target.value);
+            updateCell(event.target.value);
+          }}
+        >
+          <option value=""></option>
+          {users.map((user, index) => (
+            <option key={index} value={user.email ?? ""}>
+              {user.email}
+            </option>
+          ))}
+        </select>
+      );
+    }
+
     default: {
-      if (controls) {
-        return (
-          <input
-            className="w-full border-none"
-            type="text"
-            value={value}
-            onChange={(event) => {
-              setValue(event.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-            onBlur={() => {
-              updateCell();
-            }}
-          />
-        );
-      }
-      return <span>{value}</span>;
+      return (
+        <input
+          className="w-full border-none"
+          type="text"
+          value={value}
+          onChange={(event) => {
+            setValue(event.target.value);
+          }}
+          onKeyDown={handleKeyDown}
+          onBlur={() => {
+            updateCell();
+          }}
+        />
+      );
     }
   }
 };

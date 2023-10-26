@@ -1,10 +1,18 @@
 import { z } from "zod";
 
+export const columnTypes = [
+  "string",
+  "number",
+  "boolean",
+  "date",
+  "user",
+] as const;
+
 export const ColumnSchema = z
   .object({
     id: z.string(),
     key: z.string(),
-    type: z.enum(["string", "number", "boolean", "date"]),
+    type: z.enum(columnTypes),
   })
   .strict();
 

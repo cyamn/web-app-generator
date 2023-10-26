@@ -11,12 +11,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
@@ -167,4 +161,6 @@ model Cell {
   column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
   rowId    String
   row      Row    @relation(fields: [rowId], references: [id], onDelete: Cascade)
+
+  @@unique([rowId, columnId])
 }

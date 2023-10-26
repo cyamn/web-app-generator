@@ -7,15 +7,19 @@ import { getProject } from "../project/get";
 import { getRolesOfUserInProject } from "../roles/get";
 import { makeParser } from "./library";
 
-export async function calculateVariables(
-  variables: Variables,
-  projectId: string,
+type Project = {
+  name: string;
+  id: string;
+  createdAt?: Date;
+  description: string | null;
+};
+
+export async function getInternalVariables(
+  project: Project,
   page: Page,
   user?: User
-): Promise<Variables> {
-  const project = await getProject(projectId);
-
-  let internal: object = {
+): Promise<object> {
+  let internalVariables: object = {
     user: {
       id: "undefined",
       name: "guest",
@@ -30,22 +34,36 @@ export async function calculateVariables(
     },
     time: new Date().toISOString(),
   };
-
   if (user !== undefined)
-    internal = {
+    internalVariables = {
+      ...internalVariables,
       user: {
         ...user,
-        roles: await getRolesOfUserInProject(user.id, projectId),
+        roles: await getRolesOfUserInProject(user.id, project.id),
       },
-      ...internal,
     };
+  return internalVariables;
+}
+
+export async function calculateVariables(
+  variables: Variables,
+  projectId: string,
+  page: Page,
+  user?: User
+): Promise<Variables> {
+  const project = await getProject(projectId);
+  const internalVariables = await getInternalVariables(project, page, user);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const parser = makeParser(projectId);
+  const calculated = await calculate(
+    { ...internalVariables, ...variables },
+    parser
+  );
 
   return {
-    ...(await calculate({ ...internal, ...variables }, parser)),
-    ...internal,
+    ...calculated,
+    ...internalVariables,
   };
 }
 

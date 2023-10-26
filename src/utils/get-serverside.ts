@@ -42,3 +42,11 @@ export async function getServerSideTableList(
   const c = await getCaller(needsAuth);
   return c.tables.list({ project });
 }
+
+export async function getServerSideProjectAdmins(
+  project: string,
+  needsAuth = true
+) {
+  const c = await getCaller(needsAuth);
+  return c.roles.getUsers({ project, isAdmin: true });
+}

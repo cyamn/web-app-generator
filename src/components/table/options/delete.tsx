@@ -19,6 +19,7 @@ export const DeleteTableButton: React.FC<DeleteTableButtonProperties> = ({
     onSuccess: () => {
       void context.tables.get.invalidate({ project, tableName: table });
       toast.success("Table deleted");
+      window.location.href = `/${project}/table`;
     },
   });
 
