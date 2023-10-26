@@ -55,6 +55,7 @@ export const UserAvatar: React.FC<UserAvatarProperties> = ({
       width={size}
       height={size}
       alt={user.name ?? "user"}
+      style={{ borderRadius: "100%" }}
       className={(twMerge("rounded-full border border-slate-700"), className)}
     />
   );

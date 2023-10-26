@@ -17,7 +17,8 @@
     "postinstall": "prisma generate",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "copy-env": "cp .env.example .env"
+    "copy-env": "cp .env.example .env",
+    "bootstrap": "npm run copy-env && npm install && next build && concurrently --kill-others-on-fail  -p \"{name} {time}|\" -t \"HH:mm:ss\" --names \"DATA,APP\" -c \"yellow,blue\" \"npm run db\" \"next start\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",

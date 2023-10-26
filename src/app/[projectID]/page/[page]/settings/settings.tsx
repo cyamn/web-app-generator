@@ -44,6 +44,14 @@ export const Settings: React.FC<SettingsProperties> = ({ page, project }) => {
     },
   });
 
+  const { mutate: deletePage } = api.pages.delete.useMutation({
+    onSuccess: () => {
+      toast.success(`Deleted page ${page.name}!`);
+      void context.pages.get.invalidate({ project, page: page.path });
+      window.location.href = `/${project}/page`;
+    },
+  });
+
   function togglePublic() {
     setIsPublic(!isPublic);
     mutate({ project, pagePath: page.path, public: !isPublic });
@@ -109,6 +117,31 @@ export const Settings: React.FC<SettingsProperties> = ({ page, project }) => {
             >
               <FontAwesomeIcon icon={faUpload} />
               <span className="ml-2">Import</span>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td className="w-52 px-6 py-2">Delete</td>
+          <td className="flex w-full flex-row gap-2 p-2">
+            <button
+              className="
+        w-full rounded-lg border border-red-500 bg-red-100 px-4 py-2 font-bold text-red-600 hover:bg-red-600 hover:text-white
+        "
+              type="button"
+              onClick={() => {
+                if (
+                  !confirm(
+                    `Are you sure you want to delete page ${page.name}? This cannot be undone!`
+                  )
+                )
+                  return;
+                deletePage({
+                  project,
+                  page: page.path,
+                });
+              }}
+            >
+              <span className="ml-2">Delete page</span>
             </button>
           </td>
         </tr>

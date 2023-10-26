@@ -59,6 +59,18 @@ export const PageEditor: React.FC<PageEditorProperties> = ({
           </DashboardDecorator>
         );
       })}
+      {localPage.dashboards.length === 0 && (
+        <div className="h-32 w-full">
+          <h1 className="mb-10 w-full p-2 text-center">Start your page here</h1>
+          <div className="-mx-1 flex flex-row py-1 text-3xl text-slate-800">
+            <AddDashboardCard
+              id={0}
+              project={project}
+              addDashboard={addDashboard}
+            />
+          </div>
+        </div>
+      )}
       <div className="py-10"></div>
     </div>
   );
@@ -147,25 +159,47 @@ const DashboardDecorator: React.FC<{
       </div>
       <div className="group h-2 w-full hover:h-min">
         <div className="-mx-1 hidden flex-row py-1 text-3xl text-slate-800 group-hover:flex">
-          {Object.entries(Dashboards).map(([type, dashboard]) => {
-            const dash = DashboardFactory({ type }, { projectId: project });
-            return (
-              <button
-                key={type}
-                className="mx-1 w-full rounded-md border border-slate-300 bg-white p-1 hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
-                onClick={() => {
-                  addDashboard(id + 1, {
-                    type,
-                    parameters: dash.getParameters(),
-                  });
-                }}
-              >
-                +<FontAwesomeIcon icon={dash.getMetaData().icon} />
-              </button>
-            );
-          })}
+          <AddDashboardCard
+            id={id}
+            project={project}
+            addDashboard={addDashboard}
+          />
         </div>
       </div>
     </div>
+  );
+};
+
+type AddDashboardCardProperties = {
+  id: number;
+  project: string;
+  addDashboard: (index: number, dashboard: DashboardDefinition) => void;
+};
+
+export const AddDashboardCard: React.FC<AddDashboardCardProperties> = ({
+  id,
+  project,
+  addDashboard,
+}) => {
+  return (
+    <>
+      {Object.entries(Dashboards).map(([type, dashboard]) => {
+        const dash = DashboardFactory({ type }, { projectId: project });
+        return (
+          <button
+            key={type}
+            className="mx-1 w-full rounded-md border border-slate-300 bg-white p-1 hover:border-blue-500 hover:bg-blue-100 hover:text-blue-500"
+            onClick={() => {
+              addDashboard(id + 1, {
+                type,
+                parameters: dash.getParameters(),
+              });
+            }}
+          >
+            +<FontAwesomeIcon icon={dash.getMetaData().icon} />
+          </button>
+        );
+      })}
+    </>
   );
 };

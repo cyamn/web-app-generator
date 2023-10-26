@@ -2,6 +2,7 @@ import { ViewList } from "@/components/editor/navigation";
 import { getServerSideProject } from "@/utils/get-serverside";
 
 import { AppSettings } from "./app-settings";
+import { DeleteProjectButton } from "./delete-button";
 import { ImExportSettings } from "./im-export-settings";
 import { RoleSettings } from "./role-settings";
 
@@ -22,6 +23,10 @@ const Page = async ({ params }: PageProperties) => {
           <AppSettings projectID={params.projectID} />
           <br />
           <ImExportSettings projectID={params.projectID} />
+          <DeleteProjectButton
+            projectName={project.name}
+            projectID={params.projectID}
+          />
           <br />
           <RoleSettings projectID={params.projectID} />
         </div>

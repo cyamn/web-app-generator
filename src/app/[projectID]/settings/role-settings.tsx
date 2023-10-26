@@ -3,7 +3,6 @@ import { FC } from "react";
 
 import { UserAvatar } from "@/components/editor/avatars/user";
 import { api } from "@/utils/api";
-import { combine } from "@/utils/combine";
 
 type RoleSettingsProperties = {
   projectID: string;
@@ -26,6 +25,12 @@ export const RoleSettings: FC<RoleSettingsProperties> = ({ projectID }) => {
   });
 
   const { mutate: addUser } = api.roles.assignUserToRoleByMail.useMutation({
+    onSuccess: () => {
+      void context.roles.list.invalidate({ project: projectID });
+    },
+  });
+
+  const { mutate: removeUser } = api.roles.unAssignUserToRoleById.useMutation({
     onSuccess: () => {
       void context.roles.list.invalidate({ project: projectID });
     },
@@ -59,26 +64,33 @@ export const RoleSettings: FC<RoleSettingsProperties> = ({ projectID }) => {
             <tr key={id}>
               <td className="py-3">{role.name}</td>
               <td className="py-3">User</td>
-              <td className="py-3">Rules</td>
-              {/* <td className="py-3">{session.user.email}</td> */}
 
               <td className="flex flex-row-reverse py-3">
                 <button className="pl-2 text-right text-red-500">Remove</button>
               </td>
             </tr>
-            {combine(role.users, role.rules).map((tuple, id) => (
+            {role.users.map((user, id) => (
               <tr key={id}>
                 <td />
                 <td className="flex flex-row items-center py-3">
-                  {tuple[0] !== null && (
+                  {user !== null && (
                     <div className="mr-4 rounded-full">
-                      <UserAvatar user={tuple[0]} />
+                      <UserAvatar user={user} />
                     </div>
                   )}
-                  {tuple[0]?.email ?? ""}
+                  {user?.email ?? ""}
+                  <button
+                    onClick={() => {
+                      removeUser({
+                        role: role.id,
+                        user: user?.id ?? "",
+                      });
+                    }}
+                    className="ml-6 rounded-sm border border-slate-200 bg-slate-50 px-1 text-slate-400"
+                  >
+                    Remove
+                  </button>
                 </td>
-                <td className="py-3">{tuple[1]?.regex ?? ""}</td>
-                <td />
               </tr>
             ))}
             <tr className="border-b" key={id}>
@@ -92,9 +104,6 @@ export const RoleSettings: FC<RoleSettingsProperties> = ({ projectID }) => {
                 >
                   Add
                 </button>
-              </td>
-              <td className="py-3">
-                <button className="text-blue-500">Add</button>
               </td>
               <td />
             </tr>

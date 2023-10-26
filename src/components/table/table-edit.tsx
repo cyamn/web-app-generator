@@ -95,7 +95,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
   }
 
   return (
-    <div className="z-10 flex flex-col border-l border-slate-300 shadow-md">
+    <div className="z-10 flex flex-col border-l border-slate-300">
       <div className="flex w-max flex-row overflow-auto">
         <table className="table-auto text-left text-sm text-slate-500">
           <thead className="sticky top-0 bg-slate-50 text-xs uppercase text-slate-700">
@@ -161,7 +161,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
           </tbody>
         </table>
         <button
-          className="mt-14 bg-white p-2 shadow-md [writing-mode:vertical-lr]"
+          className="border border-slate-300 bg-white p-2 [writing-mode:vertical-lr]"
           onClick={() => {
             createColumn();
           }}
@@ -170,7 +170,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
         </button>
       </div>
       <button
-        className="w-full bg-white p-2"
+        className="w-full border border-slate-300 bg-white p-2"
         onClick={() => {
           createRow();
         }}

@@ -24,7 +24,7 @@ const Page = async ({ params }: PageProperties) => {
     <div className="flex h-full flex-row overflow-auto">
       <ViewList activeView={"table"} project={project.id} />
       <TableList project={project.id} tableName={params.table} />
-      <div className="w-max overflow-auto pr-96">
+      <div className="w-full overflow-auto pr-96">
         <TableEdit table={params.table} project={params.projectID} />
       </div>
       <div className="w-48">

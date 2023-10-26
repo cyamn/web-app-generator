@@ -22,17 +22,22 @@ Go to the project directory
   cd web-app-generator
 ```
 
-Install dependencies
+To bootstrap the project run it on localhost:3000
 
 ```bash
-  npm install
+  npm run bootstrap
 ```
 
-Start the server
+- copy an example .env file
+- install dependencies
+- build the next.js app
+- start the database and the app in production mode
 
-```bash
-  npm run start dev
-```
+Note: that this will use default passwords and default options
+
+Note: you should be able to use any username and password combination for the generator. It should be usefull to remember it tho :)
+
+Note: docs don't exist yet, sorry.
 
 ## Authors
 

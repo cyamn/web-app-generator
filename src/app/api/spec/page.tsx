@@ -13,8 +13,12 @@ const Page = async () => {
     <>
       <GithubRibbon />
       <div className="flex flex-col">
-        <Header item={<Navbar />} user={session?.user} />
-        <OpenApiPanel />
+        <div className="fixed w-full">
+          <Header item={<Navbar />} user={session?.user} />
+        </div>
+        <div className="mt-8">
+          <OpenApiPanel />
+        </div>
       </div>
     </>
   );

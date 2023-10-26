@@ -24,7 +24,7 @@ export const AddPageCard: React.FC<AddPageCardProperties> = ({ project }) => {
       <button
         disabled={isCreating}
         onClick={addPage}
-        className="mt-6 flex h-64 w-full flex-row items-center justify-center rounded-lg bg-slate-400 p-2 text-slate-50 hover:bg-slate-500"
+        className="mt-6 flex h-64 w-full flex-row items-center justify-center rounded-lg border border-blue-500 bg-blue-100 p-2 text-blue-500 hover:bg-blue-500 hover:text-white"
       >
         <h1>{isCreating ? "creating..." : "+ Add Page"}</h1>
       </button>
