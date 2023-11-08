@@ -34,8 +34,8 @@ const project = {
 describe("get internal variables function", () => {
   it("should show user as guest if undefined", async () => {
     const internal = (await getInternalVariables(
-      defaultProject,
-      defaultPage
+      defaultPage,
+      defaultProject
     )) as { user: object };
     expect(internal.user).toEqual({
       id: "undefined",
@@ -51,8 +51,8 @@ describe("calculate variables function", () => {
   it("should not change constants", async () => {
     const calculated = await calculateVariables(
       { a: "A", b: "B", c: "C" },
-      "example",
-      defaultPage
+      defaultPage,
+      "example"
     );
     expect(calculated.a).toBe("A");
     expect(calculated.b).toBe("B");
@@ -61,16 +61,16 @@ describe("calculate variables function", () => {
   it("should calculate a sum", async () => {
     const calculated = await calculateVariables(
       { sum: "=SUM(1,2)" },
-      "example",
-      defaultPage
+      defaultPage,
+      "example"
     );
     expect(calculated.sum).toBe(3);
   });
   it("should calculate a product", async () => {
     const calculated = await calculateVariables(
       { product: "=MMULT(2,3)" },
-      "example",
-      defaultPage
+      defaultPage,
+      "example"
     );
     expect(calculated.product).toBe(6);
   });
@@ -82,16 +82,16 @@ describe("calculate variables function", () => {
     });
     const calculated = await calculateVariables(
       { rowsOfTable: '=COUNT_ROWS("Table")' },
-      "example",
-      defaultPage
+      defaultPage,
+      "example"
     );
     expect(calculated.rowsOfTable).toBe(1);
   });
   it("should show and error if a table was not found", async () => {
     const calculated = await calculateVariables(
       { rowsOfTable: '=COUNT_ROWS("Not existend")' },
-      "example",
-      defaultPage
+      defaultPage,
+      "example"
     );
     expect(calculated.rowsOfTable).toBe("#TABLE NOT FOUND!");
   });
@@ -103,8 +103,8 @@ describe("calculate variables function", () => {
     });
     const calculated = await calculateVariables(
       { data: '=GET_DATA("Table", "Name", 0)' },
-      "example",
-      defaultPage
+      defaultPage,
+      "example"
     );
     expect(calculated.data).toBe("John");
   });

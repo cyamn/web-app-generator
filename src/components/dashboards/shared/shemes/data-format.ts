@@ -20,10 +20,6 @@ export const FormatDataParametersSchema = z
 export type FormatDataParameters = z.infer<typeof FormatDataParametersSchema>;
 
 export const defaultFormatDataParameters: FormatDataParameters = {
-  orderBy: {
-    years_active: "asc",
-  },
-  controls: {
-    delete: "Delete",
-  },
+  orderBy: {},
+  controls: {},
 };

@@ -5,6 +5,7 @@ import { DashboardBase } from "./dashboard-base";
 
 export type DashboardContext = {
   projectId: string;
+  recurse: number;
 };
 
 export type DashboardMetaData = {

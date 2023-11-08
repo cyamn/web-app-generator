@@ -19,6 +19,7 @@ export const PageEditor: React.FC<PageEditorProperties> = ({
   },
   project,
   addDashboard,
+  recurse = 0,
 }) => {
   const [localPage, setLocalPage] = useState<Page>(page);
   const [hydrated, setHydrated] = useState(false);
@@ -33,6 +34,9 @@ export const PageEditor: React.FC<PageEditorProperties> = ({
     setHydrated(false);
   }, [page]);
 
+  if (recurse > 10) {
+    return <></>;
+  }
   if (!hydrated && !isLoading && !isError) {
     setHydrated(true);
     setLocalPage(hydratePage(page, data));
@@ -42,7 +46,8 @@ export const PageEditor: React.FC<PageEditorProperties> = ({
     <div className="flex h-full flex-col overflow-auto p-4 font-sans leading-normal tracking-normal">
       {localPage.dashboards.map((dashboard, id) => {
         const dash = DashboardFactory(dashboard, {
-          projectId: project,
+          projectId: project ?? "",
+          recurse: recurse + 1,
         });
         return (
           <DashboardDecorator
@@ -52,7 +57,7 @@ export const PageEditor: React.FC<PageEditorProperties> = ({
             setIndex={setIndex}
             addDashboard={addDashboard}
             id={id}
-            project={project}
+            project={project ?? ""}
             dash={dash}
           >
             {dash.render()}
@@ -65,7 +70,7 @@ export const PageEditor: React.FC<PageEditorProperties> = ({
           <div className="-mx-1 flex flex-row py-1 text-3xl text-slate-800">
             <AddDashboardCard
               id={0}
-              project={project}
+              project={project ?? ""}
               addDashboard={addDashboard}
             />
           </div>
@@ -109,8 +114,9 @@ type PageEditorProperties = {
   page: Page;
   index?: number;
   setIndex?: (index: number) => void;
-  project: string;
+  project?: string;
   addDashboard: (index: number, dashboard: DashboardDefinition) => void;
+  recurse?: number;
 };
 
 const DashboardDecorator: React.FC<{
@@ -184,7 +190,10 @@ export const AddDashboardCard: React.FC<AddDashboardCardProperties> = ({
   return (
     <>
       {Object.entries(Dashboards).map(([type, dashboard]) => {
-        const dash = DashboardFactory({ type }, { projectId: project });
+        const dash = DashboardFactory(
+          { type },
+          { projectId: project, recurse: 0 }
+        );
         return (
           <button
             key={type}

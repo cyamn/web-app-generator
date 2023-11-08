@@ -14,7 +14,7 @@ export async function getProject(projectId: string): Promise<{
     },
   });
   if (!project) {
-    throw new NotFoundError("Project");
+    throw new NotFoundError("project");
   }
   return {
     ...project,

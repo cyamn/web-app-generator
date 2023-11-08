@@ -20,15 +20,15 @@ export const variablesRouter = createTRPCRouter({
       z.object({
         variables: VariablesSchema,
         page: PageSchema,
-        project: z.string(),
+        project: z.string().optional(),
       })
     )
     .output(VariablesSchema)
     .query(async ({ ctx, input }) => {
       return await calculateVariables(
         input.variables,
-        input.project,
         input.page,
+        input.project,
         ctx.session === null ? undefined : ctx.session.user
       );
     }),

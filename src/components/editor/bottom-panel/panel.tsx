@@ -6,16 +6,18 @@ import { PanelHeader } from "./header";
 type BottomPanelProperties = {
   tabNames: string[];
   tabs: (React.ReactNode | undefined)[];
+  forceVisible?: boolean;
 };
 
 export const BottomPanel: React.FC<BottomPanelProperties> = ({
   tabNames,
   tabs,
+  forceVisible = false,
 }) => {
   const [visibility, setVisibility] = useState(false);
   const [tab, setTab] = useState(0);
 
-  if (!visibility) {
+  if (!visibility && !forceVisible) {
     return (
       <PanelHeader
         activeTab={tab}

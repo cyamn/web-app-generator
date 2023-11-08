@@ -41,11 +41,7 @@ export const DatabaseParametersSchema = z
 export type DatabaseParameters = z.infer<typeof DatabaseParametersSchema>;
 
 export const defaultDatabaseParameters: DatabaseParameters = {
-  table: "people",
-  columns: {
-    active: "Active",
-    name: "Name",
-    years_active: "Years Active",
-  },
-  filter: [defaultSQLFilter],
+  table: "hobbys",
+  columns: {},
+  filter: [],
 };
