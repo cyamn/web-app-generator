@@ -90,6 +90,7 @@ describe("deserialize function", () => {
       ...page,
       variables,
     };
+    // @ts-ignore
     const result = deserialize(pageWithVariables);
     expect(result.page.variables).toEqual({
       var1: "value1",
@@ -105,6 +106,7 @@ describe("deserialize function", () => {
       variables,
     };
     expect(() => {
+      // @ts-ignore
       deserialize(pageWithVariables);
     }).toThrow(new InternalError("Failed to parse page variables"));
   });

@@ -29,7 +29,9 @@ describe("add page function", () => {
     ).rejects.toThrowError(new NotFoundError("Project"));
   });
   it("should add a page if project exists", async () => {
+    // @ts-ignore
     prisma.project.findFirst.mockResolvedValue({ id: "someID" });
+    // @ts-ignore
     prisma.page.create.mockResolvedValue({ id: "someID" });
     const result = await addPage("owner", "someID", "somePage");
     expect(prisma.page.create).toBeCalledTimes(1);

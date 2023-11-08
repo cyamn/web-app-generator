@@ -53,12 +53,14 @@ const createDummyRole = function (name: string, admin: boolean) {
 
 describe("import project from json function", () => {
   it("creates an new project if no project id provided", async () => {
+    // @ts-ignore
     addProject.mockResolvedValue("someID");
     await importProjectFromJSON("owner", project, undefined);
     expect(addProject).toBeCalledTimes(1);
     expect(prisma.project.update).toBeCalledTimes(0);
   });
   it("throws error if new project could not be created", async () => {
+    // @ts-ignore
     addProject.mockResolvedValue(undefined);
     await expect(
       (async () => {
@@ -84,6 +86,7 @@ describe("import project from json function", () => {
   });
 
   it("adds all non admin roles", async () => {
+    // @ts-ignore
     addRole.mockResolvedValue("someRoleID");
     const projectWithRoles = {
       ...project,
@@ -98,6 +101,7 @@ describe("import project from json function", () => {
     expect(addRole).toBeCalledTimes(3);
   });
   it("throws error if role could not be created", async () => {
+    // @ts-ignore
     addRole.mockResolvedValue(undefined);
     const projectWithRoles = {
       ...project,
@@ -110,7 +114,9 @@ describe("import project from json function", () => {
     ).rejects.toThrowError(new InternalError("Failed to create role"));
   });
   it("adds all users to their role", async () => {
+    // @ts-ignore
     addRole.mockResolvedValue("someRoleID");
+    // @ts-ignore
     prisma.user.findUnique.mockResolvedValue({ id: "someUserID" });
     const projectWithRoles = {
       ...project,
@@ -149,6 +155,7 @@ describe("import project from json function", () => {
     });
   });
   it("adds all new tables", async () => {
+    // @ts-ignore
     addTable.mockResolvedValue("someTableID");
     const projectWithTables = {
       ...project,
@@ -165,12 +172,14 @@ describe("import project from json function", () => {
         },
       ],
     };
+    // @ts-ignore
     await importProjectFromJSON("owner", projectWithTables, "someID");
     expect(addTable).toBeCalledTimes(2);
     expect(addTable).toBeCalledWith("owner", "someID", "table1");
     expect(addTable).toBeCalledWith("owner", "someID", "table2");
   });
   it("throws error if table could not be created", async () => {
+    // @ts-ignore
     addTable.mockResolvedValue(undefined);
     const projectWithTables = {
       ...project,
@@ -184,12 +193,14 @@ describe("import project from json function", () => {
     };
     await expect(
       (async () => {
+        // @ts-ignore
         await importProjectFromJSON("owner", projectWithTables, "someID");
       })()
     ).rejects.toThrowError(new InternalError("Failed to create table"));
   });
 
   it("updates all tables with their columns and data", async () => {
+    // @ts-ignore
     addTable.mockResolvedValue("someTableID");
     const projectWithTables = {
       ...project,
@@ -213,6 +224,7 @@ describe("import project from json function", () => {
         },
       ],
     };
+    // @ts-ignore
     await importProjectFromJSON("owner", projectWithTables, "someID");
     expect(updateTable).toBeCalledTimes(1);
     expect(updateTable).toBeCalledWith(
