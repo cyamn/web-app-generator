@@ -1,0 +1,19 @@
+.dots {
+  background-image: radial-gradient(#64748b 1px, transparent 0);
+  background-size: 40px 40px;
+  background-position: -19px -19px;
+}
+
+/* smoothly animate background */
+.dots {
+  animation: dots 4s linear infinite;
+}
+
+@keyframes dots {
+  0% {
+    translate: -40px 0px;
+  }
+  100% {
+    translate: 0px 40px;
+  }
+}

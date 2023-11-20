@@ -1,3 +1,5 @@
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 
@@ -10,13 +12,14 @@ export const Auth: React.FC = async () => {
 
   return (
     <div className="flex flex-row items-center justify-center gap-4">
-      <SignInOut session={session} />
+      {!session && <SignInOut session={session} />}
       {session && (
         <Link
-          className="rounded-full bg-slate-900/10 px-10 py-3 font-semibold text-slate-700 no-underline transition hover:bg-slate-900/20"
+          className="z-0 w-64 cursor-pointer rounded-md bg-blue-500 p-2 text-center text-lg font-semibold text-white no-underline shadow-[0_25px_40px_-10px_rgba(59,130,246,0.7)]  transition hover:bg-blue-400"
           href="/projects"
         >
-          Go to projects
+          Digitalize
+          <FontAwesomeIcon icon={faArrowRight} />
         </Link>
       )}
     </div>
