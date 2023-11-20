@@ -41,6 +41,7 @@ export const Forms: React.FC<FormProperties> = ({
 
   const dash = DashboardFactory(dashboard, {
     projectId: project,
+    recurse: 0,
   });
 
   return (

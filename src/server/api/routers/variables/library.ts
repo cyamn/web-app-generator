@@ -10,12 +10,13 @@ export function makeParser(projectId: string) {
     functions: {
       GET_DATA: getTableData(projectId),
       COUNT_ROWS: countRows(projectId),
-      //...
+      IN_ROLE: inRole(projectId),
     },
   });
 }
 
 import { getTable } from "../table/get";
+import { inRole } from "./functions/in-role";
 
 const getTableData =
   (projectId: string) =>

@@ -100,7 +100,7 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
 
   return (
     <div className="flex h-full flex-row">
-      <div className="h-full w-1/2 overflow-auto bg-green-500">
+      <div className="h-full w-1/2 overflow-auto">
         <Monaco
           page={page}
           trySetLocalPageFromString={trySetLocalPageFromString}

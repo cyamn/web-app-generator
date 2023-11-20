@@ -38,9 +38,9 @@ export const importJSONInputScheme = z.object({
 export async function importProjectFromJSON(
   userID: string,
   project: z.infer<typeof importJSONInputScheme>["project"],
-  projectID = ""
+  projectID?: string
 ): Promise<string> {
-  if (projectID === null) {
+  if (projectID === undefined) {
     projectID = await addProject(project.name, userID);
     if (projectID === undefined) {
       throw new InternalError("Failed to create project");

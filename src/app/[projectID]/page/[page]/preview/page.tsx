@@ -27,7 +27,11 @@ const Page = async ({ params }: PageProperties) => {
         mode={PageMode.Preview}
         base={`/${project.id}/page/${params.page}`}
       />
-      <PageRenderer page={pageWithMeta.page} project={project.id} />
+      <div className="h-full overflow-y-auto">
+        <div className="m-8">
+          <PageRenderer page={pageWithMeta.page} project={project.id} />
+        </div>
+      </div>
     </>
   );
 };

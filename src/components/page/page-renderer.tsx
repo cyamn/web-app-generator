@@ -10,12 +10,14 @@ import { hydratePage } from "@/utils/hydrate-page";
 
 type PageRendererProperties = {
   page: Page;
-  project: string;
+  project?: string;
+  recurse?: number;
 };
 
 export const PageRenderer: React.FC<PageRendererProperties> = ({
   page,
   project,
+  recurse = 0,
 }) => {
   const [localPage, setLocalPage] = useState<Page>(page);
   const [hydrated, setHydrated] = useState(false);
@@ -42,16 +44,21 @@ export const PageRenderer: React.FC<PageRendererProperties> = ({
     setHydrated(false);
   }, [page]);
 
+  if (recurse > 10) {
+    return <></>;
+  }
+
   if (!hydrated && !isLoading && !isError) {
     setHydrated(true);
     setLocalPage(hydratePage(page, data));
   }
 
   return (
-    <div className="flex h-full flex-col overflow-auto p-8 font-sans leading-normal tracking-normal">
+    <div className="flex h-full flex-col overflow-auto font-sans leading-normal tracking-normal">
       {localPage.dashboards.map((dashboard, id) => {
         const dash = DashboardFactory(dashboard, {
-          projectId: project,
+          projectId: project ?? "",
+          recurse: recurse + 1,
         });
         return (
           <div key={id} className="py-2">

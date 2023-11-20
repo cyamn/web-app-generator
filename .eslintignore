@@ -1,1 +1,3 @@
 folder-lint.cjs
+**/*.test.*
+/src/server/api/routers/variables/functions/

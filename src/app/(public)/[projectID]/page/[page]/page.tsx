@@ -35,7 +35,7 @@ const Page = async ({ params }: PageProperties) => {
           user={session?.user}
         />
       </div>
-      <div className="h-full overflow-y-auto">
+      <div className="h-full overflow-y-auto p-8">
         <PageRenderer page={pageWithMeta.page} project={params.projectID} />
       </div>
     </div>

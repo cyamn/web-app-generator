@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import React from "react";
 
+import { DottedBackground } from "@/components/dotted-background";
 import { Header } from "@/components/header";
 import { Navbar } from "@/components/navbar";
 import { AuthRequiredError } from "@/lib/exceptions";
@@ -19,8 +20,9 @@ const Projects = async () => {
 
   return (
     <div className="flex h-screen flex-col">
+      <DottedBackground />
       <Header item={<Navbar />} user={session?.user} />
-      <div className="h-full overflow-auto bg-slate-100 px-12">
+      <div className="h-full overflow-auto px-12">
         <h1 className="py-8 text-center text-5xl font-bold tracking-tight text-slate-700">
           Your Projects
         </h1>

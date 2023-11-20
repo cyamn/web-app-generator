@@ -32,7 +32,7 @@ export async function addProject(
   return project.id;
 }
 
-async function seedProject(projectId: string, ownerId: string) {
+export async function seedProject(projectId: string, ownerId: string) {
   await createTable(projectId);
   const adminRole = await addRole("admin", projectId, true);
   await addUserToRole(ownerId, adminRole);

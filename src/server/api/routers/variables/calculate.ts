@@ -2,6 +2,7 @@ import { User } from "next-auth";
 
 import { Page } from "@/data/page";
 import { Variables } from "@/data/page/variables";
+import { defaultProject } from "@/data/project";
 
 import { getProject } from "../project/get";
 import { getRolesOfUserInProject } from "../roles/get";
@@ -14,9 +15,15 @@ type Project = {
   description: string | null;
 };
 
+const fallbackProject: Project = {
+  ...defaultProject,
+  createdAt: new Date(),
+  description: "example",
+};
+
 export async function getInternalVariables(
-  project: Project,
   page: Page,
+  project?: Project,
   user?: User
 ): Promise<object> {
   let internalVariables: object = {
@@ -39,7 +46,7 @@ export async function getInternalVariables(
       ...internalVariables,
       user: {
         ...user,
-        roles: await getRolesOfUserInProject(user.id, project.id),
+        roles: await getRolesOfUserInProject(user.id, project!.id ?? ""),
       },
     };
   return internalVariables;
@@ -47,15 +54,16 @@ export async function getInternalVariables(
 
 export async function calculateVariables(
   variables: Variables,
-  projectId: string,
   page: Page,
+  projectId?: string,
   user?: User
 ): Promise<Variables> {
-  const project = await getProject(projectId);
-  const internalVariables = await getInternalVariables(project, page, user);
+  let project = fallbackProject;
+  if (projectId !== undefined) project = await getProject(projectId);
+  const internalVariables = await getInternalVariables(page, project, user);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const parser = makeParser(projectId);
+  const parser = makeParser(project.id);
   const calculated = await calculate(
     { ...internalVariables, ...variables },
     parser

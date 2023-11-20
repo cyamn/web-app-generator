@@ -5,7 +5,8 @@
   "scripts": {
     "build": "next build",
     "db:build": "cd database && npm run build && cd ..",
-    "db:start": "cd database && npm run start && cd ..",
+    "db:init": "prisma db push",
+    "db:start": "cd database && npm run start && cd .. && sleep 5 && npm run db:init",
     "db": "npm run db:build && npm run db:start",
     "dev": "concurrently --kill-others-on-fail  -p \"{name} {time}|\" -t \"HH:mm:ss\" --names \"DATA,APP\" -c \"yellow,blue\" \"npm run db\" \"next dev\"",
     "start": "next start",
@@ -17,7 +18,7 @@
     "postinstall": "prisma generate",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "copy-env": "cp .env.example .env",
+    "copy-env": "cp -u .env.example .env",
     "bootstrap": "npm run copy-env && npm install && next build && concurrently --kill-others-on-fail  -p \"{name} {time}|\" -t \"HH:mm:ss\" --names \"DATA,APP\" -c \"yellow,blue\" \"npm run db\" \"next start\""
   },
   "dependencies": {
@@ -112,5 +113,9 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.13.2"
+  },
+  "engines": {
+    "npm": ">=8.0.0 <11.0.0",
+    "node": ">=16.0.0 <19.0.0"
   }
 }

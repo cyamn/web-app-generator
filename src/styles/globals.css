@@ -29,3 +29,19 @@ h5 {
 h6 {
   @apply text-lg;
 }
+
+.err {
+  background-image: linear-gradient(
+      45deg,
+      transparent 65%,
+      red 80%,
+      transparent 90%
+    ),
+    linear-gradient(135deg, transparent 5%, red 15%, transparent 25%),
+    linear-gradient(135deg, transparent 45%, red 55%, transparent 65%),
+    linear-gradient(45deg, transparent 25%, red 35%, transparent 50%);
+  background-repeat: repeat-x;
+  background-size: 8px 2px;
+  background-position: 0 95%;
+  line-height: 1.25em;
+}

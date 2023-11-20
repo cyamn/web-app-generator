@@ -8,8 +8,9 @@ import { Column } from "@/data/table/column";
 import { api } from "@/utils/api";
 
 import { DatabaseParameters, Operators } from "../shemes/data";
+import { TableSelection } from "./table-selection";
 
-type DataProperties = {
+export type DataProperties = {
   project: string;
   data: DatabaseParameters;
   onSetData: (data: DatabaseParameters) => void;
@@ -26,48 +27,6 @@ export const ParameterDataForm: React.FC<DataProperties> = ({
       <TableSelection project={project} data={data} onSetData={onSetData} />
       <ColumnSelection project={project} data={data} onSetData={onSetData} />
       <FilterSelection project={project} data={data} onSetData={onSetData} />
-    </>
-  );
-};
-
-const TableSelection: React.FC<DataProperties> = ({
-  project,
-  data,
-  onSetData,
-}) => {
-  const {
-    data: tables,
-    error,
-    isError,
-    isLoading,
-  } = api.tables.list.useQuery({ project });
-  if (isError) return <div>{error.message}</div>;
-  if (isLoading || tables === undefined) return <div>Loading...</div>;
-  return (
-    <>
-      <label
-        htmlFor="table"
-        className="mb-2 block text-sm font-medium text-gray-900 "
-      >
-        Select table
-      </label>
-      <select
-        id="table"
-        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-        value={data.table}
-        onChange={(event) => {
-          onSetData({
-            ...data,
-            table: event.target.value,
-          });
-        }}
-      >
-        {tables.map((table) => (
-          <option key={table.id} value={table.name}>
-            {table.name}
-          </option>
-        ))}
-      </select>
     </>
   );
 };

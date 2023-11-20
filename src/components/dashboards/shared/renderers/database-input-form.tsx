@@ -82,7 +82,7 @@ export const DatabaseInputFormRender: React.FC<{
     isLoading,
   } = api.tables.get.useQuery({
     project: project,
-    tableName,
+    tableName: tableName ?? "",
     columns: Object.keys(parameters.data.columns ?? {}),
   });
 
