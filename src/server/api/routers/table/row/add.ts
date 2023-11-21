@@ -10,7 +10,7 @@ import { Table } from "../get";
 
 export async function createRows(
   rowSchema: Row[],
-  tableId: string
+  tableId: string,
 ): Promise<string[]> {
   const rowIDs = rowSchema.map(() => cuid());
   await prisma.row.createMany({

@@ -14,7 +14,7 @@ async function getCaller(needsAuth = true) {
 export async function getServerSidePage(
   project: string,
   page: string,
-  needsAuth = true
+  needsAuth = true,
 ) {
   const c = await getCaller(needsAuth);
   return c.pages.get({
@@ -37,7 +37,7 @@ export async function getServerSidePageList(project: string, needsAuth = true) {
 
 export async function getServerSideTableList(
   project: string,
-  needsAuth = true
+  needsAuth = true,
 ) {
   const c = await getCaller(needsAuth);
   return c.tables.list({ project });
@@ -45,7 +45,7 @@ export async function getServerSideTableList(
 
 export async function getServerSideProjectAdmins(
   project: string,
-  needsAuth = true
+  needsAuth = true,
 ) {
   const c = await getCaller(needsAuth);
   return c.roles.getUsers({ project, isAdmin: true });

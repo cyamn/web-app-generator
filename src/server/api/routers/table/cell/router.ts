@@ -20,7 +20,7 @@ export const cellRouter = createTRPCRouter({
         column: z.string(),
         row: z.string(),
         value: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -40,7 +40,7 @@ export const cellRouter = createTRPCRouter({
       z.object({
         cellID: z.string(),
         value: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {

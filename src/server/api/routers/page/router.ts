@@ -26,20 +26,20 @@ export const pageRouter = createTRPCRouter({
       z.object({
         project: z.string(),
         page: z.string(),
-      })
+      }),
     )
     .output(
       z.object({
         page: PageSchema,
         variables: VariablesSchema,
         updatedAt: z.date(),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       return await getPage(
         input.project,
         input.page,
-        ctx.session?.user.id ?? ""
+        ctx.session?.user.id ?? "",
       );
     }),
 
@@ -72,7 +72,7 @@ export const pageRouter = createTRPCRouter({
         project: z.string(),
         page: PageSchema,
         path: z.string().optional(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ ctx, input }) => {
@@ -80,7 +80,7 @@ export const pageRouter = createTRPCRouter({
         ctx.session.user.id,
         input.project,
         input.page,
-        input.path
+        input.path,
       );
     }),
 
@@ -143,14 +143,14 @@ export const pageRouter = createTRPCRouter({
         project: z.string(),
         pagePath: z.string(),
         public: z.boolean(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
       return await setPageVisibility(
         input.project,
         input.pagePath,
-        input.public
+        input.public,
       );
     }),
 
@@ -167,7 +167,7 @@ export const pageRouter = createTRPCRouter({
       z.object({
         project: z.string(),
         page: z.string(),
-      })
+      }),
     )
     .output(
       z.array(
@@ -181,10 +181,10 @@ export const pageRouter = createTRPCRouter({
               id: z.string(),
               name: z.string().nullable(),
               image: z.string().nullable(),
-            })
+            }),
           ),
-        })
-      )
+        }),
+      ),
     )
     .query(async ({ input }) => {
       return await getRoleAccess(input.project, input.page);
@@ -205,7 +205,7 @@ export const pageRouter = createTRPCRouter({
         page: z.string(),
         role: z.string(),
         access: z.boolean(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -213,7 +213,7 @@ export const pageRouter = createTRPCRouter({
         input.project,
         input.page,
         input.role,
-        input.access
+        input.access,
       );
     }),
 });

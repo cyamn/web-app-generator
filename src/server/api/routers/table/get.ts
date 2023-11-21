@@ -4,7 +4,7 @@ import { prisma } from "@/server/database";
 export async function getTable(
   name: string,
   project: string,
-  columns?: string[]
+  columns?: string[],
 ): Promise<Table | null> {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -13,7 +13,7 @@ export async function getTable(
 
 export async function getAll(
   project: string,
-  columns?: string[]
+  columns?: string[],
 ): Promise<Table[]> {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore

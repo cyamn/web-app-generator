@@ -11,7 +11,7 @@ import { createRows } from "./row/add";
 export async function addTable(
   userID: string,
   projectID: string,
-  tableName: string
+  tableName: string,
 ) {
   const project = await prisma.project.findFirst({
     where: {
@@ -32,7 +32,7 @@ export async function addTable(
 
 export async function createTable(
   projectID: string,
-  tableSchema: Table = defaultTable
+  tableSchema: Table = defaultTable,
 ): Promise<string> {
   const table = await prisma.table.create({
     data: {

@@ -1,5 +1,5 @@
 export const handleImport = async (
-  acceptedExtensions?: string[]
+  acceptedExtensions?: string[],
 ): Promise<string[]> => {
   const fileSelector = createFileSelector(acceptedExtensions);
   fileSelector.click();

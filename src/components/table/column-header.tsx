@@ -29,20 +29,20 @@ export const ColumnHeader: React.FC<ColumnHeaderProperties> = ({
 }) => {
   const [savedValue, setSavedValue] = React.useState(value_);
   const [value, setValue] = React.useState(value_);
-  const [type, setType] = React.useState<string>(column.type);
+  const [, setType] = React.useState<string>(column.type);
 
-  const context = api.useContext();
+  const utils = api.useUtils();
 
   const { mutate: update } = api.tables.column.update.useMutation({
     onSuccess: () => {
-      void context.tables.get.invalidate({ project, tableName: table });
+      void utils.tables.get.invalidate({ project, tableName: table });
       toast.success("Column updated");
     },
   });
 
   const { mutate: deleteColumn } = api.tables.column.delete.useMutation({
     onSuccess: () => {
-      void context.tables.get.invalidate({ project, tableName: table });
+      void utils.tables.get.invalidate({ project, tableName: table });
       toast.success("Column deleted");
     },
   });

@@ -1,6 +1,6 @@
 export const firstNCharsUpperCase = (
   inputString: string,
-  n: number
+  n: number,
 ): string => {
   if (n >= 1 && inputString.length >= n) {
     const firstNChars = inputString.slice(0, Math.max(0, n)).toUpperCase();

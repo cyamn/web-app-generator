@@ -2,7 +2,7 @@ import { prisma } from "@/server/database";
 
 export async function updateCell(
   cellID: string,
-  value: string
+  value: string,
 ): Promise<string> {
   const updated = await prisma.cell.update({
     where: {

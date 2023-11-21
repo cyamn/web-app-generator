@@ -21,7 +21,7 @@ export const columnRouter = createTRPCRouter({
         tableID: z.string(),
         key: z.string(),
         type: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -41,7 +41,7 @@ export const columnRouter = createTRPCRouter({
         columnID: z.string(),
         key: z.string(),
         type: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -60,7 +60,7 @@ export const columnRouter = createTRPCRouter({
     .input(
       z.object({
         columnID: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {

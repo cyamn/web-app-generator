@@ -15,11 +15,11 @@ export const AppSettings: FC<AppSettingsProperties> = ({ projectID }) => {
     error,
   } = api.projects.get.useQuery({ id: projectID });
 
-  const context = api.useContext();
+  const utils = api.useUtils();
 
   const { mutate } = api.projects.update.useMutation({
     onSuccess: () => {
-      void context.projects.get.invalidate({ id: projectID });
+      void utils.projects.get.invalidate({ id: projectID });
     },
   });
 
@@ -73,7 +73,7 @@ export const AppSettings: FC<AppSettingsProperties> = ({ projectID }) => {
               onClick={() => {
                 const description = prompt(
                   "New description",
-                  project.description
+                  project.description,
                 );
                 if (description === null) return;
                 mutate({

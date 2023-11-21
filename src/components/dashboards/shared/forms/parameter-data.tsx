@@ -50,7 +50,7 @@ const ColumnSelection: React.FC<DataProperties> = ({
   if (isLoading || table === undefined) return <div>Loading...</div>;
 
   function setColumn(
-    column: Column
+    column: Column,
   ): React.ChangeEventHandler<HTMLInputElement> | undefined {
     return (event) => {
       const newColumns = { ...data.columns };
@@ -68,7 +68,7 @@ const ColumnSelection: React.FC<DataProperties> = ({
   }
 
   function changeColumnName(
-    column: Column
+    column: Column,
   ): React.ChangeEventHandler<HTMLInputElement> | undefined {
     return (event) => {
       const newColumns = { ...data.columns };
@@ -170,7 +170,7 @@ const FilterSelection: React.FC<DataProperties> = ({
                       filter: filters.map((f, index_) =>
                         index_ === index
                           ? { ...f, column: event.target.value }
-                          : f
+                          : f,
                       ),
                     });
                   }}
@@ -191,7 +191,7 @@ const FilterSelection: React.FC<DataProperties> = ({
                       filter: filters.map((f, index_) =>
                         index_ === index
                           ? { ...f, operator: event.target.value }
-                          : f
+                          : f,
                       ),
                     });
                   }}
@@ -214,7 +214,7 @@ const FilterSelection: React.FC<DataProperties> = ({
                       filter: filters.map((f, index_) =>
                         index_ === index
                           ? { ...f, value: event.target.value }
-                          : f
+                          : f,
                       ),
                     });
                   }}

@@ -46,7 +46,7 @@ export const projectsRouter = createTRPCRouter({
         id: z.string(),
         createdAt: z.date(),
         description: z.string(),
-      })
+      }),
     )
     .query(async ({ input }) => {
       return await getProject(input.id);
@@ -70,7 +70,7 @@ export const projectsRouter = createTRPCRouter({
             description: z.string().optional(),
           })
           .nonstrict(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ ctx, input }) => {
@@ -115,8 +115,8 @@ export const projectsRouter = createTRPCRouter({
           id: z.string(),
           updatedAt: z.date(),
           description: z.string(),
-        })
-      )
+        }),
+      ),
     )
     .query(async ({ ctx }) => {
       return await listProjects(ctx.session.user.id);
@@ -142,16 +142,16 @@ export const projectsRouter = createTRPCRouter({
             name: z.string(),
             users: z.array(z.string()),
             isAdmin: z.boolean(),
-          })
+          }),
         ),
         tables: z.array(
           z.object({
             name: z.string(),
             columns: z.record(z.string(), z.string()),
             data: z.array(z.array(z.string())),
-          })
+          }),
         ),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       const project = await getProject(input.id);
@@ -181,7 +181,7 @@ export const projectsRouter = createTRPCRouter({
             name: table.name,
             columns: cols,
             data: deserialize(table).cells.map((row) =>
-              row.map((cell) => cell.value)
+              row.map((cell) => cell.value),
             ),
           };
         }),
@@ -202,7 +202,7 @@ export const projectsRouter = createTRPCRouter({
       return await importProjectFromJSON(
         ctx.session.user.id,
         input.project,
-        input.projectID
+        input.projectID,
       );
     }),
 });

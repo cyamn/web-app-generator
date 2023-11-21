@@ -39,7 +39,7 @@ export const tablesRouter = createTRPCRouter({
       const table = await getTable(
         input.tableName,
         input.project,
-        input.columns
+        input.columns,
       );
       if (!table) throw new NotFoundError("table");
       const deserialized = deserialize(table);
@@ -61,7 +61,7 @@ export const tablesRouter = createTRPCRouter({
       return await addTable(
         ctx.session.user.id,
         input.project,
-        input.tableName
+        input.tableName,
       );
     }),
 
@@ -81,16 +81,16 @@ export const tablesRouter = createTRPCRouter({
         newName: z.string(),
         columns: z.record(z.string()),
         data: z.array(z.array(z.string())),
-      })
+      }),
     )
     .output(z.string())
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       return await updateTable(
         input.project,
         input.tableName,
         input.columns,
         input.data,
-        input.newName
+        input.newName,
       );
     }),
 

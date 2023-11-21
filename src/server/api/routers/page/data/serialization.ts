@@ -42,7 +42,7 @@ export function deserialize(page_: SerializedPage): {
 }
 
 function parseVariables(
-  unknownVariables: unknown
+  unknownVariables: unknown,
 ): z.infer<typeof VariablesSchema> {
   const stringVariables = unknownVariables as string;
   if (stringVariables === "{}") return {};

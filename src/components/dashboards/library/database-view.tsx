@@ -43,7 +43,7 @@ export default class DatabaseViewDashboard extends DashboardBase<Parameters> {
     };
     const updateFormatData = (
       data: Parameters["data"],
-      format: Parameters["format"]
+      format: Parameters["format"],
     ) => {
       updateFunction({
         ...this.getParameters(),

@@ -2,7 +2,7 @@ import { UpdateFunction } from "../../definitions/types";
 
 export function autoGenerateController<T>(
   parameters: T,
-  updateFunction: UpdateFunction<T>
+  updateFunction: UpdateFunction<T>,
 ) {
   if (typeof parameters === "string" || parameters === null) {
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {

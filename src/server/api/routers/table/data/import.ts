@@ -9,7 +9,7 @@ export async function importCSV(
   project: string,
   csv: string,
   name: string,
-  tableName?: string
+  tableName?: string,
 ) {
   let id;
   try {
@@ -33,7 +33,7 @@ export async function importCSV(
 async function reCreateTable(
   table: string | undefined,
   name: string,
-  project: string
+  project: string,
 ) {
   if (table !== undefined) {
     await prisma.table.delete({
@@ -83,7 +83,7 @@ async function importCSVIntoExisting(
   csv: string,
   name: string,
   project: string,
-  table?: string
+  table?: string,
 ) {
   const newTable = await reCreateTable(table, name, project);
   const rows = csv.split("\n");
@@ -103,7 +103,7 @@ async function importCSVIntoExisting(
 async function createRow(
   tableID: string,
   columnIds: string[],
-  rowString: string
+  rowString: string,
 ) {
   const row = rowString.split(",");
   const rowId = cuid();

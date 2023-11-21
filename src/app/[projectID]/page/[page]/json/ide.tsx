@@ -36,7 +36,7 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
   const [oldPath, setOldPath] = useState<string>(page.path);
 
   function addCliLog(log: string, type: string): void {
-    const last = cliLog[cliLog.length - 1];
+    const last = cliLog.at(-1);
     if (last?.message === log) {
       setCliLog((previous: LogMessage[]) => {
         const amount = last.amount === undefined ? 1 : last.amount + 1;
@@ -90,7 +90,7 @@ export const IDE: React.FC<IDEProperties> = ({ page, project }) => {
       return;
     }
     mutate({ project, page: localPage, path: oldPath });
-    // set page to formated page
+    // set page to formatted page
     addCliLog("page saved successfully", "success");
   }
 

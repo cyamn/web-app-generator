@@ -3,7 +3,7 @@ import { prisma } from "@/server/database";
 export async function updateColumn(
   columnID: string,
   key: string,
-  type: string
+  type: string,
 ): Promise<string> {
   const updated = await prisma.column.update({
     where: {

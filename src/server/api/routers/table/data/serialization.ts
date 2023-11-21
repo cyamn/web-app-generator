@@ -26,7 +26,7 @@ export function deserializeCSV(table: SerializedTable): string {
 }
 
 export function deserializeColumns(
-  table: SerializedTable
+  table: SerializedTable,
 ): DeserializedTable["columns"] {
   return table.columns.map((column) => {
     const col = ColumnSchema.safeParse({
@@ -44,7 +44,7 @@ export function deserializeColumns(
 // TODO: this is a mess
 function deserializeCells(
   table: SerializedTable,
-  columns: DeserializedTable["columns"]
+  columns: DeserializedTable["columns"],
 ): DeserializedTable["cells"] {
   return table.rows.map((row) => {
     const rowCells = gatherRowCells(row, columns);
@@ -66,10 +66,9 @@ function deserializeCells(
 
 function gatherRowCells(
   row: SerializedTable["rows"][0],
-  columns: DeserializedTable["columns"]
+  columns: DeserializedTable["columns"],
 ) {
-  const rowCells = row.cells.map((cell, index) => {
-    const colID = columns[index % columns.length]?.id ?? "";
+  const rowCells = row.cells.map((cell) => {
     return {
       id: cell.id,
       value: cell.value,

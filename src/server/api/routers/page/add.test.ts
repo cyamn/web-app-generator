@@ -25,7 +25,7 @@ describe("add page function", () => {
     await expect(
       (async () => {
         await addPage("owner", "someID", "somePage");
-      })()
+      })(),
     ).rejects.toThrowError(new NotFoundError("Project"));
   });
   it("should add a page if project exists", async () => {

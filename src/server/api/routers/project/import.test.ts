@@ -65,7 +65,7 @@ describe("import project from json function", () => {
     await expect(
       (async () => {
         await importProjectFromJSON("owner", project, undefined);
-      })()
+      })(),
     ).rejects.toThrowError(new InternalError("Failed to create project"));
   });
   it("updates existing project if id provided", async () => {
@@ -110,7 +110,7 @@ describe("import project from json function", () => {
     await expect(
       (async () => {
         await importProjectFromJSON("owner", projectWithRoles, "someID");
-      })()
+      })(),
     ).rejects.toThrowError(new InternalError("Failed to create role"));
   });
   it("adds all users to their role", async () => {
@@ -195,7 +195,7 @@ describe("import project from json function", () => {
       (async () => {
         // @ts-ignore
         await importProjectFromJSON("owner", projectWithTables, "someID");
-      })()
+      })(),
     ).rejects.toThrowError(new InternalError("Failed to create table"));
   });
 
@@ -237,7 +237,7 @@ describe("import project from json function", () => {
       [
         ["value1", 1],
         ["value2", 2],
-      ]
+      ],
     );
   });
 });

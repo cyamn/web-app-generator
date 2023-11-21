@@ -35,7 +35,7 @@ describe("get internal variables function", () => {
   it("should show user as guest if undefined", async () => {
     const internal = (await getInternalVariables(
       defaultPage,
-      defaultProject
+      defaultProject,
     )) as { user: object };
     expect(internal.user).toEqual({
       id: "undefined",
@@ -52,7 +52,7 @@ describe("calculate variables function", () => {
     const calculated = await calculateVariables(
       { a: "A", b: "B", c: "C" },
       defaultPage,
-      "example"
+      "example",
     );
     expect(calculated.a).toBe("A");
     expect(calculated.b).toBe("B");
@@ -62,7 +62,7 @@ describe("calculate variables function", () => {
     const calculated = await calculateVariables(
       { sum: "=SUM(1,2)" },
       defaultPage,
-      "example"
+      "example",
     );
     expect(calculated.sum).toBe(3);
   });
@@ -70,7 +70,7 @@ describe("calculate variables function", () => {
     const calculated = await calculateVariables(
       { product: "=MMULT(2,3)" },
       defaultPage,
-      "example"
+      "example",
     );
     expect(calculated.product).toBe(6);
   });
@@ -83,7 +83,7 @@ describe("calculate variables function", () => {
     const calculated = await calculateVariables(
       { rowsOfTable: '=COUNT_ROWS("Table")' },
       defaultPage,
-      "example"
+      "example",
     );
     expect(calculated.rowsOfTable).toBe(1);
   });
@@ -91,7 +91,7 @@ describe("calculate variables function", () => {
     const calculated = await calculateVariables(
       { rowsOfTable: '=COUNT_ROWS("Not existend")' },
       defaultPage,
-      "example"
+      "example",
     );
     expect(calculated.rowsOfTable).toBe("#TABLE NOT FOUND!");
   });
@@ -104,7 +104,7 @@ describe("calculate variables function", () => {
     const calculated = await calculateVariables(
       { data: '=GET_DATA("Table", "Name", 0)' },
       defaultPage,
-      "example"
+      "example",
     );
     expect(calculated.data).toBe("John");
   });

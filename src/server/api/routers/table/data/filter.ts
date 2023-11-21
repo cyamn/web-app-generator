@@ -8,7 +8,7 @@ import { Table as DeserializedTable } from "../schema";
 
 export function filter(
   table: DeserializedTable,
-  filter: TableFilter[]
+  filter: TableFilter[],
 ): DeserializedTable {
   let filteredTable = table;
   filter.map((filter) => {
@@ -53,7 +53,7 @@ export function checkFilters(row: Row, filters: TableFilter[]): boolean {
 export function evaluateFilter(
   cellValue: string | number | boolean | Date,
   filterValue: string | number | boolean | object,
-  operator: string
+  operator: string,
 ): boolean {
   switch (operator) {
     case "eq": {

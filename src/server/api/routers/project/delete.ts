@@ -5,7 +5,7 @@ import { NotFoundError } from "../shared/errors";
 
 export async function deleteProject(
   projectID: string,
-  userID: string
+  userID: string,
 ): Promise<string> {
   const project = await prisma.project.deleteMany({
     where: {

@@ -10,19 +10,19 @@ export function internalToName(url: string): string {
   // replace leading _ with _
   name = name.replace(/^_/, "");
   // replace double _ with _
-  name = name.replace(/_+/g, "_");
+  name = name.replaceAll(/_+/g, "_");
   // replace special characters with _
-  name = name.replace(/_/g, " ");
+  name = name.replaceAll("_", " ");
   // replace dot with .
-  name = name.replace(/dot/g, ".");
+  name = name.replaceAll("dot", ".");
   // replace ss with ß
-  name = name.replace(/ss/g, "ß");
+  name = name.replaceAll("ss", "ß");
   // replace ue with ü
-  name = name.replace(/ue/g, "ü");
-  name = name.replace(/oe/g, "ö");
-  name = name.replace(/ae/g, "ä");
+  name = name.replaceAll("ue", "ü");
+  name = name.replaceAll("oe", "ö");
+  name = name.replaceAll("ae", "ä");
   // replace _ with space
-  name = name.replace(/_/g, " ");
+  name = name.replaceAll("_", " ");
   // capitalize first letter
   name = name.charAt(0).toUpperCase() + name.slice(1);
   return name;

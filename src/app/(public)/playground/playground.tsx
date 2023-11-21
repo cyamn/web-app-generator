@@ -64,7 +64,7 @@ export const Playground = () => {
   }
 
   function addCliLog(log: string, type: string): void {
-    const last = cliLog[cliLog.length - 1];
+    const last = cliLog.at(-1);
     if (last?.message === log) {
       setCliLog((previous: LogMessage[]) => {
         const amount = last.amount === undefined ? 1 : last.amount + 1;

@@ -7,10 +7,7 @@ type NavbarProperties = {
   pagePath?: string;
 };
 
-export const Navbar: React.FC<NavbarProperties> = async ({
-  project,
-  pagePath = "",
-}) => {
+export const Navbar: React.FC<NavbarProperties> = async ({ project }) => {
   const pagesWithMeta = await getServerSidePageList(project, false);
 
   return (

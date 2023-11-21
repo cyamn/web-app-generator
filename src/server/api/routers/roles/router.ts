@@ -25,7 +25,7 @@ export const rolesRouter = createTRPCRouter({
       z.object({
         user: z.string(),
         project: z.string(),
-      })
+      }),
     )
     .output(z.array(z.string()))
     .query(async ({ input }) => {
@@ -45,7 +45,7 @@ export const rolesRouter = createTRPCRouter({
       z.object({
         role: z.string(),
         project: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -65,7 +65,7 @@ export const rolesRouter = createTRPCRouter({
       z.object({
         roleID: z.string(),
         roleName: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -84,7 +84,7 @@ export const rolesRouter = createTRPCRouter({
     .input(
       z.object({
         roleID: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -103,7 +103,7 @@ export const rolesRouter = createTRPCRouter({
     .input(
       z.object({
         project: z.string(),
-      })
+      }),
     )
     .output(
       z.array(
@@ -116,16 +116,16 @@ export const rolesRouter = createTRPCRouter({
               email: z.string().nullable(),
               name: z.string().nullable(),
               image: z.string().nullable(),
-            })
+            }),
           ),
           rules: z.array(
             z.object({
               id: z.string(),
               regex: z.string(),
-            })
+            }),
           ),
-        })
-      )
+        }),
+      ),
     )
     .query(async ({ input }) => {
       return await listRoles(input.project);
@@ -144,7 +144,7 @@ export const rolesRouter = createTRPCRouter({
       z.object({
         role: z.string(),
         email: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -165,7 +165,7 @@ export const rolesRouter = createTRPCRouter({
       z.object({
         role: z.string(),
         email: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -186,7 +186,7 @@ export const rolesRouter = createTRPCRouter({
       z.object({
         role: z.string(),
         user: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -206,7 +206,7 @@ export const rolesRouter = createTRPCRouter({
       z.object({
         role: z.string(),
         user: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -226,7 +226,7 @@ export const rolesRouter = createTRPCRouter({
       z.object({
         project: z.string(),
         isAdmin: z.boolean().optional(),
-      })
+      }),
     )
     .output(
       z.array(
@@ -235,8 +235,8 @@ export const rolesRouter = createTRPCRouter({
           email: z.string().nullable(),
           name: z.string().nullable(),
           image: z.string().nullable(),
-        })
-      )
+        }),
+      ),
     )
     .query(async ({ input }) => {
       return await getUsers(input.project, input.isAdmin);

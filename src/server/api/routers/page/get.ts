@@ -30,7 +30,7 @@ const pageSelector = {
 
 export async function getAllPages(
   userID: string,
-  projectID: string
+  projectID: string,
 ): Promise<
   {
     page: Page;
@@ -55,7 +55,7 @@ export async function getAllPages(
 export async function getPage(
   projectID: string,
   pagePath: string,
-  userID = ""
+  userID = "",
 ): Promise<{
   page: Page;
   updatedAt: Date;
@@ -101,7 +101,7 @@ export async function getPage(
 
 export async function getPublicPage(
   projectID: string,
-  pagePath: string
+  pagePath: string,
 ): Promise<{
   page: Page;
   updatedAt: Date;

@@ -9,6 +9,7 @@ import { authOptions } from "@/server/auth";
 
 import { Playground } from "./playground";
 
+// eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
 const defaultPage: Page = {
   path: "/",
   name: "Home",

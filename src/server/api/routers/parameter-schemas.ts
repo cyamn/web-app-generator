@@ -24,7 +24,7 @@ export const TableFilterSchema = z.array(
       tableFilterOperatorSchema,
       z.array(tableFilterOperatorSchema),
     ]),
-  })
+  }),
 );
 
 export type TableFilter = z.infer<typeof TableFilterSchema>[0];
@@ -42,7 +42,7 @@ export const projectTableColumnSchema = z.object({
 });
 
 export const idListSchema = z.array(
-  z.object({ id: z.string(), name: z.string() })
+  z.object({ id: z.string(), name: z.string() }),
 );
 
 export const CSVDataSchema = z.object({

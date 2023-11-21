@@ -189,10 +189,10 @@ export const AddDashboardCard: React.FC<AddDashboardCardProperties> = ({
 }) => {
   return (
     <>
-      {Object.entries(Dashboards).map(([type, dashboard]) => {
+      {Object.entries(Dashboards).map(([type]) => {
         const dash = DashboardFactory(
           { type },
-          { projectId: project, recurse: 0 }
+          { projectId: project, recurse: 0 },
         );
         return (
           <button

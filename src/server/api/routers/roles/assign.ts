@@ -4,7 +4,7 @@ import { NotFoundError } from "../shared/errors";
 
 export async function addUserToRole(
   userId: string,
-  roleId: string
+  roleId: string,
 ): Promise<string> {
   const updatedRole = await prisma.role.update({
     where: {
@@ -23,7 +23,7 @@ export async function addUserToRole(
 
 export async function removeUserFromRole(
   userId: string,
-  roleId: string
+  roleId: string,
 ): Promise<string> {
   const updatedRole = await prisma.role.update({
     where: {

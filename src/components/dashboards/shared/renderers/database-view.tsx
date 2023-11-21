@@ -58,11 +58,11 @@ function sortTableRows(
     name: string;
     cells: { value: string; id: string; row: string; col: string }[][];
   },
-  tableName: string
+  tableName: string,
 ):
   | ((
       a: { value: string; id: string; row: string; col: string }[],
-      b: { value: string; id: string; row: string; col: string }[]
+      b: { value: string; id: string; row: string; col: string }[],
     ) => number)
   | undefined {
   return (rowA, rowB) => {
@@ -71,14 +71,14 @@ function sortTableRows(
       const column = table.columns.find((col) => col.key === columnName);
       if (column === undefined) {
         throw new Error(
-          `Column ${columnName} not found in table ${tableName}!`
+          `Column ${columnName} not found in table ${tableName}!`,
         );
       }
       const columnA = rowA.find((cell) => cell.col === column.id);
       const columnB = rowB.find((cell) => cell.col === column.id);
       if (columnA === undefined || columnB === undefined) {
         throw new Error(
-          `Column ${column.key} not found in table ${tableName}!`
+          `Column ${column.key} not found in table ${tableName}!`,
         );
       }
       const cmp = castAndCompare(columnA.value, columnB.value, column.type);

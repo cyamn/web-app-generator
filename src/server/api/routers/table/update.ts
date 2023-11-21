@@ -13,7 +13,7 @@ export async function updateTable(
   tableName: string,
   columnsRecord: Record<string, string>,
   data: string[][],
-  newName: string = tableName
+  newName: string = tableName,
 ): Promise<string> {
   const table = await getUpdatedTable(tableName, projectID, newName);
   const columns: Column[] = await recreatedColumns(table, columnsRecord);
@@ -29,7 +29,7 @@ async function insertData(
     key: string;
   }[],
   table: Table,
-  columnIDs: Record<string, string>
+  columnIDs: Record<string, string>,
 ) {
   const rows = data.map((row) => {
     const rowRecord: Record<string, string> = {};
@@ -50,7 +50,7 @@ async function insertData(
 
 async function recreatedColumns(
   table: Table,
-  columnsRecord: Record<string, string>
+  columnsRecord: Record<string, string>,
 ) {
   await prisma.row.deleteMany({
     where: {
@@ -77,7 +77,7 @@ async function recreatedColumns(
         key,
         type,
       };
-    }
+    },
   );
   return columns;
 }
@@ -85,7 +85,7 @@ async function recreatedColumns(
 async function getUpdatedTable(
   tableName: string,
   projectID: string,
-  newName: string
+  newName: string,
 ) {
   const table = await prisma.table.findFirst({
     where: {

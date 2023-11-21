@@ -3,7 +3,7 @@ import { Variables } from "@/data/page/variables";
 
 export function hydratePage(page: Page, variables: Variables): Page {
   const pageString = JSON.stringify(page);
-  const hydratedPageString = pageString.replace(
+  const hydratedPageString = pageString.replaceAll(
     /\$([\w.]+)/g,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -21,7 +21,7 @@ export function hydratePage(page: Page, variables: Variables): Page {
         }
       }
       return variable;
-    }
+    },
   );
 
   let parsed: unknown;

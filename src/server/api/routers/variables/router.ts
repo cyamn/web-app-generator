@@ -21,7 +21,7 @@ export const variablesRouter = createTRPCRouter({
         variables: VariablesSchema,
         page: PageSchema,
         project: z.string().optional(),
-      })
+      }),
     )
     .output(VariablesSchema)
     .query(async ({ ctx, input }) => {
@@ -29,7 +29,7 @@ export const variablesRouter = createTRPCRouter({
         input.variables,
         input.page,
         input.project,
-        ctx.session === null ? undefined : ctx.session.user
+        ctx.session === null ? undefined : ctx.session.user,
       );
     }),
 });

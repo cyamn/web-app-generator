@@ -17,6 +17,6 @@ export default function handler(_: NextApiRequest, response: NextApiResponse) {
       version,
       baseUrl: `${getNextUrl()}/api`,
       tags: ["debug", "project", "page", "table", "role"],
-    })
+    }),
   );
 }

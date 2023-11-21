@@ -8,7 +8,7 @@ import { isProjectAdminFilter } from "./shared";
 export async function addPage(
   userID: string,
   projectId: string,
-  pageName: string
+  pageName: string,
 ): Promise<string> {
   const project = await prisma.project.findFirst({
     where: {

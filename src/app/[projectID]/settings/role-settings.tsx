@@ -16,23 +16,23 @@ export const RoleSettings: FC<RoleSettingsProperties> = ({ projectID }) => {
     error,
   } = api.roles.list.useQuery({ project: projectID });
 
-  const context = api.useContext();
+  const utils = api.useUtils();
 
   const { mutate: addRole, isLoading: isAdding } = api.roles.add.useMutation({
     onSuccess: () => {
-      void context.roles.list.invalidate({ project: projectID });
+      void utils.roles.list.invalidate({ project: projectID });
     },
   });
 
   const { mutate: addUser } = api.roles.assignUserToRoleByMail.useMutation({
     onSuccess: () => {
-      void context.roles.list.invalidate({ project: projectID });
+      void utils.roles.list.invalidate({ project: projectID });
     },
   });
 
   const { mutate: removeUser } = api.roles.unAssignUserToRoleById.useMutation({
     onSuccess: () => {
-      void context.roles.list.invalidate({ project: projectID });
+      void utils.roles.list.invalidate({ project: projectID });
     },
   });
 
@@ -48,7 +48,7 @@ export const RoleSettings: FC<RoleSettingsProperties> = ({ projectID }) => {
   function promptAddUser(roleID: string): void {
     const email = prompt(
       "Please enter an email for the person you want to add:",
-      "some@mail"
+      "some@mail",
     );
     if (email === null) return;
     addUser({ email, role: roleID });

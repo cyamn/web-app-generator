@@ -16,7 +16,7 @@ export const AddTableCard: React.FC<AddTableCardProperties> = ({ project }) => {
   const addTable = (): void => {
     const tableName = prompt(
       "Please enter your table name:",
-      "my awesome table"
+      "my awesome table",
     );
     if (tableName === null) return;
     mutate({ project, tableName });

@@ -2,7 +2,7 @@ import { prisma } from "@/server/database";
 
 export async function updateRole(
   roleID: string,
-  roleName: string
+  roleName: string,
 ): Promise<string> {
   const role = await prisma.role.update({
     where: {

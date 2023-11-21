@@ -5,7 +5,7 @@ import { NotFoundError } from "../shared/errors";
 export async function setPageVisibility(
   project: string,
   pagePath: string,
-  shallBePublic: boolean
+  shallBePublic: boolean,
 ): Promise<string> {
   const pages = await prisma.page.updateMany({
     where: {
@@ -27,7 +27,7 @@ export async function setPageVisibility(
 
 export async function getRoleAccess(
   project: string,
-  page: string
+  page: string,
 ): Promise<
   Array<{
     id: string;
@@ -79,7 +79,7 @@ export async function getRoleAccess(
       access:
         role.roleAccessPages.some(
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          (roleAccessPage) => roleAccessPage.page.path === page
+          (roleAccessPage) => roleAccessPage.page.path === page,
         ) || role.isAdmin,
     };
   });
@@ -89,7 +89,7 @@ export async function setRoleAccess(
   project: string,
   pagePath: string,
   role: string,
-  access: boolean
+  access: boolean,
 ): Promise<string> {
   const page = await prisma.page.findFirst({
     where: {

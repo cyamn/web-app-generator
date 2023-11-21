@@ -5,7 +5,7 @@ import { isProjectAdminFilter } from "./shared";
 export async function deletePage(
   userID: string,
   projectID: string,
-  pagePath: string
+  pagePath: string,
 ): Promise<string> {
   const delta = await prisma.page.deleteMany({
     where: {

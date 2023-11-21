@@ -23,7 +23,7 @@ const Page = async ({ params }: PageProperties) => {
   const pageWithMeta = await getServerSidePage(
     params.projectID,
     params.page,
-    false
+    false,
   );
   return (
     <div className="flex h-full flex-col">

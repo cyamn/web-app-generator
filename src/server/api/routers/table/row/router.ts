@@ -27,7 +27,7 @@ export const rowRouter = createTRPCRouter({
         ...projectTableSchema.shape,
         filter: TableFilterSchema.optional(),
         row: RowSchema,
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -56,7 +56,7 @@ export const rowRouter = createTRPCRouter({
       z.object({
         rowId: z.string(),
         row: RowSchema,
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {
@@ -75,7 +75,7 @@ export const rowRouter = createTRPCRouter({
     .input(
       z.object({
         rowId: z.string(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {

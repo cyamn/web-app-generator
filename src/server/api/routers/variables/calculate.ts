@@ -24,7 +24,7 @@ const fallbackProject: Project = {
 export async function getInternalVariables(
   page: Page,
   project?: Project,
-  user?: User
+  user?: User,
 ): Promise<object> {
   let internalVariables: object = {
     user: {
@@ -56,7 +56,7 @@ export async function calculateVariables(
   variables: Variables,
   page: Page,
   projectId?: string,
-  user?: User
+  user?: User,
 ): Promise<Variables> {
   let project = fallbackProject;
   if (projectId !== undefined) project = await getProject(projectId);
@@ -66,7 +66,7 @@ export async function calculateVariables(
   const parser = makeParser(project.id);
   const calculated = await calculate(
     { ...internalVariables, ...variables },
-    parser
+    parser,
   );
 
   return {
@@ -78,7 +78,7 @@ export async function calculateVariables(
 async function calculate(
   variables: Variables,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  parser: any
+  parser: any,
 ): Promise<Variables> {
   const newVariables: Variables = {};
   for (const [key, value] of Object.entries(variables)) {
@@ -97,7 +97,7 @@ async function evaluate(
   formula: string,
   variables: Variables,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  parser: any
+  parser: any,
 ): Promise<string> {
   // replace every variable with its value in the formula if the value is evaluated already
   for (const [key, value] of Object.entries(variables)) {

@@ -9,7 +9,7 @@ import { createTable } from "../table/add";
 export async function addProject(
   name: string,
   ownerId: string,
-  description = "my amazing project"
+  description = "my amazing project",
 ): Promise<string> {
   const project = await prisma.project.create({
     data: {

@@ -32,7 +32,7 @@ describe("delete project function", () => {
     await expect(
       (async () => {
         await deleteProject("project", "owner");
-      })()
+      })(),
     ).rejects.toThrowError(new NotFoundError("project"));
 
     expect(prisma.project.deleteMany).toBeCalledTimes(1);

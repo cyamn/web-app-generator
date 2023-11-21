@@ -22,15 +22,15 @@ type SettingsProperties = {
 
 export const Settings: React.FC<SettingsProperties> = ({ page, project }) => {
   const [isPublic, setIsPublic] = useState<boolean>(
-    page.access?.public ?? false
+    page.access?.public ?? false,
   );
-  const context = api.useContext();
+  const utils = api.useUtils();
   const { mutate } = api.pages.togglePublicVisibility.useMutation({
     onSuccess: () => {
       toast.success(
-        `Set page ${page.name} to ${isPublic ? "public" : "private"}!`
+        `Set page ${page.name} to ${isPublic ? "public" : "private"}!`,
       );
-      void context.pages.get.invalidate({ project, page: page.path });
+      void utils.pages.get.invalidate({ project, page: page.path });
     },
     onError: (error) => {
       toast.error(`Error: ${error.message}`);
@@ -40,14 +40,14 @@ export const Settings: React.FC<SettingsProperties> = ({ page, project }) => {
   const { mutate: updatePage } = api.pages.update.useMutation({
     onSuccess: () => {
       toast.success(`Updated page ${page.name}!`);
-      void context.pages.get.invalidate({ project, page: page.path });
+      void utils.pages.get.invalidate({ project, page: page.path });
     },
   });
 
   const { mutate: deletePage } = api.pages.delete.useMutation({
     onSuccess: () => {
       toast.success(`Deleted page ${page.name}!`);
-      void context.pages.get.invalidate({ project, page: page.path });
+      void utils.pages.get.invalidate({ project, page: page.path });
       window.location.href = `/${project}/page`;
     },
   });
@@ -131,7 +131,7 @@ export const Settings: React.FC<SettingsProperties> = ({ page, project }) => {
               onClick={() => {
                 if (
                   !confirm(
-                    `Are you sure you want to delete page ${page.name}? This cannot be undone!`
+                    `Are you sure you want to delete page ${page.name}? This cannot be undone!`,
                   )
                 )
                   return;

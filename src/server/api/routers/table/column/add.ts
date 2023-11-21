@@ -5,7 +5,7 @@ import { prisma } from "@/server/database";
 
 export async function createColumns(
   columnSchema: Column[],
-  tableId: string
+  tableId: string,
 ): Promise<Record<string, string>> {
   const columnIDs: Record<string, string> = {};
   for (const column of columnSchema) {
@@ -25,7 +25,7 @@ export async function createColumns(
 export async function createColumn(
   tableID: string,
   key: string,
-  type: string
+  type: string,
 ): Promise<string> {
   const column = await prisma.column.create({
     data: {

@@ -4,7 +4,7 @@ import { isProjectAdminFilter } from "./shared";
 
 export async function listPages(
   userID: string,
-  projectID: string
+  projectID: string,
 ): Promise<{ name: string; path: string }[]> {
   const pages = await prisma.page.findMany({
     where: {

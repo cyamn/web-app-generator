@@ -6,7 +6,7 @@ import { InternalError } from "../../shared/errors";
 export async function createCells(
   rowSchema: Row[],
   columnIDs: Record<string, string>,
-  rowIDs: string[]
+  rowIDs: string[],
 ): Promise<void> {
   await prisma.cell.createMany({
     data: rowSchema.flatMap((row: Row, rowIndex) => {
@@ -28,7 +28,7 @@ export async function createCells(
 export async function addCell(
   columnID: string,
   rowID: string,
-  value: string
+  value: string,
 ): Promise<string> {
   const cell = await prisma.cell.create({
     data: {

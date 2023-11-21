@@ -8,7 +8,7 @@ import { idListSchema } from "../parameter-schemas";
 
 export async function listTables(
   userID: string,
-  projectID: string
+  projectID: string,
 ): Promise<z.infer<typeof idListSchema>> {
   const tables = await prisma.table.findMany({
     where: {

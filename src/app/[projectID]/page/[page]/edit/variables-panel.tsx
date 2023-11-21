@@ -102,7 +102,7 @@ export const VariablesPanel: React.FC<VariablesPanelProperties> = ({
                   </td>
                 </tr>
               );
-            }
+            },
           )}
         </tbody>
       </table>

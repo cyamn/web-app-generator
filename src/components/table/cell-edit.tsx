@@ -90,7 +90,7 @@ export const CellEdit: React.FC<CellProperties> = ({
     case "boolean": {
       return (
         <FontAwesomeIcon
-          className={`cursor-pointer"} w-full px-2 text-center text-2xl
+          className={`w-full cursor-pointer px-2 text-center text-2xl
           `}
           icon={value === "true" ? faSquareCheck : faSquare}
           onClick={() => {
@@ -126,7 +126,7 @@ export const CellEdit: React.FC<CellProperties> = ({
       } = api.roles.getUsers.useQuery({ project });
 
       if (isLoading) return <div>...</div>;
-      if (isError) return <div>error.message</div>;
+      if (isError) return <div>{error.message}</div>;
 
       return (
         <select

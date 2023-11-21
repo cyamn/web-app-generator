@@ -40,25 +40,25 @@ export const TableEdit: React.FC<TableEditProperties> = ({
     tableName: table_,
   });
 
-  const context = api.useContext();
+  const utils = api.useUtils();
 
   const { mutate: insert } = api.tables.row.add.useMutation({
     onSuccess: () => {
-      void context.tables.get.invalidate({ project, tableName: table_ });
+      void utils.tables.get.invalidate({ project, tableName: table_ });
       toast.success("Row added");
     },
   });
 
   const { mutate: addColumn } = api.tables.column.add.useMutation({
     onSuccess: () => {
-      void context.tables.get.invalidate({ project, tableName: table_ });
+      void utils.tables.get.invalidate({ project, tableName: table_ });
       toast.success("Column added");
     },
   });
 
   const { mutate: deleteRow } = api.tables.row.delete.useMutation({
     onSuccess: () => {
-      void context.tables.get.invalidate({ project, tableName: table_ });
+      void utils.tables.get.invalidate({ project, tableName: table_ });
       toast.success("Column deleted");
     },
   });
@@ -109,7 +109,7 @@ export const TableEdit: React.FC<TableEditProperties> = ({
                 >
                   <ColumnHeader
                     value={internalToName(
-                      (columns ? columns[column.key] : column.key) ?? ""
+                      (columns ? columns[column.key] : column.key) ?? "",
                     )}
                     column={column}
                     project={project}

@@ -13,14 +13,14 @@ export const DProjectSchema = z.object({
       name: z.string(),
       users: z.array(z.string()),
       isAdmin: z.boolean(),
-    })
+    }),
   ),
   tables: z.array(
     z.object({
       name: z.string(),
       columns: z.record(z.string(), z.string()),
       data: z.array(z.array(z.string())),
-    })
+    }),
   ),
 });
 

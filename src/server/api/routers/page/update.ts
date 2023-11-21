@@ -7,7 +7,7 @@ export async function updatePage(
   userID: string,
   projectID: string,
   page: Page,
-  path: string = page.path
+  path: string = page.path,
 ): Promise<string> {
   const delta = await prisma.page.updateMany({
     where: {

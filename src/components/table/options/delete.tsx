@@ -13,11 +13,11 @@ export const DeleteTableButton: React.FC<DeleteTableButtonProperties> = ({
   project,
   table,
 }) => {
-  const context = api.useContext();
+  const utils = api.useUtils();
 
   const { mutate: deleteTable } = api.tables.delete.useMutation({
     onSuccess: () => {
-      void context.tables.get.invalidate({ project, tableName: table });
+      void utils.tables.get.invalidate({ project, tableName: table });
       toast.success("Table deleted");
       window.location.href = `/${project}/table`;
     },
@@ -28,7 +28,7 @@ export const DeleteTableButton: React.FC<DeleteTableButtonProperties> = ({
       onClick={() => {
         if (
           confirm(
-            "Are you sure you want to delete this table? At least you should export it first."
+            "Are you sure you want to delete this table? At least you should export it first.",
           )
         ) {
           deleteTable({ project, tableName: table });

@@ -17,7 +17,7 @@ type TableControlsProperties = {
 };
 
 export const TableControls: React.FC<TableControlsProperties> = (
-  properties
+  properties,
 ) => {
   switch (properties.control[0]) {
     case "delete": {
@@ -41,17 +41,12 @@ export const DeleteRowControl: React.FC<TableControlsProperties> = ({
   project,
   control,
 }) => {
-  const context = api.useContext();
+  const utils = api.useUtils();
 
-  const {
-    mutate: deleteRow,
-    isLoading,
-    isError,
-    error,
-  } = api.tables.row.delete.useMutation({
+  const { mutate: deleteRow, isLoading } = api.tables.row.delete.useMutation({
     onSuccess: () => {
       toast.success("Row deleted");
-      void context.tables.get.invalidate({
+      void utils.tables.get.invalidate({
         project,
         tableName: table.name,
       });
@@ -84,17 +79,12 @@ export const DuplicateRowControl: React.FC<TableControlsProperties> = ({
   project,
   control,
 }) => {
-  const context = api.useContext();
+  const utils = api.useUtils();
 
-  const {
-    mutate: insertRow,
-    isLoading,
-    isError,
-    error,
-  } = api.tables.row.add.useMutation({
+  const { mutate: insertRow, isLoading } = api.tables.row.add.useMutation({
     onSuccess: () => {
       toast.success("Row duplicated");
-      void context.tables.get.invalidate({
+      void utils.tables.get.invalidate({
         project,
         tableName: table.name,
       });
@@ -135,17 +125,12 @@ export const EditRowControl: React.FC<TableControlsProperties> = ({
   const [isChanged, setIsChanged] = React.useState(false);
   const [localRowData, setLocalRowData] = React.useState(rowData);
 
-  const context = api.useContext();
+  const utils = api.useUtils();
 
-  const {
-    mutate: updateRow,
-    isLoading,
-    isError,
-    error,
-  } = api.tables.row.update.useMutation({
+  const { mutate: updateRow } = api.tables.row.update.useMutation({
     onSuccess: () => {
       toast.success("Row updated");
-      void context.tables.get.invalidate({
+      void utils.tables.get.invalidate({
         project,
         tableName: table.name,
       });

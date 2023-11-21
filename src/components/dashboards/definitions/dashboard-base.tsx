@@ -38,8 +38,7 @@ export class DashboardBase<T> implements IDashboard<T> {
 
   public constructor(context: DashboardContext, parameters?: T) {
     this.context = context;
-    this.parameters =
-      parameters === undefined ? this.getDefaultParameters() : parameters;
+    this.parameters = parameters ?? this.getDefaultParameters();
     return;
   }
 

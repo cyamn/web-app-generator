@@ -147,7 +147,7 @@ const OrderSelection: React.FC<FormatProperties> = ({
             onClick={() => {
               // find key that was not set yet
               const key = table.columns.find(
-                (column) => !Object.keys(orderBys).includes(column.key)
+                (column) => !Object.keys(orderBys).includes(column.key),
               )?.key;
               onSetData(data, {
                 ...format,
@@ -270,7 +270,7 @@ const ControlSelection: React.FC<FormatProperties> = ({
             onClick={() => {
               // find key that was not set yet
               const key = possibleControls.find(
-                (control) => !Object.keys(controls).includes(control)
+                (control) => !Object.keys(controls).includes(control),
               );
               onSetData(data, {
                 ...format,

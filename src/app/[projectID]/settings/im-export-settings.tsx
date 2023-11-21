@@ -25,12 +25,12 @@ export const ImExportSettings: FC<ImExportSettingsProperties> = ({
     id: projectID,
   });
 
-  const context = api.useContext();
+  const utils = api.useUtils();
 
   const { mutate: importProject } = api.projects.import.useMutation({
     onSuccess: () => {
-      void context.projects.get.invalidate({ id: projectID });
-      void context.roles.list.invalidate({ project: projectID });
+      void utils.projects.get.invalidate({ id: projectID });
+      void utils.roles.list.invalidate({ project: projectID });
       toast.success("Updated project");
     },
   });

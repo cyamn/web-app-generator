@@ -9,10 +9,10 @@ export const useProjectList = () => {
 };
 
 export const useAddProject = () => {
-  const context = api.useContext();
+  const utils = api.useUtils();
   const { mutate, isLoading: isAdding } = api.projects.add.useMutation({
     onSuccess: () => {
-      void context.projects.list.invalidate();
+      void utils.projects.list.invalidate();
       window.location.reload();
     },
   });

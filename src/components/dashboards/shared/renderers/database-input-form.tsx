@@ -96,7 +96,7 @@ export const DatabaseInputFormRender: React.FC<{
   const inputPlaceholders = table.columns.map((column) => {
     if (data.filter !== undefined) {
       const rules = data.filter.filter(
-        (f: SQLFilter) => f.column === column.key
+        (f: SQLFilter) => f.column === column.key,
       );
       if (rules.length > 0) {
         let placeholder = "";
@@ -159,11 +159,11 @@ const CreateButton: React.FC<ButtonProperties> = ({
   onReset,
   filter,
 }) => {
-  const context = api.useContext();
+  const utils = api.useUtils();
 
   const { mutate, isLoading: isCreating } = api.tables.row.add.useMutation({
     onSuccess: () => {
-      void context.tables.get.invalidate({ project, tableName: table });
+      void utils.tables.get.invalidate({ project, tableName: table });
       toast.success("Data submitted successfully!");
       onReset();
     },

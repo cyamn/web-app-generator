@@ -10,16 +10,16 @@ export function nameToInternal(name: string): string {
   // space -> _
   index = index.replace(" ", "_");
   // replace umlauts to
-  index = index.replace(/ä/g, "ae");
-  index = index.replace(/ö/g, "oe");
-  index = index.replace(/ü/g, "ue");
-  index = index.replace(/ß/g, "ss");
+  index = index.replaceAll("ä", "ae");
+  index = index.replaceAll("ö", "oe");
+  index = index.replaceAll("ü", "ue");
+  index = index.replaceAll("ß", "ss");
   // replace . to dot
-  index = index.replace(/\./g, "dot");
+  index = index.replaceAll(".", "dot");
   // replace special characters to _
-  index = index.replace(/\W/g, "_");
+  index = index.replaceAll(/\W/g, "_");
   // remove double _
-  index = index.replace(/_+/g, "_");
+  index = index.replaceAll(/_+/g, "_");
   // remove leading _
   index = index.replace(/^_/, "");
   // remove trailing _

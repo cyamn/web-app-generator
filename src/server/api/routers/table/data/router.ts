@@ -27,7 +27,7 @@ export const dataRouter = createTRPCRouter({
       const table = await getTable(
         input.tableName,
         input.project,
-        input.columns
+        input.columns,
       );
       if (!table) throw new NotFoundError("table");
       return {
@@ -50,7 +50,7 @@ export const dataRouter = createTRPCRouter({
         name: z.string(),
         project: z.string(),
         table: z.string().optional(),
-      })
+      }),
     )
     .output(z.string())
     .mutation(async ({ input }) => {

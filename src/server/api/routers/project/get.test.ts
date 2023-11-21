@@ -41,7 +41,7 @@ describe("get project function", () => {
     await expect(
       (async () => {
         await getProject("myproject");
-      })()
+      })(),
     ).rejects.toThrowError(new NotFoundError("project"));
 
     expect(prisma.project.findFirst).toBeCalledTimes(1);

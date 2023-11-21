@@ -17,7 +17,7 @@ const Page = async ({ params, children }: PageProperties) => {
   const pageWithMeta = await getServerSidePage(
     params.projectID,
     params.page,
-    session !== null
+    session !== null,
   );
 
   if (session === null) return <div className="w-full">{children}</div>;

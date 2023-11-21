@@ -10,6 +10,6 @@ export default function handler(_: NextApiRequest, response: NextApiResponse) {
     renderTrpcPanel(appRouter, {
       url: `${getNextUrl()}/api/trpc`,
       transformer: "superjson",
-    })
+    }),
   );
 }

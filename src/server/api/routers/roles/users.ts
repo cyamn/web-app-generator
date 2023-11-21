@@ -2,7 +2,7 @@ import { prisma } from "@/server/database";
 
 export async function getUsers(
   projectId: string,
-  admin = false
+  admin = false,
 ): Promise<
   Array<{
     id: string;
