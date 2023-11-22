@@ -11,12 +11,12 @@ type DashboardsParameters = {
 
 export function DashboardFactory(
   parameters: DashboardsParameters,
-  utils: DashboardContext,
+  context: DashboardContext,
 ): IDashboard<unknown> {
   const dashboard = Dashboards[parameters.type];
   if (dashboard === undefined) {
-    return new DashboardBase<unknown>(utils, parameters.parameters);
+    return new DashboardBase<unknown>(context, parameters.parameters);
   }
-  const instance = new dashboard(utils, parameters.parameters);
+  const instance = new dashboard(context, parameters.parameters);
   return instance;
 }

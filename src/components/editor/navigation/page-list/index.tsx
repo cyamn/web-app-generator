@@ -4,11 +4,12 @@ import { PageMode } from "../page-tabs";
 import { ListItem } from "../shared/list-item";
 import { AddPageButton } from "./add-page-button";
 
-type PageListProperties = {
+export type PageListProperties = {
   project: string;
   pagePath?: string;
 };
 
+// TODO duplicate of table-list?
 export const PageList: React.FC<PageListProperties> = async ({
   project,
   pagePath = "",

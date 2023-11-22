@@ -25,7 +25,9 @@ export const handleImport = async (
   });
 };
 
-function createFileSelector(acceptedExtensions?: string[]): HTMLInputElement {
+export function createFileSelector(
+  acceptedExtensions?: string[],
+): HTMLInputElement {
   const fileSelector = document.createElement("input");
   fileSelector.setAttribute("type", "file");
   fileSelector.setAttribute("multiple", "multiple");

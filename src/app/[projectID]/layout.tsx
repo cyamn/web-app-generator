@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth/next";
 
 import { Quickmenu } from "@/components/command";
 import { Header } from "@/components/header";
+import { AuthRequiredError } from "@/lib/exceptions";
 import { authOptions } from "@/server/auth";
 import {
   getServerSideProject,
@@ -17,7 +18,7 @@ type PageProperties = {
 
 const Page = async ({ params, children }: PageProperties) => {
   const session = await getServerSession(authOptions);
-  if (session === null) throw new Error("Unauthorized");
+  if (session === null) throw new AuthRequiredError();
 
   const project = await getServerSideProject(params.projectID);
   if (project === null) throw new Error("Project not found");
@@ -25,7 +26,7 @@ const Page = async ({ params, children }: PageProperties) => {
   // check if is admin
   const projectAdmins = await getServerSideProjectAdmins(params.projectID);
   const isAdmin = projectAdmins.some((admin) => admin.id === session.user.id);
-  if (!isAdmin) throw new Error("Unauthorized");
+  if (!isAdmin) throw new AuthRequiredError();
 
   return (
     <div className="flex h-screen w-screen flex-col overflow-auto">

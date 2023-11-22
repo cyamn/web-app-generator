@@ -29,7 +29,7 @@ export async function addRow(table: Table, row: Row): Promise<string> {
   return rowID;
 }
 
-async function createEmptyRow(table: Table) {
+export async function createEmptyRow(table: Table) {
   const rowID = cuid();
   await prisma.row.create({
     data: {
@@ -44,7 +44,7 @@ async function createEmptyRow(table: Table) {
   return rowID;
 }
 
-async function getColumnIDs(table: Table): Promise<Dict> {
+export async function getColumnIDs(table: Table): Promise<Dict> {
   const columnCuids: Dict = {};
   for (const column of table.columns) {
     const col = await prisma.column.findFirst({

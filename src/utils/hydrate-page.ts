@@ -10,8 +10,6 @@ export function hydratePage(page: Page, variables: Variables): Page {
     (_, variableName: string) => {
       let variable = variables;
       const variableNames = variableName.split(".");
-      console.log(variableNames);
-      console.log(variable);
       for (const name of variableNames) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

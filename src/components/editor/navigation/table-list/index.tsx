@@ -3,7 +3,7 @@ import { getServerSideTableList } from "@/utils/get-serverside";
 import { ListItem } from "../shared/list-item";
 import { AddTableButton } from "./add-table-button";
 
-type TableListProperties = {
+export type TableListProperties = {
   project: string;
   tableName?: string;
 };
