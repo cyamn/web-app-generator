@@ -16,7 +16,10 @@
     "lint": "npm run lint:types && npm run lint:conventions && npm run lint:duplicates",
     "format": "eslint src --fix && prettier --write .",
     "postinstall": "prisma generate",
-    "test": "vitest",
+    "test:unit": "vitest -c ./src/tests/vitest.config.unit.ts",
+    "test:int:pre": "./scripts/start-test-db.sh",
+    "test:int": "./scripts/start-test-db.sh; vitest -c ./src/tests/vitest.config.integration.ts",
+    "test": "./scripts/start-test-db.sh; vitest",
     "coverage": "vitest run --coverage",
     "copy-env": "cp -u .env.example .env",
     "bootstrap": "npm run copy-env && npm install && next build && concurrently --kill-others-on-fail  -p \"{name} {time}|\" -t \"HH:mm:ss\" --names \"DATA,APP\" -c \"yellow,blue\" \"npm run db\" \"next start\""

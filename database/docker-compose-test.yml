@@ -1,0 +1,26 @@
+version: "3.5"
+
+services:
+  postgres:
+    container_name: postgres_container_test
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-mydatabase}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres-test
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: always
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
+    driver: local

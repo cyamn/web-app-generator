@@ -5,7 +5,7 @@ import { appRouter } from "@/server/api/root";
 import { authOptions } from "@/server/auth";
 import { prisma } from "@/server/database";
 
-async function getCaller(needsAuth = true) {
+export async function getCaller(needsAuth = true) {
   const session = await getServerSession(authOptions);
   if (needsAuth && !session) throw new AuthRequiredError();
   return appRouter.createCaller({ prisma, session });
