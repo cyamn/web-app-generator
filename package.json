@@ -29,7 +29,7 @@
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@monaco-editor/react": "^4.5.1",
     "@next-auth/prisma-adapter": "^1.0.5",
-    "@prisma/client": "^4.16.0",
+    "@prisma/client": "^5.7.0",
     "@radix-ui/react-context-menu": "^2.1.4",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-progress": "^1.0.3",
